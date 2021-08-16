@@ -93,6 +93,7 @@ export async function loadValidation(req: Request): Promise<UserValidation> {
     }
 }
 
+
 /**
  * Validates a user role, stored in res.locals.profile.roles
  *  - On success executes next()

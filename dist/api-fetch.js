@@ -35,7 +35,7 @@ function apiFetch(url = '', options = {}) {
                 delete options.referrer;
             }
             if (!options.headers.Authorization && LOCAL_HOSTNAMES.includes(url.hostname)) {
-                if (CHUMS_API_USER === '' || CHUMS_API_PASSWORD === '') {
+                if (!CHUMS_API_USER || !CHUMS_API_PASSWORD) {
                     debug('apiFetch() WARNING: session variables CHUMS_API_USER, CHUMS_API_PASSWORD not set.');
                 }
                 const auth = Buffer.from(`${CHUMS_API_USER}:${CHUMS_API_PASSWORD}`).toString('base64');
