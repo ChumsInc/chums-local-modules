@@ -66,7 +66,7 @@ export function WebSocketServer() {
     }, 10000);
 
     const onUpgrade = (request: IncomingMessage, socket: Socket, head: Buffer) => {
-        debug(' server.onUpgrade()', request);
+        // debug(' server.onUpgrade()', request);
         wsServer.handleUpgrade(request, socket, head, (ws) => {
             wsServer.emit('connection', ws, request);
         })
