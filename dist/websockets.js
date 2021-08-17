@@ -9,56 +9,62 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadSocketValidation = exports.onUpgrade = exports.wsServer = void 0;
+exports.loadSocketValidation = exports.WebSocketServer = void 0;
 const debug_1 = require("debug");
 const ws_1 = require("ws");
 const node_fetch_1 = require("node-fetch");
 const cookie = require("cookie");
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
 const debug = debug_1.default('chums:lib:websockets');
-exports.wsServer = new ws_1.Server({ noServer: true });
-exports.wsServer.on('connection', (ws, message) => __awaiter(void 0, void 0, void 0, function* () {
-    const { valid, status, profile } = yield loadSocketValidation(message);
-    if (!valid || status !== 'ok') {
-        ws.close();
-        return;
-    }
-    ws.isAlive = true;
-    ws.profile = profile;
-    ws.on('message', (message) => {
-        ws.isAlive = true;
-        debug('wsServer.onMessage', message);
-    });
-    ws.on('pong', () => {
-        ws.isAlive = true;
-    });
-    ws.on('close', (ev) => {
-        debug('wsServer.onClose()', ev);
-    });
-    ws.on('error', (ev) => {
-        debug('wsServer.onError()', ev);
-    });
-}));
-setInterval(() => {
-    exports.wsServer.clients.forEach((ws) => {
-        if (!ws.isAlive) {
-            return ws.terminate();
+function WebSocketServer() {
+    const wsServer = new ws_1.Server({ noServer: true });
+    wsServer.on('connection', (ws, message) => __awaiter(this, void 0, void 0, function* () {
+        const { valid, status, profile } = yield loadSocketValidation(message);
+        if (!valid || status !== 'ok') {
+            ws.close();
+            return;
         }
-        ws.isAlive = false;
-        ws.ping(null, false, (err) => {
-            if (err) {
-                debug('wsServer.clients.ping()', err.message);
-            }
+        ws.isAlive = true;
+        ws.profile = profile;
+        ws.on('message', (message) => {
+            ws.isAlive = true;
+            debug('wsServer.onMessage', message);
         });
-    });
-}, 10000);
-const onUpgrade = (request, socket, head) => {
-    debug(' server.onUpgrade()', request);
-    exports.wsServer.handleUpgrade(request, socket, head, (ws) => {
-        exports.wsServer.emit('connection', ws, request);
-    });
-};
-exports.onUpgrade = onUpgrade;
+        ws.on('pong', () => {
+            ws.isAlive = true;
+        });
+        ws.on('close', (ev) => {
+            debug('wsServer.onClose()', ev);
+        });
+        ws.on('error', (ev) => {
+            debug('wsServer.onError()', ev);
+        });
+    }));
+    setInterval(() => {
+        wsServer.clients.forEach((ws) => {
+            if (!ws.isAlive) {
+                return ws.terminate();
+            }
+            ws.isAlive = false;
+            ws.ping(null, false, (err) => {
+                if (err) {
+                    debug('wsServer.clients.ping()', err.message);
+                }
+            });
+        });
+    }, 10000);
+    const onUpgrade = (request, socket, head) => {
+        debug(' server.onUpgrade()', request);
+        wsServer.handleUpgrade(request, socket, head, (ws) => {
+            wsServer.emit('connection', ws, request);
+        });
+    };
+    return {
+        wsServer,
+        onUpgrade,
+    };
+}
+exports.WebSocketServer = WebSocketServer;
 /**
  * Executes validation request
  *  - validates req.cookies.PHPSESSID (from a logged in user)

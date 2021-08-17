@@ -12,8 +12,10 @@ export interface ExtWebSocket extends WebSocket {
 export interface ExtServer extends Server {
     clients: Set<ExtWebSocket>;
 }
-export declare const wsServer: ExtServer;
-export declare const onUpgrade: (request: IncomingMessage, socket: Socket, head: Buffer) => void;
+export declare function WebSocketServer(): {
+    wsServer: ExtServer;
+    onUpgrade: (request: IncomingMessage, socket: Socket, head: Buffer) => void;
+};
 /**
  * Executes validation request
  *  - validates req.cookies.PHPSESSID (from a logged in user)

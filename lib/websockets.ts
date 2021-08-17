@@ -21,56 +21,63 @@ export interface ExtServer extends Server {
     clients: Set<ExtWebSocket>;
 }
 
-export const wsServer: ExtServer = new Server({noServer: true}) as ExtServer;
-
-wsServer.on('connection', async (ws: ExtWebSocket, message: IncomingMessage) => {
-    const {valid, status, profile} = await loadSocketValidation(message);
-    if (!valid || status !== 'ok') {
-        ws.close();
-        return;
-    }
-    ws.isAlive = true;
-    ws.profile = profile;
-
-    ws.on('message', (message: string) => {
-        ws.isAlive = true;
-        debug('wsServer.onMessage', message);
-    });
-
-    ws.on('pong', () => {
-        ws.isAlive = true;
-    });
-
-    ws.on('close', (ev: any) => {
-        debug('wsServer.onClose()', ev);
-    });
-
-    ws.on('error', (ev: any) => {
-        debug('wsServer.onError()', ev);
-    });
-})
-
-setInterval(() => {
-    wsServer.clients.forEach((ws: ExtWebSocket) => {
-        if (!ws.isAlive) {
-            return ws.terminate();
+export function WebSocketServer() {
+    const wsServer: ExtServer = new Server({noServer: true}) as ExtServer;
+    wsServer.on('connection', async (ws: ExtWebSocket, message: IncomingMessage) => {
+        const {valid, status, profile} = await loadSocketValidation(message);
+        if (!valid || status !== 'ok') {
+            ws.close();
+            return;
         }
+        ws.isAlive = true;
+        ws.profile = profile;
 
-        ws.isAlive = false;
-        ws.ping(null, false, (err?: Error) => {
-            if (err) {
-                debug('wsServer.clients.ping()', err.message);
-            }
+        ws.on('message', (message: string) => {
+            ws.isAlive = true;
+            debug('wsServer.onMessage', message);
+        });
+
+        ws.on('pong', () => {
+            ws.isAlive = true;
+        });
+
+        ws.on('close', (ev: any) => {
+            debug('wsServer.onClose()', ev);
+        });
+
+        ws.on('error', (ev: any) => {
+            debug('wsServer.onError()', ev);
         });
     })
-}, 10000);
 
-export const onUpgrade = (request: IncomingMessage, socket: Socket, head: Buffer) => {
-    debug(' server.onUpgrade()', request);
-    wsServer.handleUpgrade(request, socket, head, (ws) => {
-        wsServer.emit('connection', ws, request);
-    })
+    setInterval(() => {
+        wsServer.clients.forEach((ws: ExtWebSocket) => {
+            if (!ws.isAlive) {
+                return ws.terminate();
+            }
+
+            ws.isAlive = false;
+            ws.ping(null, false, (err?: Error) => {
+                if (err) {
+                    debug('wsServer.clients.ping()', err.message);
+                }
+            });
+        })
+    }, 10000);
+
+    const onUpgrade = (request: IncomingMessage, socket: Socket, head: Buffer) => {
+        debug(' server.onUpgrade()', request);
+        wsServer.handleUpgrade(request, socket, head, (ws) => {
+            wsServer.emit('connection', ws, request);
+        })
+    }
+
+    return {
+        wsServer,
+        onUpgrade,
+    }
 }
+
 
 
 /**

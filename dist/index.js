@@ -10,7 +10,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.onUpgrade = exports.wsServer = exports.validateUserAccount = exports.loadValidation = exports.validateRole = exports.validateUser = exports.parseSQL = exports.getSageCompany = exports.getDBCompany = exports.parseDataForAOA = exports.addResultToExcelSheet = exports.buildWorkBook = exports.buildXLSXHeaders = exports.resultToExcelSheet = exports.getConnection = exports.pool = exports.mysql2Pool = exports.sendOldSESEmail = exports.getTs36 = exports.getTs = exports.getLogoImageAttachment = exports.sendGmail = exports.sendEmail = exports.apiFetch = void 0;
+exports.WebSocketServer = exports.validateUserAccount = exports.loadValidation = exports.validateRole = exports.validateUser = exports.parseSQL = exports.getSageCompany = exports.getDBCompany = exports.parseDataForAOA = exports.addResultToExcelSheet = exports.buildWorkBook = exports.buildXLSXHeaders = exports.resultToExcelSheet = exports.getConnection = exports.pool = exports.mysql2Pool = exports.sendOldSESEmail = exports.getTs36 = exports.getTs = exports.getLogoImageAttachment = exports.sendGmail = exports.sendEmail = exports.apiFetch = void 0;
 var api_fetch_1 = require("./api-fetch");
 Object.defineProperty(exports, "apiFetch", { enumerable: true, get: function () { return api_fetch_1.apiFetch; } });
 var mailer_1 = require("./mailer");
@@ -41,6 +41,5 @@ Object.defineProperty(exports, "loadValidation", { enumerable: true, get: functi
 var validate_user_account_1 = require("./validate-user-account");
 Object.defineProperty(exports, "validateUserAccount", { enumerable: true, get: function () { return validate_user_account_1.validateUserAccount; } });
 var websockets_1 = require("./websockets");
-Object.defineProperty(exports, "wsServer", { enumerable: true, get: function () { return websockets_1.wsServer; } });
-Object.defineProperty(exports, "onUpgrade", { enumerable: true, get: function () { return websockets_1.onUpgrade; } });
+Object.defineProperty(exports, "WebSocketServer", { enumerable: true, get: function () { return websockets_1.WebSocketServer; } });
 __exportStar(require("./types"), exports);
