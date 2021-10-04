@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildXLSXHeaders = exports.buildWorkBook = exports.addResultToExcelSheet = exports.resultToExcelSheet = exports.parseDataForAOA = exports.decode_cell = void 0;
+exports.buildXLSXHeaders = exports.buildWorkBook = exports.addResultToExcelSheet = exports.resultToExcelSheet = exports.parseDataForAOA = exports.encode_cell = exports.decode_cell = void 0;
 const debug_1 = require("debug");
 const debug = debug_1.default('chums:local-modules:toXLSX');
 const xlsx_1 = require("xlsx");
 exports.decode_cell = xlsx_1.utils.decode_cell;
+exports.encode_cell = xlsx_1.utils.encode_cell;
 function parseDataForAOA(data, columnNames, onlyColumnNames) {
     let rows = [];
     let fields = [];

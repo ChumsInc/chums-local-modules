@@ -2,7 +2,8 @@ import Debug from 'debug';
 const debug = Debug('chums:local-modules:toXLSX');
 import {utils, WorkSheet, write, WritingOptions, SheetAOAOpts} from 'xlsx';
 import {RowDataPacket} from "mysql2";
-export const {decode_cell} = utils;
+export const decode_cell = utils.decode_cell;
+export const encode_cell = utils.encode_cell;
 
 export interface ColumnNames {
     [key:string]: string,
