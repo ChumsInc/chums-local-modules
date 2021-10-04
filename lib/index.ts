@@ -5,5 +5,5 @@ export {resultToExcelSheet, buildXLSXHeaders, buildWorkBook, addResultToExcelShe
 export {getDBCompany, getSageCompany, parseSQL} from './utils';
 export {validateUser, validateRole, loadValidation} from './validate-user';
 export {validateUserAccount} from './validate-user-account';
-export {WebSocketServer, ExtServer, ExtWebSocket} from './websockets';
+export {WebSocketServer, ExtServer, ExtWebSocket, loadSocketValidation} from './websockets';
 export * from './types';

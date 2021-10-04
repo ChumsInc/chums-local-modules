@@ -3,6 +3,8 @@ const debug = Debug('chums:local-modules:toXLSX');
 import {utils, WorkSheet, write, WritingOptions, SheetAOAOpts} from 'xlsx';
 import {RowDataPacket} from "mysql2";
 
+export {utils} from 'xlsx';
+
 export interface ColumnNames {
     [key:string]: string,
 }
