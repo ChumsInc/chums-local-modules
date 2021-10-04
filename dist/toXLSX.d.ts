@@ -1,6 +1,6 @@
 import { WorkSheet, WritingOptions, SheetAOAOpts } from 'xlsx';
 import { RowDataPacket } from "mysql2";
-export { utils } from 'xlsx';
+export declare const decode_cell: (address: string) => import("xlsx").CellAddress;
 export interface ColumnNames {
     [key: string]: string;
 }
