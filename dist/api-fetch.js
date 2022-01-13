@@ -13,7 +13,7 @@ exports.apiFetch = void 0;
 const debug_1 = require("debug");
 const node_fetch_1 = require("node-fetch");
 const url_1 = require("url");
-const debug = debug_1.default('chums:local-modules:api-fetch');
+const debug = (0, debug_1.default)('chums:local-modules:api-fetch');
 const { CHUMS_API_USER = '', CHUMS_API_PASSWORD = '' } = process.env;
 const LOCAL_HOSTNAMES = ['localhost', 'intranet.chums.com'];
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
@@ -41,10 +41,14 @@ function apiFetch(url = '', options = {}) {
                 const auth = Buffer.from(`${CHUMS_API_USER}:${CHUMS_API_PASSWORD}`).toString('base64');
                 options.headers.Authorization = `Basic ${auth}`;
             }
-            return yield node_fetch_1.default(url, options);
+            return yield (0, node_fetch_1.default)(url, options);
         }
         catch (err) {
-            debug("get()", err.message);
+            if (err instanceof Error) {
+                debug('apiFetch()', err.message);
+                return Promise.reject(err);
+            }
+            debug("apiFetch()", err);
             return Promise.reject(err);
         }
     });

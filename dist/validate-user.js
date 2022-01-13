@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateRole = exports.loadValidation = exports.validateUser = void 0;
 const debug_1 = require("debug");
-const debug = debug_1.default('chums:local-modules:validate-user');
+const debug = (0, debug_1.default)('chums:local-modules:validate-user');
 const node_fetch_1 = require("node-fetch");
 const auth_1 = require("./auth");
 const jwt_handler_1 = require("./jwt-handler");
@@ -39,8 +39,12 @@ function validateUser(req, res, next) {
             next();
         }
         catch (err) {
-            debug("validateUser()", err.message);
-            res.status(401).json({ error: 'Not authorized', message: err.message });
+            if (err instanceof Error) {
+                debug("validateUser()", err.message);
+                res.status(401).json({ error: 'Not authorized', message: err.message });
+            }
+            debug("validateUser()", err);
+            res.status(401).json({ error: 'Not authorized', message: err });
         }
     });
 }
@@ -56,17 +60,17 @@ exports.validateUser = validateUser;
 function loadValidation(req) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { token } = auth_1.jwtToken(req);
+            const { token } = (0, auth_1.jwtToken)(req);
             if (token) {
-                const decoded = yield jwt_handler_1.validateToken(token);
-                if (jwt_handler_1.isLocalToken(decoded) && jwt_handler_1.isBeforeExpiry(decoded)) {
+                const decoded = yield (0, jwt_handler_1.validateToken)(token);
+                if ((0, jwt_handler_1.isLocalToken)(decoded) && (0, jwt_handler_1.isBeforeExpiry)(decoded)) {
                     const { user, roles = [], accounts = [] } = decoded;
                     user.roles = roles;
                     user.accounts = accounts;
                     return { valid: true, profile: { user, roles, accounts } };
                 }
             }
-            const { user, pass } = auth_1.basicAuth(req);
+            const { user, pass } = (0, auth_1.basicAuth)(req);
             const session = req.cookies.PHPSESSID;
             const fetchOptions = {};
             const headers = new node_fetch_1.Headers();
@@ -87,14 +91,18 @@ function loadValidation(req) {
                 headers.set('Content-Type', 'application/json');
             }
             fetchOptions.headers = headers;
-            const response = yield node_fetch_1.default(url, fetchOptions);
+            const response = yield (0, node_fetch_1.default)(url, fetchOptions);
             if (!response.ok) {
                 return Promise.reject(new Error(`${response.status} ${response.statusText}`));
             }
             return yield response.json();
         }
         catch (err) {
-            debug("loadValidation()", err.message);
+            if (err instanceof Error) {
+                debug("loadValidation()", err.message);
+                return Promise.reject(err);
+            }
+            debug("loadValidation()", err);
             return Promise.reject(err);
         }
     });

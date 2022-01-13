@@ -22,7 +22,10 @@ export const validateToken = async (token: string): Promise<BaseJWTToken> => {
             return Promise.reject(new Error('Invalid Token: token may be invalid or expired'));
         }
         return await verify(token, JWT_SECRET) as BaseJWTToken;
-    } catch (err) {
+    } catch (err:unknown) {
+        if (!(err instanceof Error)) {
+            return Promise.reject(err);
+        }
         if (err.name !== ERR_TOKEN_EXPIRED) {
             debug("validateToken()", err.name, err.message);
         }

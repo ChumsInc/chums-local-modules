@@ -15,7 +15,7 @@ const ws_1 = require("ws");
 const node_fetch_1 = require("node-fetch");
 const cookie = require("cookie");
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
-const debug = debug_1.default('chums:lib:websockets');
+const debug = (0, debug_1.default)('chums:lib:websockets');
 function WebSocketServer() {
     const wsServer = new ws_1.Server({ noServer: true });
     wsServer.on('connection', (ws, message) => __awaiter(this, void 0, void 0, function* () {
@@ -83,14 +83,18 @@ function loadSocketValidation(message) {
             headers.set('X-Forwarded-For', message.socket.remoteAddress || 'localhost');
             let url = `${API_HOST}/api/user/validate/${encodeURIComponent(cookies.PHPSESSID)}`;
             fetchOptions.headers = headers;
-            const response = yield node_fetch_1.default(url, fetchOptions);
+            const response = yield (0, node_fetch_1.default)(url, fetchOptions);
             if (!response.ok) {
                 return Promise.reject(new Error(`${response.status} ${response.statusText}`));
             }
             return yield response.json();
         }
         catch (err) {
-            debug("loadValidation()", err.message);
+            if (err instanceof Error) {
+                debug("loadValidation()", err.message);
+                return Promise.reject(err);
+            }
+            debug("loadValidation()", err);
             return Promise.reject(err);
         }
     });

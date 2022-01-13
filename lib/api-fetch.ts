@@ -56,8 +56,12 @@ export async function apiFetch(url: string | URL = '', options: APIFetchOptions 
             options.headers.Authorization = `Basic ${auth}`;
         }
         return await fetch(url, options);
-    } catch (err) {
-        debug("get()", err.message);
+    } catch (err:unknown) {
+        if (err instanceof Error) {
+            debug('apiFetch()', err.message);
+            return Promise.reject(err);
+        }
+        debug("apiFetch()", err);
         return Promise.reject(err);
     }
 }

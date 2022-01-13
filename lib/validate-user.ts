@@ -31,9 +31,13 @@ export async function validateUser(req: Request, res: Response, next: NextFuncti
         res.locals.profile = profile;
         req.userAuth = {valid, status, profile};
         next();
-    } catch (err) {
-        debug("validateUser()", err.message)
-        res.status(401).json({error: 'Not authorized', message: err.message});
+    } catch (err:unknown) {
+        if (err instanceof Error) {
+            debug("validateUser()", err.message)
+            res.status(401).json({error: 'Not authorized', message: err.message});
+        }
+        debug("validateUser()", err)
+        res.status(401).json({error: 'Not authorized', message: err});
     }
 }
 
@@ -87,8 +91,12 @@ export async function loadValidation(req: Request): Promise<UserValidation> {
             return Promise.reject(new Error(`${response.status} ${response.statusText}`));
         }
         return await response.json();
-    } catch (err) {
-        debug("loadValidation()", err.message);
+    } catch (err:unknown) {
+        if (err instanceof Error) {
+            debug("loadValidation()", err.message);
+            return Promise.reject(err);
+        }
+        debug("loadValidation()", err);
         return Promise.reject(err);
     }
 }

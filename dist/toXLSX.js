@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildXLSXHeaders = exports.buildWorkBook = exports.addResultToExcelSheet = exports.resultToExcelSheet = exports.parseDataForAOA = exports.encode_cell = exports.decode_cell = void 0;
 const debug_1 = require("debug");
-const debug = debug_1.default('chums:local-modules:toXLSX');
+const debug = (0, debug_1.default)('chums:local-modules:toXLSX');
 const xlsx_1 = require("xlsx");
 exports.decode_cell = xlsx_1.utils.decode_cell;
 exports.encode_cell = xlsx_1.utils.encode_cell;
@@ -57,7 +57,7 @@ function buildWorkBook(sheets, options = {}) {
         compression: true,
     };
     const sheetNames = Object.keys(sheets);
-    return xlsx_1.write({ SheetNames: sheetNames, Sheets: sheets }, Object.assign(Object.assign({}, defaultOptions), options));
+    return (0, xlsx_1.write)({ SheetNames: sheetNames, Sheets: sheets }, Object.assign(Object.assign({}, defaultOptions), options));
 }
 exports.buildWorkBook = buildWorkBook;
 function buildXLSXHeaders(filename) {

@@ -6,4 +6,5 @@ export { getDBCompany, getSageCompany, parseSQL } from './utils';
 export { validateUser, validateRole, loadValidation } from './validate-user';
 export { validateUserAccount } from './validate-user-account';
 export { WebSocketServer, ExtServer, ExtWebSocket, loadSocketValidation } from './websockets';
+export { handleUpload, loadFileContents, expressUploadFile } from './file-upload';
 export * from './types';

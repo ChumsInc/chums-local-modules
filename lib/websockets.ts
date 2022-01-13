@@ -103,8 +103,12 @@ export async function loadSocketValidation(message: IncomingMessage): Promise<Us
             return Promise.reject(new Error(`${response.status} ${response.statusText}`));
         }
         return await response.json();
-    } catch (err) {
-        debug("loadValidation()", err.message);
+    } catch (err:unknown) {
+        if (err instanceof Error) {
+            debug("loadValidation()", err.message);
+            return Promise.reject(err);
+        }
+        debug("loadValidation()", err);
         return Promise.reject(err);
     }
 }

@@ -89,8 +89,12 @@ export const sendOldSESEmail = async ({
 
         // return mailOptions;
         return await transporter.sendMail(mailOptions);
-    } catch (err) {
-        debug("sendEmail()", err.message);
+    } catch (err:unknown) {
+        if (err instanceof Error) {
+            debug("sendEmail()", err.message);
+            return Promise.reject(err);
+        }
+        debug("sendEmail()", err);
         return Promise.reject(err);
     }
 };
@@ -165,8 +169,12 @@ export const sendGmail = async ({
 
         // return mailOptions;
         return await transporter.sendMail(mailOptions);
-    } catch (err) {
-        debug("sendGmail()", err.message);
+    } catch (err:unknown) {
+        if (err instanceof Error) {
+            debug("sendGmail()", err.message);
+            return Promise.reject(err);
+        }
+        debug("sendGmail()", err);
         return Promise.reject(err);
     }
 }

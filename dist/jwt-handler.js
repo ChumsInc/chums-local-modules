@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.isLocalToken = exports.isBeforeExpiry = exports.validateToken = void 0;
 const debug_1 = require("debug");
 const jsonwebtoken_1 = require("jsonwebtoken");
-const debug = debug_1.default('chums:local-modules:jwt-handler');
+const debug = (0, debug_1.default)('chums:local-modules:jwt-handler');
 const { JWT_ISSUER = 'NOT THE ISSUER', JWT_SECRET = 'NOT THE SECRET' } = process.env;
 const ERR_TOKEN_EXPIRED = 'TokenExpiredError';
 /**
@@ -22,16 +22,19 @@ const ERR_TOKEN_EXPIRED = 'TokenExpiredError';
  */
 const validateToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const payload = jsonwebtoken_1.decode(token);
-        if (!exports.isLocalToken(payload)) {
-            if (exports.isBeforeExpiry(token)) {
+        const payload = (0, jsonwebtoken_1.decode)(token);
+        if (!(0, exports.isLocalToken)(payload)) {
+            if ((0, exports.isBeforeExpiry)(token)) {
                 return payload;
             }
             return Promise.reject(new Error('Invalid Token: token may be invalid or expired'));
         }
-        return yield jsonwebtoken_1.verify(token, JWT_SECRET);
+        return yield (0, jsonwebtoken_1.verify)(token, JWT_SECRET);
     }
     catch (err) {
+        if (!(err instanceof Error)) {
+            return Promise.reject(err);
+        }
         if (err.name !== ERR_TOKEN_EXPIRED) {
             debug("validateToken()", err.name, err.message);
         }
@@ -44,7 +47,7 @@ exports.validateToken = validateToken;
  */
 const isBeforeExpiry = (payload) => {
     if (typeof payload === 'string') {
-        payload = jsonwebtoken_1.decode(payload);
+        payload = (0, jsonwebtoken_1.decode)(payload);
     }
     if (!payload || typeof payload === 'string') {
         return false;
@@ -59,7 +62,7 @@ exports.isBeforeExpiry = isBeforeExpiry;
  */
 const isLocalToken = (payload) => {
     if (typeof payload === 'string') {
-        payload = jsonwebtoken_1.decode(payload);
+        payload = (0, jsonwebtoken_1.decode)(payload);
     }
     if (!payload || typeof payload === 'string') {
         return false;

@@ -36,8 +36,12 @@ export async function validateUserAccount({id, Company, ARDivisionNo, CustomerNo
         }
         const {success} = await res.json();
         return success === true;
-    } catch(err) {
-        debug("validateAccount()", err.message);
+    } catch(err:unknown) {
+        if (err instanceof Error) {
+            debug("validateAccount()", err.message);
+            return Promise.reject(err);
+        }
+        debug("validateAccount()", err);
         return Promise.reject(err);
     }
 }
