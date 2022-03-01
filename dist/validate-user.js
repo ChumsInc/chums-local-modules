@@ -42,6 +42,7 @@ function validateUser(req, res, next) {
             if (err instanceof Error) {
                 debug("validateUser()", err.message);
                 res.status(401).json({ error: 'Not authorized', message: err.message });
+                return;
             }
             debug("validateUser()", err);
             res.status(401).json({ error: 'Not authorized', message: err });
