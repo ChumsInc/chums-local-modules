@@ -1,10 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.expressUploadFile = exports.handleUpload = exports.loadFileContents = void 0;
+exports.expressUploadFile = exports.handleUpload = exports.loadFileContents = exports.File = void 0;
 const debug_1 = require("debug");
 const promises_1 = require("fs/promises");
 const fs_1 = require("fs");
 const formidable_1 = require("formidable");
+var formidable_2 = require("formidable");
+Object.defineProperty(exports, "File", { enumerable: true, get: function () { return formidable_2.File; } });
 const debug = (0, debug_1.default)('chums:lib:file-upload');
 const ROOT_PATH = '/var/tmp';
 const UPLOAD_PATH = ROOT_PATH + '/chums';
@@ -60,6 +62,10 @@ async function handleUpload(req, options = {}) {
         return new Promise((resolve, reject) => {
             const form = new formidable_1.IncomingForm({ uploadDir: uploadPath, keepExtensions: true });
             form.on('error', (err) => {
+                if (err instanceof Error) {
+                    debug('handleUpload() form.on.error', err.message);
+                    return Promise.reject(err);
+                }
                 debug('error', err);
                 return reject(new Error(err));
             });
@@ -68,12 +74,16 @@ async function handleUpload(req, options = {}) {
                 return reject(new Error('upload aborted'));
             });
             form.parse(req, (err, fields, files) => {
-                const [file] = Object.values(files);
+                const fileValues = Object.values(files);
+                if (!fileValues.length) {
+                    return Promise.reject(new Error('No files found'));
+                }
+                const [file] = fileValues;
                 if (!file || Array.isArray(file)) {
                     debug('file was not found?', file);
-                    return reject({ error: 'file was not found' });
+                    return reject(new Error('file was not found'));
                 }
-                return resolve(file.filepath);
+                return resolve(file);
             });
         });
     }
@@ -90,8 +100,8 @@ exports.handleUpload = handleUpload;
 async function expressUploadFile(req, options = {}) {
     try {
         await ensureUploadPathExists(options);
-        const filepath = await handleUpload(req);
-        return loadFileContents(filepath);
+        const file = await handleUpload(req);
+        return loadFileContents(file.filepath);
     }
     catch (error) {
         if (error instanceof Error) {

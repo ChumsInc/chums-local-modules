@@ -1,8 +1,9 @@
 import Debug from 'debug';
 import {access, mkdir, readFile, unlink} from 'fs/promises';
 import {constants, PathLike} from 'fs';
-import {Fields, Files, IncomingForm} from "formidable";
+import {Fields, File, Files, IncomingForm} from "formidable";
 import {Request} from 'express';
+export {File} from 'formidable';
 
 const debug = Debug('chums:lib:file-upload');
 const ROOT_PATH = '/var/tmp';
@@ -53,7 +54,7 @@ export async function loadFileContents(path: PathLike, removeFile: boolean = tru
     }
 }
 
-export async function handleUpload(req: Request, options:UploadOptions = {}): Promise<PathLike> {
+export async function handleUpload(req: Request, options:UploadOptions = {}): Promise<File> {
     if (!options) {
         options = {};
     }
@@ -62,7 +63,11 @@ export async function handleUpload(req: Request, options:UploadOptions = {}): Pr
         await ensureUploadPathExists(options);
         return new Promise((resolve, reject) => {
             const form = new IncomingForm({uploadDir: uploadPath, keepExtensions: true});
-            form.on('error', (err) => {
+            form.on('error', (err:any) => {
+                if (err instanceof Error) {
+                    debug('handleUpload() form.on.error', err.message);
+                    return Promise.reject(err);
+                }
                 debug('error', err);
                 return reject(new Error(err));
             });
@@ -72,13 +77,17 @@ export async function handleUpload(req: Request, options:UploadOptions = {}): Pr
                 return reject(new Error('upload aborted'));
             });
 
-            form.parse(req, (err, fields: Fields, files: Files) => {
-                const [file] = Object.values(files);
+            form.parse(req, (err:any, fields: Fields, files: Files) => {
+                const fileValues = Object.values(files);
+                if (!fileValues.length) {
+                    return Promise.reject(new Error('No files found'));
+                }
+                const [file] = fileValues;
                 if (!file || Array.isArray(file)) {
                     debug('file was not found?', file);
-                    return reject({error: 'file was not found'});
+                    return reject(new Error('file was not found'));
                 }
-                return resolve(file.filepath);
+                return resolve(file);
             })
         })
     } catch (error: unknown) {
@@ -95,8 +104,8 @@ export async function handleUpload(req: Request, options:UploadOptions = {}): Pr
 export async function expressUploadFile(req: Request, options:UploadOptions = {}): Promise<string> {
     try {
         await ensureUploadPathExists(options);
-        const filepath = await handleUpload(req);
-        return loadFileContents(filepath);
+        const file = await handleUpload(req);
+        return loadFileContents(file.filepath);
     } catch (error: unknown) {
         if (error instanceof Error) {
             console.log("expressUpload()", error.message);
