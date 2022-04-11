@@ -1,7 +1,9 @@
-const mysql2 = require('mysql2/promise');
+import {createPool, createConnection, PoolOptions} from 'mysql2/promise'
+export {Pool, QueryOptions, Connection, PoolConnection} from 'mysql2/promise'
 
-const config = {
-    connectionLimit: process.env.MYSQL_POOL_LIMIT || 5,
+
+const config:PoolOptions = {
+    connectionLimit: Number(process.env.MYSQL_POOL_LIMIT) || 5,
     host: process.env.MYSQL_SERVER || '',
     user: process.env.MYSQL_USERNAME || '',
     password: process.env.MYSQL_PASSWORD || '',
@@ -11,7 +13,7 @@ const config = {
 
 export async function getConnection() {
     const {connectionLimit, ...connectionConfig} = config;
-    return mysql2.createConnection({...connectionConfig});
+    return createConnection({...connectionConfig});
 }
 
-export const mysql2Pool = mysql2.createPool({...config});
+export const mysql2Pool = createPool({...config});
