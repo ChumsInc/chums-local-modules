@@ -14,7 +14,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.expressUploadFile = exports.loadFileContents = exports.handleUpload = exports.loadSocketValidation = exports.WebSocketServer = exports.validateUserAccount = exports.loadValidation = exports.validateRole = exports.validateUser = exports.parseSQL = exports.getSageCompany = exports.getDBCompany = exports.parseDataForAOA = exports.addResultToExcelSheet = exports.buildWorkBook = exports.buildXLSXHeaders = exports.resultToExcelSheet = exports.getConnection = exports.pool = exports.mysql2Pool = exports.sendOldSESEmail = exports.getTs36 = exports.getTs = exports.getLogoImageAttachment = exports.sendGmail = exports.sendEmail = exports.apiFetch = void 0;
+exports.FormidableFile = exports.expressUploadFile = exports.loadFileContents = exports.handleUpload = exports.loadSocketValidation = exports.WebSocketServer = exports.validateUserAccount = exports.loadValidation = exports.validateRole = exports.validateUser = exports.parseSQL = exports.getSageCompany = exports.getDBCompany = exports.parseDataForAOA = exports.addResultToExcelSheet = exports.buildWorkBook = exports.buildXLSXHeaders = exports.resultToExcelSheet = exports.getConnection = exports.pool = exports.mysql2Pool = exports.sendOldSESEmail = exports.getTs36 = exports.getTs = exports.getLogoImageAttachment = exports.sendGmail = exports.sendEmail = exports.apiFetch = void 0;
 var api_fetch_1 = require("./api-fetch");
 Object.defineProperty(exports, "apiFetch", { enumerable: true, get: function () { return api_fetch_1.apiFetch; } });
 var mailer_1 = require("./mailer");
@@ -51,4 +51,5 @@ var file_upload_1 = require("./file-upload");
 Object.defineProperty(exports, "handleUpload", { enumerable: true, get: function () { return file_upload_1.handleUpload; } });
 Object.defineProperty(exports, "loadFileContents", { enumerable: true, get: function () { return file_upload_1.loadFileContents; } });
 Object.defineProperty(exports, "expressUploadFile", { enumerable: true, get: function () { return file_upload_1.expressUploadFile; } });
+Object.defineProperty(exports, "FormidableFile", { enumerable: true, get: function () { return file_upload_1.File; } });
 __exportStar(require("./types"), exports);
