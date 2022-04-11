@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = exports.sendGmail = exports.getLogoImageAttachment = exports.getTs36 = exports.getTs = exports.sendOldSESEmail = void 0;
 const debug_1 = require("debug");
@@ -31,7 +22,7 @@ const debug = (0, debug_1.default)('chums:lib:mailer');
  * @param {string} [textContent]
  * @param [attachments]
  */
-const sendOldSESEmail = ({ to = [], cc = [], bcc = [], replyTo, from, subject, html, textContent, attachments }) => __awaiter(void 0, void 0, void 0, function* () {
+const sendOldSESEmail = async ({ to = [], cc = [], bcc = [], replyTo, from, subject, html, textContent, attachments }) => {
     try {
         to = !Array.isArray(to) ? [to] : to;
         cc = !Array.isArray(cc) ? [cc] : cc;
@@ -65,7 +56,7 @@ const sendOldSESEmail = ({ to = [], cc = [], bcc = [], replyTo, from, subject, h
             attachments
         };
         // return mailOptions;
-        return yield transporter.sendMail(mailOptions);
+        return await transporter.sendMail(mailOptions);
     }
     catch (err) {
         if (err instanceof Error) {
@@ -75,7 +66,7 @@ const sendOldSESEmail = ({ to = [], cc = [], bcc = [], replyTo, from, subject, h
         debug("sendEmail()", err);
         return Promise.reject(err);
     }
-});
+};
 exports.sendOldSESEmail = sendOldSESEmail;
 const getTs = () => {
     return Date.now();
@@ -98,7 +89,7 @@ const getLogoImageAttachment = (ts = (0, exports.getTs36)()) => {
     };
 };
 exports.getLogoImageAttachment = getLogoImageAttachment;
-const sendGmail = ({ to = [], cc = [], bcc = [], replyTo, from, subject, html, textContent, attachments }) => __awaiter(void 0, void 0, void 0, function* () {
+const sendGmail = async ({ to = [], cc = [], bcc = [], replyTo, from, subject, html, textContent, attachments }) => {
     try {
         to = !Array.isArray(to) ? [to] : to;
         cc = !Array.isArray(cc) ? [cc] : cc;
@@ -131,7 +122,7 @@ const sendGmail = ({ to = [], cc = [], bcc = [], replyTo, from, subject, html, t
         };
         debug('sendGmail()', { to, from, subject, replyTo });
         // return mailOptions;
-        return yield transporter.sendMail(mailOptions);
+        return await transporter.sendMail(mailOptions);
     }
     catch (err) {
         if (err instanceof Error) {
@@ -141,6 +132,6 @@ const sendGmail = ({ to = [], cc = [], bcc = [], replyTo, from, subject, html, t
         debug("sendGmail()", err);
         return Promise.reject(err);
     }
-});
+};
 exports.sendGmail = sendGmail;
 exports.sendEmail = exports.sendGmail;

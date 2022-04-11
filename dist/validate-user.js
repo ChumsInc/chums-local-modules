@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateRole = exports.loadValidation = exports.validateUser = void 0;
 const debug_1 = require("debug");
@@ -27,27 +18,25 @@ const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
  * @param {function} next
  * @returns {Promise<void>}
  */
-function validateUser(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const { valid, status, profile } = yield loadValidation(req);
-            if (!valid) {
-                res.status(401).json({ error: 401, status });
-            }
-            res.locals.profile = profile;
-            req.userAuth = { valid, status, profile };
-            next();
+async function validateUser(req, res, next) {
+    try {
+        const { valid, status, profile } = await loadValidation(req);
+        if (!valid) {
+            res.status(401).json({ error: 401, status });
         }
-        catch (err) {
-            if (err instanceof Error) {
-                debug("validateUser()", err.message);
-                res.status(401).json({ error: 'Not authorized', message: err.message });
-                return;
-            }
-            debug("validateUser()", err);
-            res.status(401).json({ error: 'Not authorized', message: err });
+        res.locals.profile = profile;
+        req.userAuth = { valid, status, profile };
+        next();
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            debug("validateUser()", err.message);
+            res.status(401).json({ error: 'Not authorized', message: err.message });
+            return;
         }
-    });
+        debug("validateUser()", err);
+        res.status(401).json({ error: 'Not authorized', message: err });
+    }
 }
 exports.validateUser = validateUser;
 /**
@@ -58,55 +47,53 @@ exports.validateUser = validateUser;
  * @param {Object} req - Express request object
  * @returns {Promise<{valid: boolean, profile: {roles: [], accounts: [], user}}|*>}
  */
-function loadValidation(req) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const { token } = (0, auth_1.jwtToken)(req);
-            if (token) {
-                const decoded = yield (0, jwt_handler_1.validateToken)(token);
-                if ((0, jwt_handler_1.isLocalToken)(decoded) && (0, jwt_handler_1.isBeforeExpiry)(decoded)) {
-                    const { user, roles = [], accounts = [] } = decoded;
-                    user.roles = roles;
-                    user.accounts = accounts;
-                    return { valid: true, profile: { user, roles, accounts } };
-                }
+async function loadValidation(req) {
+    try {
+        const { token } = (0, auth_1.jwtToken)(req);
+        if (token) {
+            const decoded = await (0, jwt_handler_1.validateToken)(token);
+            if ((0, jwt_handler_1.isLocalToken)(decoded) && (0, jwt_handler_1.isBeforeExpiry)(decoded)) {
+                const { user, roles = [], accounts = [] } = decoded;
+                user.roles = roles;
+                user.accounts = accounts;
+                return { valid: true, profile: { user, roles, accounts } };
             }
-            const { user, pass } = (0, auth_1.basicAuth)(req);
-            const session = req.cookies.PHPSESSID;
-            const fetchOptions = {};
-            const headers = new node_fetch_1.Headers();
-            headers.set('X-Forwarded-For', req.ip);
-            headers.set('referrer', req.get('referrer') || req.originalUrl);
-            let url = `${API_HOST}/api/user/validate`;
-            if (!!user && !!pass) {
-                const credentials = Buffer.from(`${user}:${pass}`).toString('base64');
-                headers.set('Authorization', `Basic ${credentials}`);
-            }
-            else if (!!session) {
-                url += `/${encodeURIComponent(session)}`;
-            }
-            else if (!!token) {
-                url += '/google';
-                fetchOptions.method = 'post';
-                fetchOptions.body = JSON.stringify({ token });
-                headers.set('Content-Type', 'application/json');
-            }
-            fetchOptions.headers = headers;
-            const response = yield (0, node_fetch_1.default)(url, fetchOptions);
-            if (!response.ok) {
-                return Promise.reject(new Error(`${response.status} ${response.statusText}`));
-            }
-            return yield response.json();
         }
-        catch (err) {
-            if (err instanceof Error) {
-                debug("loadValidation()", err.message);
-                return Promise.reject(err);
-            }
-            debug("loadValidation()", err);
+        const { user, pass } = (0, auth_1.basicAuth)(req);
+        const session = req.cookies.PHPSESSID;
+        const fetchOptions = {};
+        const headers = new node_fetch_1.Headers();
+        headers.set('X-Forwarded-For', req.ip);
+        headers.set('referrer', req.get('referrer') || req.originalUrl);
+        let url = `${API_HOST}/api/user/validate`;
+        if (!!user && !!pass) {
+            const credentials = Buffer.from(`${user}:${pass}`).toString('base64');
+            headers.set('Authorization', `Basic ${credentials}`);
+        }
+        else if (!!session) {
+            url += `/${encodeURIComponent(session)}`;
+        }
+        else if (!!token) {
+            url += '/google';
+            fetchOptions.method = 'post';
+            fetchOptions.body = JSON.stringify({ token });
+            headers.set('Content-Type', 'application/json');
+        }
+        fetchOptions.headers = headers;
+        const response = await (0, node_fetch_1.default)(url, fetchOptions);
+        if (!response.ok) {
+            return Promise.reject(new Error(`${response.status} ${response.statusText}`));
+        }
+        return await response.json();
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            debug("loadValidation()", err.message);
             return Promise.reject(err);
         }
-    });
+        debug("loadValidation()", err);
+        return Promise.reject(err);
+    }
 }
 exports.loadValidation = loadValidation;
 /**

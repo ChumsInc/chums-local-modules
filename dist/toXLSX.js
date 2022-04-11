@@ -57,7 +57,7 @@ function buildWorkBook(sheets, options = {}) {
         compression: true,
     };
     const sheetNames = Object.keys(sheets);
-    return (0, xlsx_1.write)({ SheetNames: sheetNames, Sheets: sheets }, Object.assign(Object.assign({}, defaultOptions), options));
+    return (0, xlsx_1.write)({ SheetNames: sheetNames, Sheets: sheets }, { ...defaultOptions, ...options });
 }
 exports.buildWorkBook = buildWorkBook;
 function buildXLSXHeaders(filename) {

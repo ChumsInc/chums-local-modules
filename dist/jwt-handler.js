@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isLocalToken = exports.isBeforeExpiry = exports.validateToken = void 0;
 const debug_1 = require("debug");
@@ -20,7 +11,7 @@ const ERR_TOKEN_EXPIRED = 'TokenExpiredError';
  * @param {String} token - A JWT token to be validated
  * @return {Promise<BaseJWTToken|Error>}
  */
-const validateToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
+const validateToken = async (token) => {
     try {
         const payload = (0, jsonwebtoken_1.decode)(token);
         if (!(0, exports.isLocalToken)(payload)) {
@@ -29,7 +20,7 @@ const validateToken = (token) => __awaiter(void 0, void 0, void 0, function* () 
             }
             return Promise.reject(new Error('Invalid Token: token may be invalid or expired'));
         }
-        return yield (0, jsonwebtoken_1.verify)(token, JWT_SECRET);
+        return await (0, jsonwebtoken_1.verify)(token, JWT_SECRET);
     }
     catch (err) {
         if (!(err instanceof Error)) {
@@ -40,7 +31,7 @@ const validateToken = (token) => __awaiter(void 0, void 0, void 0, function* () 
         }
         return Promise.reject(err);
     }
-});
+};
 exports.validateToken = validateToken;
 /**
  * Validates a token expiration timestamp
