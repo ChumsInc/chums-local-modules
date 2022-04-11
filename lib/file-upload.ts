@@ -8,14 +8,21 @@ const debug = Debug('chums:lib:file-upload');
 const ROOT_PATH = '/var/tmp';
 const UPLOAD_PATH = ROOT_PATH + '/chums';
 
+export interface UploadOptions {
+    uploadPath?: string,
+}
 
-async function ensureUploadPathExists() {
+async function ensureUploadPathExists(options:UploadOptions = {}):Promise<boolean> {
+    if (!options) {
+        options = {};
+    }
+    const uploadPath:string = options.uploadPath || UPLOAD_PATH;
     try {
-        await access(UPLOAD_PATH, constants.R_OK | constants.W_OK);
+        await access(uploadPath, constants.R_OK | constants.W_OK);
         return true;
     } catch (err: unknown) {
         try {
-            await mkdir(UPLOAD_PATH);
+            await mkdir(uploadPath);
             return true;
         } catch (err: unknown) {
             if (err instanceof Error) {
@@ -26,6 +33,7 @@ async function ensureUploadPathExists() {
         }
     }
 }
+
 
 export async function loadFileContents(path: PathLike, removeFile: boolean = true): Promise<string> {
     try {
@@ -45,12 +53,15 @@ export async function loadFileContents(path: PathLike, removeFile: boolean = tru
     }
 }
 
-
-export async function handleUpload(req: Request): Promise<PathLike> {
+export async function handleUpload(req: Request, options:UploadOptions = {}): Promise<PathLike> {
+    if (!options) {
+        options = {};
+    }
+    const uploadPath:string = options.uploadPath || UPLOAD_PATH;
     try {
-        await ensureUploadPathExists();
+        await ensureUploadPathExists(options);
         return new Promise((resolve, reject) => {
-            const form = new IncomingForm({uploadDir: UPLOAD_PATH, keepExtensions: true});
+            const form = new IncomingForm({uploadDir: uploadPath, keepExtensions: true});
             form.on('error', (err) => {
                 debug('error', err);
                 return reject(new Error(err));
@@ -81,8 +92,9 @@ export async function handleUpload(req: Request): Promise<PathLike> {
 }
 
 
-export async function expressUploadFile(req: Request): Promise<string> {
+export async function expressUploadFile(req: Request, options:UploadOptions = {}): Promise<string> {
     try {
+        await ensureUploadPathExists(options);
         const filepath = await handleUpload(req);
         return loadFileContents(filepath);
     } catch (error: unknown) {

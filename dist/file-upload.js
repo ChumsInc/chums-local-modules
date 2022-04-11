@@ -17,15 +17,19 @@ const formidable_1 = require("formidable");
 const debug = (0, debug_1.default)('chums:lib:file-upload');
 const ROOT_PATH = '/var/tmp';
 const UPLOAD_PATH = ROOT_PATH + '/chums';
-function ensureUploadPathExists() {
+function ensureUploadPathExists(options = {}) {
     return __awaiter(this, void 0, void 0, function* () {
+        if (!options) {
+            options = {};
+        }
+        const uploadPath = options.uploadPath || UPLOAD_PATH;
         try {
-            yield (0, promises_1.access)(UPLOAD_PATH, fs_1.constants.R_OK | fs_1.constants.W_OK);
+            yield (0, promises_1.access)(uploadPath, fs_1.constants.R_OK | fs_1.constants.W_OK);
             return true;
         }
         catch (err) {
             try {
-                yield (0, promises_1.mkdir)(UPLOAD_PATH);
+                yield (0, promises_1.mkdir)(uploadPath);
                 return true;
             }
             catch (err) {
@@ -59,12 +63,16 @@ function loadFileContents(path, removeFile = true) {
     });
 }
 exports.loadFileContents = loadFileContents;
-function handleUpload(req) {
+function handleUpload(req, options = {}) {
     return __awaiter(this, void 0, void 0, function* () {
+        if (!options) {
+            options = {};
+        }
+        const uploadPath = options.uploadPath || UPLOAD_PATH;
         try {
-            yield ensureUploadPathExists();
+            yield ensureUploadPathExists(options);
             return new Promise((resolve, reject) => {
-                const form = new formidable_1.IncomingForm({ uploadDir: UPLOAD_PATH, keepExtensions: true });
+                const form = new formidable_1.IncomingForm({ uploadDir: uploadPath, keepExtensions: true });
                 form.on('error', (err) => {
                     debug('error', err);
                     return reject(new Error(err));
@@ -94,9 +102,10 @@ function handleUpload(req) {
     });
 }
 exports.handleUpload = handleUpload;
-function expressUploadFile(req) {
+function expressUploadFile(req, options = {}) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            yield ensureUploadPathExists(options);
             const filepath = yield handleUpload(req);
             return loadFileContents(filepath);
         }

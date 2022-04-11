@@ -7,7 +7,8 @@
     "build-ts": "tsc",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test-email": "node test-email.js"
+    "test-email": "node test-email.js",
+    "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "@types/node-fetch": "^2.6.1",
     "@types/nodemailer": "^6.4.4",
     "@types/ws": "^8.5.2",
+    "auto-changelog": "^2.4.0",
     "typescript": "^4.6.2"
   },
   "typings": "./dist/index.d.ts",
@@ -47,5 +49,10 @@
   },
   "peerDependencies": {
     "express": "^4.17.3"
+  },
+  "auto-changelog": {
+    "template": "keepachangelog",
+    "unreleased": true,
+    "commitLimit": false
   }
 }
