@@ -1,11 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildXLSXHeaders = exports.buildWorkBook = exports.addResultToExcelSheet = exports.resultToExcelSheet = exports.parseDataForAOA = exports.encode_cell = exports.decode_cell = void 0;
+exports.buildXLSXHeaders = exports.buildWorkBook = exports.addResultToExcelSheet = exports.resultToExcelSheet = exports.parseDataForAOA = exports.xlsxMimeType = exports.sheet_add_aoa = exports.sheet_add_json = exports.json_to_sheet = exports.aoa_to_sheet = exports.encode_cell = exports.decode_cell = void 0;
 const debug_1 = require("debug");
 const debug = (0, debug_1.default)('chums:local-modules:toXLSX');
 const xlsx_1 = require("xlsx");
 exports.decode_cell = xlsx_1.utils.decode_cell;
 exports.encode_cell = xlsx_1.utils.encode_cell;
+exports.aoa_to_sheet = xlsx_1.utils.aoa_to_sheet, exports.json_to_sheet = xlsx_1.utils.json_to_sheet, exports.sheet_add_json = xlsx_1.utils.sheet_add_json, exports.sheet_add_aoa = xlsx_1.utils.sheet_add_aoa;
+exports.xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 function parseDataForAOA(data, columnNames, onlyColumnNames) {
     let rows = [];
     let fields = [];

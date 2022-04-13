@@ -4,6 +4,10 @@ import {utils, WorkSheet, write, WritingOptions, SheetAOAOpts} from 'xlsx';
 import {RowDataPacket} from "mysql2";
 export const decode_cell = utils.decode_cell;
 export const encode_cell = utils.encode_cell;
+export const {aoa_to_sheet, json_to_sheet, sheet_add_json, sheet_add_aoa} = utils;
+
+
+export const xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 export interface ColumnNames {
     [key:string]: string,
