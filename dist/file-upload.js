@@ -5,6 +5,7 @@ const debug_1 = require("debug");
 const promises_1 = require("fs/promises");
 const fs_1 = require("fs");
 const formidable_1 = require("formidable");
+const path = require("path");
 var formidable_2 = require("formidable");
 Object.defineProperty(exports, "File", { enumerable: true, get: function () { return formidable_2.File; } });
 const debug = (0, debug_1.default)('chums:lib:file-upload');
@@ -73,7 +74,7 @@ async function handleUpload(req, options = {}) {
                 debug('aborted');
                 return reject(new Error('upload aborted'));
             });
-            form.parse(req, (err, fields, files) => {
+            form.parse(req, async (err, fields, files) => {
                 const fileValues = Object.values(files);
                 if (!fileValues.length) {
                     return Promise.reject(new Error('No files found'));
@@ -82,6 +83,9 @@ async function handleUpload(req, options = {}) {
                 if (!file || Array.isArray(file)) {
                     debug('file was not found?', file);
                     return reject(new Error('file was not found'));
+                }
+                if (options.keepOriginalFilename && !!file.originalFilename) {
+                    await (0, promises_1.rename)(path.join(uploadPath, file.newFilename), path.join(uploadPath, file.originalFilename));
                 }
                 return resolve(file);
             });

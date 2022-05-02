@@ -1,8 +1,9 @@
 import Debug from 'debug';
-import {access, mkdir, readFile, unlink} from 'fs/promises';
+import {access, mkdir, readFile, unlink, rename} from 'fs/promises';
 import {constants, PathLike} from 'fs';
 import {Fields, File, Files, IncomingForm} from "formidable";
 import {Request} from 'express';
+import * as path from "path";
 export {File} from 'formidable';
 
 const debug = Debug('chums:lib:file-upload');
@@ -11,6 +12,7 @@ const UPLOAD_PATH = ROOT_PATH + '/chums';
 
 export interface UploadOptions {
     uploadPath?: string,
+    keepOriginalFilename?: boolean,
 }
 
 async function ensureUploadPathExists(options:UploadOptions = {}):Promise<boolean> {
@@ -54,6 +56,7 @@ export async function loadFileContents(path: PathLike, removeFile: boolean = tru
     }
 }
 
+
 export async function handleUpload(req: Request, options:UploadOptions = {}): Promise<File> {
     if (!options) {
         options = {};
@@ -77,7 +80,7 @@ export async function handleUpload(req: Request, options:UploadOptions = {}): Pr
                 return reject(new Error('upload aborted'));
             });
 
-            form.parse(req, (err:any, fields: Fields, files: Files) => {
+            form.parse(req, async (err:any, fields: Fields, files: Files) => {
                 const fileValues = Object.values(files);
                 if (!fileValues.length) {
                     return Promise.reject(new Error('No files found'));
@@ -86,6 +89,9 @@ export async function handleUpload(req: Request, options:UploadOptions = {}): Pr
                 if (!file || Array.isArray(file)) {
                     debug('file was not found?', file);
                     return reject(new Error('file was not found'));
+                }
+                if (options.keepOriginalFilename && !!file.originalFilename) {
+                    await rename(path.join(uploadPath, file.newFilename), path.join(uploadPath, file.originalFilename))
                 }
                 return resolve(file);
             })
