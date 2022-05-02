@@ -3,11 +3,11 @@ export interface Address {
     address: string;
 }
 export interface sendMailProps {
-    to: string | string[];
-    cc?: string | string[];
-    bcc?: string | string[];
-    replyTo?: string;
-    from?: string;
+    to: (string | Address) | (string | Address)[];
+    cc?: (string | Address) | (string | Address)[];
+    bcc?: (string | Address) | (string | Address)[];
+    replyTo?: string | Address;
+    from?: string | Address;
     subject?: string;
     html: string;
     textContent?: string;
