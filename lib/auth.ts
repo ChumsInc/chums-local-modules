@@ -13,7 +13,7 @@ export interface BasicAuth {
  */
 export const basicAuth = (req:Request):BasicAuth => {
     const nullUser:BasicAuth = {user: null, pass: null};
-    const authorization = req.header('authorization');
+    const authorization = req.get('authorization');
 
     if (!authorization) {
         return nullUser;

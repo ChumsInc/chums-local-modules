@@ -8,7 +8,7 @@ exports.jwtToken = exports.basicAuth = void 0;
  */
 const basicAuth = (req) => {
     const nullUser = { user: null, pass: null };
-    const authorization = req.header('authorization');
+    const authorization = req.get('authorization');
     if (!authorization) {
         return nullUser;
     }
