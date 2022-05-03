@@ -5,6 +5,6 @@ export { resultToExcelSheet, buildXLSXHeaders, buildWorkBook, addResultToExcelSh
 export { getDBCompany, getSageCompany, parseSQL } from './utils';
 export { validateUser, validateRole, loadValidation } from './validate-user';
 export { validateUserAccount } from './validate-user-account';
-export { WebSocketServer, ExtServer, ExtWebSocket, loadSocketValidation } from './websockets';
+export { webSocketServer, ExtServer, ExtWebSocket, loadSocketValidation } from './websockets';
 export { handleUpload, loadFileContents, expressUploadFile, UploadOptions, File as FormidableFile } from './file-upload';
 export * from './types';

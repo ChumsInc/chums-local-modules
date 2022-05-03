@@ -1,17 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadSocketValidation = exports.WebSocketServer = void 0;
+exports.loadSocketValidation = exports.webSocketServer = void 0;
 const debug_1 = require("debug");
 const ws_1 = require("ws");
 const node_fetch_1 = require("node-fetch");
 const cookie = require("cookie");
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
 const debug = (0, debug_1.default)('chums:lib:websockets');
-function WebSocketServer() {
-    const wsServer = new ws_1.Server({ noServer: true });
+function webSocketServer() {
+    const wsServer = new ws_1.WebSocketServer({ noServer: true });
     wsServer.on('connection', async (ws, message) => {
         const { valid, status, profile } = await loadSocketValidation(message);
-        if (!valid || status !== 'ok') {
+        if (!valid || status !== 'OK') {
             ws.close();
             return;
         }
@@ -55,7 +55,7 @@ function WebSocketServer() {
         onUpgrade,
     };
 }
-exports.WebSocketServer = WebSocketServer;
+exports.webSocketServer = webSocketServer;
 /**
  * Executes validation request
  *  - validates req.cookies.PHPSESSID (from a logged in user)

@@ -1,5 +1,6 @@
 import Debug from 'debug';
 import * as WebSocket from 'ws';
+import {WebSocketServer} from 'ws';
 import {Server} from 'ws';
 import {IncomingMessage} from 'http';
 import {Socket} from "net";
@@ -17,15 +18,15 @@ export interface ExtWebSocket extends WebSocket {
     profile?: UserProfile,
 }
 
-export interface ExtServer extends Server {
+export interface ExtServer extends WebSocketServer {
     clients: Set<ExtWebSocket>;
 }
 
-export function WebSocketServer() {
-    const wsServer: ExtServer = new Server({noServer: true}) as ExtServer;
+export function webSocketServer() {
+    const wsServer: ExtServer = new WebSocketServer({noServer: true}) as ExtServer;
     wsServer.on('connection', async (ws: ExtWebSocket, message: IncomingMessage) => {
         const {valid, status, profile} = await loadSocketValidation(message);
-        if (!valid || status !== 'ok') {
+        if (!valid || status !== 'OK') {
             ws.close();
             return;
         }
@@ -102,7 +103,7 @@ export async function loadSocketValidation(message: IncomingMessage): Promise<Us
         if (!response.ok) {
             return Promise.reject(new Error(`${response.status} ${response.statusText}`));
         }
-        return await response.json();
+        return await response.json() as UserValidation;
     } catch (err:unknown) {
         if (err instanceof Error) {
             debug("loadValidation()", err.message);
