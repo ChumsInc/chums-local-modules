@@ -3,20 +3,20 @@
 This is used on a variety of node.js server instance for standard tasks.
 
 ## Required Environment Variables
-Module | VARIABLE | Default Value | notes
---- | --- | --- | ---
-General | DEBUG | chums:*
-MySQL | MYSQL_POOL_LIMIT | 5
-MySQL | MYSQL_SERVER 
-MySQL | MYSQL_USERNAME
-MySQL | MYSQL_PASSWORD
-MySQL | MYSQL_DB
-Authentication | JWT_SECRET
-Authentication | JWT_ISSUER | | Used to validate if locally generated token
-Authentication | CHUMS_API_HOST | http://localhost | used for calls to chums /api
-Authentication | CHUMS_API_USER | | used for API calls to /api/user
-Authentication | CHUMS_API_PASSWORD | | used for API calls to /api/user
-Sage100 | SAGE_QUERY_EXECUTABLE | | Required for sageQuery, requires that ODBC connections are established on server
+| Module         | VARIABLE | Default Value | notes |
+|----------------| --- | --- | --- |
+| General        | DEBUG | chums:* |
+| MySQL          | MYSQL_POOL_LIMIT | 5 |
+| MySQL          | MYSQL_SERVER  |
+| MySQL          | MYSQL_USERNAME |
+| MySQL          | MYSQL_PASSWORD |
+| MySQL          | MYSQL_DB |
+| Authentication | JWT_SECRET |
+| Authentication | JWT_ISSUER | | Used to validate if locally generated token |
+| Authentication | CHUMS_API_HOST | http://localhost | used for calls to chums /api |
+| Authentication | CHUMS_API_USER | | used for API calls to /api/user |
+| Authentication | CHUMS_API_PASSWORD | | used for API calls to /api/user |
+| Sage100        | SAGE_QUERY_EXECUTABLE | | Required for sageQuery, requires that ODBC connections are established on server |
 
 
 
@@ -54,6 +54,7 @@ const [rows] = await mysql2Pool.query(sql, args);
  * Validates a user against /api/user
  *  - on success populates res.locals.profile = {user, roles, accounts}
  *  - on failure sends json with status 401, {error: 401, status: 'ERR_NOT_AUTHORIZED'}
+ *  - setting res.locals.debug = true will output to stderr the referer on authentication failure
  * @param req
  * @param res
  * @param next

@@ -26,6 +26,9 @@ export async function validateUser(req: Request, res: Response, next: NextFuncti
     try {
         const {valid, status, profile} = await loadValidation(req);
         if (!valid) {
+            if (res.locals.debug) {
+                debug('validateUser()', valid, status, req.get('referer'));
+            }
             res.status(401).json({error: 401, status});
         }
         res.locals.profile = profile;
