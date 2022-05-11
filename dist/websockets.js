@@ -6,6 +6,7 @@ const ws_1 = require("ws");
 const node_fetch_1 = require("node-fetch");
 const cookie = require("cookie");
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
+const VALIDATION_ERROR = 'VALIDATION_ERROR';
 const debug = (0, debug_1.default)('chums:lib:websockets');
 function webSocketServer() {
     const wsServer = new ws_1.WebSocketServer({ noServer: true });
@@ -66,7 +67,9 @@ async function loadSocketValidation(message) {
     try {
         const cookies = cookie.parse(message.headers.cookie || '');
         if (!cookies.PHPSESSID) {
-            return Promise.reject(new Error('Only cookie sessions can be validated'));
+            const error = new Error('Only cookie sessions can be validated');
+            error.name = VALIDATION_ERROR;
+            return Promise.reject(error);
         }
         const fetchOptions = {};
         const headers = new node_fetch_1.Headers();
@@ -75,7 +78,9 @@ async function loadSocketValidation(message) {
         fetchOptions.headers = headers;
         const response = await (0, node_fetch_1.default)(url, fetchOptions);
         if (!response.ok) {
-            return Promise.reject(new Error(`${response.status} ${response.statusText}`));
+            const error = new Error(`Validation Error: ${response.status} ${response.statusText}`);
+            error.name = VALIDATION_ERROR;
+            return Promise.reject(error);
         }
         return await response.json();
     }
