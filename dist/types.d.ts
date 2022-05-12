@@ -41,8 +41,9 @@ export interface UserProfile {
 }
 export interface UserValidation {
     valid: boolean;
+    error?: Error;
     status?: string;
-    profile: UserProfile;
+    profile?: UserProfile;
 }
 export interface BaseJWTToken {
     aud?: string;

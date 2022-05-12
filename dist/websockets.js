@@ -69,7 +69,8 @@ async function loadSocketValidation(message) {
         if (!cookies.PHPSESSID) {
             const error = new Error('Only cookie sessions can be validated');
             error.name = VALIDATION_ERROR;
-            return Promise.reject(error);
+            return { valid: false, error };
+            // return Promise.reject(error);
         }
         const fetchOptions = {};
         const headers = new node_fetch_1.Headers();
@@ -80,7 +81,8 @@ async function loadSocketValidation(message) {
         if (!response.ok) {
             const error = new Error(`Validation Error: ${response.status} ${response.statusText}`);
             error.name = VALIDATION_ERROR;
-            return Promise.reject(error);
+            return { valid: false, error };
+            // return Promise.reject(error);
         }
         return await response.json();
     }
