@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.apiFetch = void 0;
+exports.apiFetch = exports.Response = void 0;
 const debug_1 = require("debug");
 const node_fetch_1 = require("node-fetch");
+var node_fetch_2 = require("node-fetch");
+Object.defineProperty(exports, "Response", { enumerable: true, get: function () { return node_fetch_2.Response; } });
 const url_1 = require("url");
 const debug = (0, debug_1.default)('chums:local-modules:api-fetch');
 const { CHUMS_API_USER = '', CHUMS_API_PASSWORD = '' } = process.env;

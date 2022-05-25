@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateUserAccount = void 0;
 const debug_1 = require("debug");
-const debug = (0, debug_1.default)('chums:local-modules:validate-user-account');
 const api_fetch_1 = require("./api-fetch");
 const utils_1 = require("./utils");
+const debug = (0, debug_1.default)('chums:local-modules:validate-user-account');
 const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo';
 async function validateUserAccount({ id, Company, ARDivisionNo, CustomerNo }) {
     try {

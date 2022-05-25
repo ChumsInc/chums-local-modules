@@ -5,6 +5,7 @@ import {RowDataPacket} from "mysql2";
 export const decode_cell = utils.decode_cell;
 export const encode_cell = utils.encode_cell;
 export const {aoa_to_sheet, json_to_sheet, sheet_add_json, sheet_add_aoa} = utils;
+export {WorkSheet, WritingOptions, SheetAOAOpts} from 'xlsx';
 
 
 export const xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';

@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateRole = exports.loadValidation = exports.validateUser = void 0;
 const debug_1 = require("debug");
-const debug = (0, debug_1.default)('chums:local-modules:validate-user');
 const node_fetch_1 = require("node-fetch");
 const auth_1 = require("./auth");
 const jwt_handler_1 = require("./jwt-handler");
+const debug = (0, debug_1.default)('chums:local-modules:validate-user');
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
 /**
  * Requests validation from CHUMS /api/user service

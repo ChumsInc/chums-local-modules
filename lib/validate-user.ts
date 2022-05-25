@@ -1,14 +1,12 @@
 import Debug from 'debug';
-const debug = Debug('chums:local-modules:validate-user');
-
 import {NextFunction, Request, Response} from 'express'
 import {default as fetch, Headers, RequestInit} from 'node-fetch';
 import {basicAuth, jwtToken} from './auth';
 import {UserJWTToken, UserProfile, UserValidation} from "./types";
-import {validateToken, isBeforeExpiry, isLocalToken} from './jwt-handler';
+import {isBeforeExpiry, isLocalToken, validateToken} from './jwt-handler';
 
+const debug = Debug('chums:local-modules:validate-user');
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
-
 
 
 /**
@@ -34,7 +32,7 @@ export async function validateUser(req: Request, res: Response, next: NextFuncti
         res.locals.profile = profile;
         req.userAuth = {valid, status, profile};
         next();
-    } catch (err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             debug("validateUser()", err.message)
             res.status(401).json({error: 'Not authorized', message: err.message});
@@ -70,7 +68,7 @@ export async function loadValidation(req: Request): Promise<UserValidation> {
         const {user, pass} = basicAuth(req);
         const session = req.cookies.PHPSESSID;
 
-        const fetchOptions:RequestInit = {};
+        const fetchOptions: RequestInit = {};
         const headers = new Headers();
         headers.set('X-Forwarded-For', req.ip);
         headers.set('referrer', req.get('referrer') || req.originalUrl);
@@ -95,7 +93,7 @@ export async function loadValidation(req: Request): Promise<UserValidation> {
             return Promise.reject(new Error(`${response.status} ${response.statusText}`));
         }
         return await response.json();
-    } catch (err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             debug("loadValidation()", err.message);
             return Promise.reject(err);

@@ -14,9 +14,10 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FormidableFile = exports.expressUploadFile = exports.loadFileContents = exports.handleUpload = exports.loadSocketValidation = exports.webSocketServer = exports.validateUserAccount = exports.loadValidation = exports.validateRole = exports.validateUser = exports.parseSQL = exports.getSageCompany = exports.getDBCompany = exports.parseDataForAOA = exports.addResultToExcelSheet = exports.buildWorkBook = exports.buildXLSXHeaders = exports.resultToExcelSheet = exports.getConnection = exports.pool = exports.mysql2Pool = exports.sendOldSESEmail = exports.getTs36 = exports.getTs = exports.getLogoImageAttachment = exports.sendGmail = exports.sendEmail = exports.apiFetch = void 0;
+exports.DEFAULT_UPLOAD_PATH = exports.FormidableFile = exports.expressUploadFile = exports.loadFileContents = exports.handleUpload = exports.loadSocketValidation = exports.webSocketServer = exports.validateUserAccount = exports.loadValidation = exports.validateRole = exports.validateUser = exports.parseSQL = exports.getSageCompany = exports.getDBCompany = exports.decode_cell = exports.encode_cell = exports.xlsxMimeType = exports.sheet_add_aoa = exports.sheet_add_json = exports.json_to_sheet = exports.aoa_to_sheet = exports.parseDataForAOA = exports.addResultToExcelSheet = exports.buildWorkBook = exports.buildXLSXHeaders = exports.resultToExcelSheet = exports.getConnection = exports.pool = exports.mysql2Pool = exports.sendOldSESEmail = exports.getTs36 = exports.getTs = exports.getLogoImageAttachment = exports.sendGmail = exports.sendEmail = exports.Response = exports.apiFetch = void 0;
 var api_fetch_1 = require("./api-fetch");
 Object.defineProperty(exports, "apiFetch", { enumerable: true, get: function () { return api_fetch_1.apiFetch; } });
+Object.defineProperty(exports, "Response", { enumerable: true, get: function () { return api_fetch_1.Response; } });
 var mailer_1 = require("./mailer");
 Object.defineProperty(exports, "sendEmail", { enumerable: true, get: function () { return mailer_1.sendEmail; } });
 Object.defineProperty(exports, "sendGmail", { enumerable: true, get: function () { return mailer_1.sendGmail; } });
@@ -34,6 +35,13 @@ Object.defineProperty(exports, "buildXLSXHeaders", { enumerable: true, get: func
 Object.defineProperty(exports, "buildWorkBook", { enumerable: true, get: function () { return toXLSX_1.buildWorkBook; } });
 Object.defineProperty(exports, "addResultToExcelSheet", { enumerable: true, get: function () { return toXLSX_1.addResultToExcelSheet; } });
 Object.defineProperty(exports, "parseDataForAOA", { enumerable: true, get: function () { return toXLSX_1.parseDataForAOA; } });
+Object.defineProperty(exports, "aoa_to_sheet", { enumerable: true, get: function () { return toXLSX_1.aoa_to_sheet; } });
+Object.defineProperty(exports, "json_to_sheet", { enumerable: true, get: function () { return toXLSX_1.json_to_sheet; } });
+Object.defineProperty(exports, "sheet_add_json", { enumerable: true, get: function () { return toXLSX_1.sheet_add_json; } });
+Object.defineProperty(exports, "sheet_add_aoa", { enumerable: true, get: function () { return toXLSX_1.sheet_add_aoa; } });
+Object.defineProperty(exports, "xlsxMimeType", { enumerable: true, get: function () { return toXLSX_1.xlsxMimeType; } });
+Object.defineProperty(exports, "encode_cell", { enumerable: true, get: function () { return toXLSX_1.encode_cell; } });
+Object.defineProperty(exports, "decode_cell", { enumerable: true, get: function () { return toXLSX_1.decode_cell; } });
 var utils_1 = require("./utils");
 Object.defineProperty(exports, "getDBCompany", { enumerable: true, get: function () { return utils_1.getDBCompany; } });
 Object.defineProperty(exports, "getSageCompany", { enumerable: true, get: function () { return utils_1.getSageCompany; } });
@@ -52,4 +60,5 @@ Object.defineProperty(exports, "handleUpload", { enumerable: true, get: function
 Object.defineProperty(exports, "loadFileContents", { enumerable: true, get: function () { return file_upload_1.loadFileContents; } });
 Object.defineProperty(exports, "expressUploadFile", { enumerable: true, get: function () { return file_upload_1.expressUploadFile; } });
 Object.defineProperty(exports, "FormidableFile", { enumerable: true, get: function () { return file_upload_1.File; } });
+Object.defineProperty(exports, "DEFAULT_UPLOAD_PATH", { enumerable: true, get: function () { return file_upload_1.DEFAULT_UPLOAD_PATH; } });
 __exportStar(require("./types"), exports);

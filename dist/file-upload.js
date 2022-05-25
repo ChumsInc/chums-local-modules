@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.expressUploadFile = exports.handleUpload = exports.loadFileContents = exports.File = void 0;
+exports.expressUploadFile = exports.handleUpload = exports.loadFileContents = exports.DEFAULT_UPLOAD_PATH = exports.File = void 0;
 const debug_1 = require("debug");
 const promises_1 = require("fs/promises");
 const fs_1 = require("fs");
@@ -10,12 +10,12 @@ var formidable_2 = require("formidable");
 Object.defineProperty(exports, "File", { enumerable: true, get: function () { return formidable_2.File; } });
 const debug = (0, debug_1.default)('chums:lib:file-upload');
 const ROOT_PATH = '/var/tmp';
-const UPLOAD_PATH = ROOT_PATH + '/chums';
+exports.DEFAULT_UPLOAD_PATH = ROOT_PATH + '/chums';
 async function ensureUploadPathExists(options = {}) {
     if (!options) {
         options = {};
     }
-    const uploadPath = options.uploadPath || UPLOAD_PATH;
+    const uploadPath = options.uploadPath || exports.DEFAULT_UPLOAD_PATH;
     try {
         await (0, promises_1.access)(uploadPath, fs_1.constants.R_OK | fs_1.constants.W_OK);
         return true;
@@ -57,7 +57,7 @@ async function handleUpload(req, options = {}) {
     if (!options) {
         options = {};
     }
-    const uploadPath = options.uploadPath || UPLOAD_PATH;
+    const uploadPath = options.uploadPath || exports.DEFAULT_UPLOAD_PATH;
     try {
         await ensureUploadPathExists(options);
         return new Promise((resolve, reject) => {
@@ -101,11 +101,19 @@ async function handleUpload(req, options = {}) {
     }
 }
 exports.handleUpload = handleUpload;
+/**
+ *
+ * @param {Request} req
+ * @param {UploadOptions} options
+ * @return {Promise<string>}
+ *
+ * If options.preserveFile is explicitly false then the uploaded file is removed after contents are read
+ */
 async function expressUploadFile(req, options = {}) {
     try {
         await ensureUploadPathExists(options);
         const file = await handleUpload(req);
-        return loadFileContents(file.filepath);
+        return loadFileContents(file.filepath, options.preserveFile === false);
     }
     catch (error) {
         if (error instanceof Error) {

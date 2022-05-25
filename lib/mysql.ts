@@ -1,4 +1,4 @@
-import {createPool, createConnection, PoolOptions} from 'mysql2/promise'
+import {createPool, createConnection, PoolOptions, Pool} from 'mysql2/promise'
 export {Pool, QueryOptions, Connection, PoolConnection} from 'mysql2/promise'
 
 
@@ -17,4 +17,4 @@ export async function getConnection() {
     return createConnection({...connectionConfig});
 }
 
-export const mysql2Pool = createPool({...config});
+export const mysql2Pool:Pool = createPool({...config});

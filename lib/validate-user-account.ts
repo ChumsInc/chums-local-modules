@@ -1,9 +1,8 @@
 import Debug from 'debug';
-const debug = Debug('chums:local-modules:validate-user-account');
-
 import {apiFetch} from './api-fetch';
 import {getDBCompany} from './utils';
 
+const debug = Debug('chums:local-modules:validate-user-account');
 const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo';
 
 /**
@@ -16,13 +15,13 @@ const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:Cus
  */
 
 export interface ValidateUserAccountProps {
-    id: string|number,
+    id: string | number,
     Company: string,
     ARDivisionNo: string,
     CustomerNo: string,
 }
 
-export async function validateUserAccount({id, Company, ARDivisionNo, CustomerNo}:ValidateUserAccountProps) {
+export async function validateUserAccount({id, Company, ARDivisionNo, CustomerNo}: ValidateUserAccountProps) {
     try {
         const url = VALIDATE_URL
             .replace(':id', encodeURIComponent(id))
@@ -36,7 +35,7 @@ export async function validateUserAccount({id, Company, ARDivisionNo, CustomerNo
         }
         const {success} = await res.json();
         return success === true;
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             debug("validateAccount()", err.message);
             return Promise.reject(err);

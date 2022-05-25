@@ -8,18 +8,19 @@ export {File} from 'formidable';
 
 const debug = Debug('chums:lib:file-upload');
 const ROOT_PATH = '/var/tmp';
-const UPLOAD_PATH = ROOT_PATH + '/chums';
+export const DEFAULT_UPLOAD_PATH = ROOT_PATH + '/chums';
 
 export interface UploadOptions {
     uploadPath?: string,
     keepOriginalFilename?: boolean,
+    preserveFile?: boolean,
 }
 
 async function ensureUploadPathExists(options:UploadOptions = {}):Promise<boolean> {
     if (!options) {
         options = {};
     }
-    const uploadPath:string = options.uploadPath || UPLOAD_PATH;
+    const uploadPath:string = options.uploadPath || DEFAULT_UPLOAD_PATH;
     try {
         await access(uploadPath, constants.R_OK | constants.W_OK);
         return true;
@@ -61,7 +62,7 @@ export async function handleUpload(req: Request, options:UploadOptions = {}): Pr
     if (!options) {
         options = {};
     }
-    const uploadPath:string = options.uploadPath || UPLOAD_PATH;
+    const uploadPath:string = options.uploadPath || DEFAULT_UPLOAD_PATH;
     try {
         await ensureUploadPathExists(options);
         return new Promise((resolve, reject) => {
@@ -106,12 +107,19 @@ export async function handleUpload(req: Request, options:UploadOptions = {}): Pr
     }
 }
 
-
+/**
+ *
+ * @param {Request} req
+ * @param {UploadOptions} options
+ * @return {Promise<string>}
+ *
+ * If options.preserveFile is explicitly false then the uploaded file is removed after contents are read
+ */
 export async function expressUploadFile(req: Request, options:UploadOptions = {}): Promise<string> {
     try {
         await ensureUploadPathExists(options);
         const file = await handleUpload(req);
-        return loadFileContents(file.filepath);
+        return loadFileContents(file.filepath, options.preserveFile === false);
     } catch (error: unknown) {
         if (error instanceof Error) {
             console.log("expressUpload()", error.message);

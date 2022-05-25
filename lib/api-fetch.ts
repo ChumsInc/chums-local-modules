@@ -1,5 +1,6 @@
 import Debug from 'debug';
-import fetch from 'node-fetch';
+import fetch, {Response} from 'node-fetch';
+export {Response} from 'node-fetch'
 import {URL} from 'url'
 
 const debug = Debug('chums:local-modules:api-fetch');
@@ -30,7 +31,7 @@ export interface APIFetchOptions {
     referrer?: string,
 }
 
-export async function apiFetch(url: string | URL = '', options: APIFetchOptions = {}) {
+export async function apiFetch(url: string | URL = '', options: APIFetchOptions = {}):Promise<Response> {
     try {
         if (typeof url === 'string') {
             url = new URL(url, API_HOST);
