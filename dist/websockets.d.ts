@@ -5,6 +5,7 @@ import { IncomingMessage } from 'http';
 import { Socket } from "net";
 import * as Buffer from "buffer";
 import { UserProfile, UserValidation } from "./types";
+export declare const VALIDATION_ERROR = "VALIDATION_ERROR";
 export interface ExtWebSocket extends WebSocket {
     isAlive: boolean;
     profile?: UserProfile;

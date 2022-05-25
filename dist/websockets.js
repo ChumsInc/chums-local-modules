@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadSocketValidation = exports.webSocketServer = void 0;
+exports.loadSocketValidation = exports.webSocketServer = exports.VALIDATION_ERROR = void 0;
 const debug_1 = require("debug");
 const ws_1 = require("ws");
 const node_fetch_1 = require("node-fetch");
 const cookie = require("cookie");
-const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
-const VALIDATION_ERROR = 'VALIDATION_ERROR';
 const debug = (0, debug_1.default)('chums:lib:websockets');
+const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
+exports.VALIDATION_ERROR = 'VALIDATION_ERROR';
 function webSocketServer() {
     const wsServer = new ws_1.WebSocketServer({ noServer: true });
     wsServer.on('connection', async (ws, message) => {
@@ -68,7 +68,7 @@ async function loadSocketValidation(message) {
         const cookies = cookie.parse(message.headers.cookie || '');
         if (!cookies.PHPSESSID) {
             const error = new Error('Only cookie sessions can be validated');
-            error.name = VALIDATION_ERROR;
+            error.name = exports.VALIDATION_ERROR;
             return { valid: false, error };
             // return Promise.reject(error);
         }
@@ -80,7 +80,7 @@ async function loadSocketValidation(message) {
         const response = await (0, node_fetch_1.default)(url, fetchOptions);
         if (!response.ok) {
             const error = new Error(`Validation Error: ${response.status} ${response.statusText}`);
-            error.name = VALIDATION_ERROR;
+            error.name = exports.VALIDATION_ERROR;
             return { valid: false, error };
             // return Promise.reject(error);
         }

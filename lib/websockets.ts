@@ -9,10 +9,11 @@ import {UserProfile, UserValidation} from "./types";
 import {default as fetch, Headers, RequestInit} from "node-fetch";
 import * as cookie from 'cookie';
 
-const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
-const VALIDATION_ERROR = 'VALIDATION_ERROR';
-
 const debug = Debug('chums:lib:websockets');
+
+const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
+export const VALIDATION_ERROR = 'VALIDATION_ERROR';
+
 
 export interface ExtWebSocket extends WebSocket {
     isAlive: boolean,
