@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import fetch, {Response} from 'node-fetch';
+import fetch, {RequestInit, Response} from 'node-fetch';
 export {Response} from 'node-fetch'
 import {URL} from 'url'
 
@@ -21,7 +21,7 @@ const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
  * @returns {Promise<Error|*>}
  */
 
-export interface APIFetchOptions {
+export interface APIFetchOptions extends RequestInit {
     headers?: {
         Authorization?: string,
         'Content-Type'?: string

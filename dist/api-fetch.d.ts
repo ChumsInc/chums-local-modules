@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { Response } from 'node-fetch';
+import { RequestInit, Response } from 'node-fetch';
 export { Response } from 'node-fetch';
 import { URL } from 'url';
 /**
@@ -13,7 +13,7 @@ import { URL } from 'url';
  * @param {String} [options.referrer]
  * @returns {Promise<Error|*>}
  */
-export interface APIFetchOptions {
+export interface APIFetchOptions extends RequestInit {
     headers?: {
         Authorization?: string;
         'Content-Type'?: string;
