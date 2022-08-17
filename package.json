@@ -1,6 +1,6 @@
 {
   "name": "chums-local-modules",
-  "version": "1.2.14",
+  "version": "1.2.15",
   "description": "modules shared across chums node server instances",
   "main": "dist/index.js",
   "scripts": {
