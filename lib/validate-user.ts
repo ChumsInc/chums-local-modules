@@ -34,7 +34,7 @@ export async function validateUser(req: Request, res: Response, next: NextFuncti
         next();
     } catch (err: unknown) {
         if (err instanceof Error) {
-            debug("validateUser()", err.message, req.method, req.originalUrl)
+            debug("validateUser()", err.message, req.ip, req.method, req.originalUrl)
             res.status(401).json({error: 'Not authorized', message: err.message});
             return;
         }
