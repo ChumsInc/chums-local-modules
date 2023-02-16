@@ -9,7 +9,8 @@
     "emitDeclarationOnly": false,
     "lib": ["ES2020"],
     "moduleResolution": "Node",
-    "outDir": "dist"
+    "outDir": "dist",
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules"
