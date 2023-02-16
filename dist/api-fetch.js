@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.apiFetch = exports.Response = void 0;
+exports.apiFetchJSON = exports.apiFetch = exports.Response = void 0;
 const debug_1 = require("debug");
 const node_fetch_1 = require("node-fetch");
+const url_1 = require("url");
 var node_fetch_2 = require("node-fetch");
 Object.defineProperty(exports, "Response", { enumerable: true, get: function () { return node_fetch_2.Response; } });
-const url_1 = require("url");
 const debug = (0, debug_1.default)('chums:local-modules:api-fetch');
 const { CHUMS_API_USER = '', CHUMS_API_PASSWORD = '' } = process.env;
 const LOCAL_HOSTNAMES = ['localhost', 'intranet.chums.com'];
@@ -45,3 +45,18 @@ async function apiFetch(url = '', options = {}) {
     }
 }
 exports.apiFetch = apiFetch;
+async function apiFetchJSON(url, options = {}) {
+    try {
+        const res = await apiFetch(url, options);
+        return await res.json();
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            console.debug("apiFetchJSON()", err.message);
+            return Promise.reject(err);
+        }
+        console.debug("apiFetchJSON()", err);
+        return Promise.reject(new Error('Error in apiFetchJSON()'));
+    }
+}
+exports.apiFetchJSON = apiFetchJSON;

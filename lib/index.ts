@@ -1,4 +1,4 @@
-export {apiFetch, APIFetchOptions, Response} from './api-fetch';
+export {apiFetch, APIFetchOptions, Response, apiFetchJSON} from './api-fetch';
 export {sendEmail, sendGmail, getLogoImageAttachment, getTs, getTs36, sendMailProps, sendOldSESEmail} from './mailer';
 export {mysql2Pool, mysql2Pool as pool, getConnection, Pool, QueryOptions, PoolConnection, Connection} from './mysql';
 export {
