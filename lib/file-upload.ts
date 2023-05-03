@@ -1,9 +1,11 @@
 import Debug from 'debug';
-import {access, mkdir, readFile, unlink, rename} from 'fs/promises';
+import {access, mkdir, readFile, rename, unlink} from 'fs/promises';
 import {constants, PathLike} from 'fs';
+import * as formidable from "formidable";
 import {Fields, File, Files, IncomingForm} from "formidable";
 import {Request} from 'express';
 import * as path from "path";
+
 export {File} from 'formidable';
 
 const debug = Debug('chums:lib:file-upload');
@@ -16,11 +18,11 @@ export interface UploadOptions {
     preserveFile?: boolean,
 }
 
-async function ensureUploadPathExists(options:UploadOptions = {}):Promise<boolean> {
+async function ensureUploadPathExists(options: UploadOptions = {}): Promise<boolean> {
     if (!options) {
         options = {};
     }
-    const uploadPath:string = options.uploadPath || DEFAULT_UPLOAD_PATH;
+    const uploadPath: string = options.uploadPath || DEFAULT_UPLOAD_PATH;
     try {
         await access(uploadPath, constants.R_OK | constants.W_OK);
         return true;
@@ -58,16 +60,16 @@ export async function loadFileContents(path: PathLike, removeFile: boolean = tru
 }
 
 
-export async function handleUpload(req: Request, options:UploadOptions = {}): Promise<File> {
+export async function handleUpload(req: Request, options: UploadOptions = {}): Promise<formidable.File> {
     if (!options) {
         options = {};
     }
-    const uploadPath:string = options.uploadPath || DEFAULT_UPLOAD_PATH;
+    const uploadPath: string = options.uploadPath || DEFAULT_UPLOAD_PATH;
     try {
         await ensureUploadPathExists(options);
         return new Promise((resolve, reject) => {
             const form = new IncomingForm({uploadDir: uploadPath, keepExtensions: true});
-            form.on('error', (err:any) => {
+            form.on('error', (err: any) => {
                 if (err instanceof Error) {
                     debug('handleUpload() form.on.error', err.message);
                     return Promise.reject(err);
@@ -81,7 +83,7 @@ export async function handleUpload(req: Request, options:UploadOptions = {}): Pr
                 return reject(new Error('upload aborted'));
             });
 
-            form.parse(req, async (err:any, fields: Fields, files: Files) => {
+            form.parse(req, async (err: any, fields: Fields, files: Files) => {
                 const fileValues = Object.values(files);
                 if (!fileValues.length) {
                     return Promise.reject(new Error('No files found'));
@@ -115,7 +117,7 @@ export async function handleUpload(req: Request, options:UploadOptions = {}): Pr
  *
  * If options.preserveFile is explicitly false then the uploaded file is removed after contents are read
  */
-export async function expressUploadFile(req: Request, options:UploadOptions = {}): Promise<string> {
+export async function expressUploadFile(req: Request, options: UploadOptions = {}): Promise<string> {
     try {
         await ensureUploadPathExists(options);
         const file = await handleUpload(req);
