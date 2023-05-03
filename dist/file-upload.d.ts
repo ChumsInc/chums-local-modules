@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import { PathLike } from 'fs';
-import { File } from "formidable";
+import * as formidable from "formidable";
 import { Request } from 'express';
 export { File } from 'formidable';
 export declare const DEFAULT_UPLOAD_PATH: string;
@@ -10,7 +10,7 @@ export interface UploadOptions {
     preserveFile?: boolean;
 }
 export declare function loadFileContents(path: PathLike, removeFile?: boolean): Promise<string>;
-export declare function handleUpload(req: Request, options?: UploadOptions): Promise<File>;
+export declare function handleUpload(req: Request, options?: UploadOptions): Promise<formidable.File>;
 /**
  *
  * @param {Request} req

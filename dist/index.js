@@ -14,7 +14,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEFAULT_UPLOAD_PATH = exports.FormidableFile = exports.expressUploadFile = exports.loadFileContents = exports.handleUpload = exports.loadSocketValidation = exports.webSocketServer = exports.validateUserAccount = exports.loadValidation = exports.validateRole = exports.validateUser = exports.parseSQL = exports.getSageCompany = exports.getDBCompany = exports.decode_cell = exports.encode_cell = exports.xlsxMimeType = exports.sheet_add_aoa = exports.sheet_add_json = exports.json_to_sheet = exports.aoa_to_sheet = exports.parseDataForAOA = exports.addResultToExcelSheet = exports.buildWorkBook = exports.buildXLSXHeaders = exports.resultToExcelSheet = exports.getConnection = exports.pool = exports.mysql2Pool = exports.sendOldSESEmail = exports.getTs36 = exports.getTs = exports.getLogoImageAttachment = exports.sendGmail = exports.sendEmail = exports.apiFetchJSON = exports.Response = exports.apiFetch = void 0;
+exports.DEFAULT_UPLOAD_PATH = exports.FormidableFile = exports.expressUploadFile = exports.loadFileContents = exports.handleUpload = exports.loadSocketValidation = exports.webSocketServer = exports.validateUserAccount = exports.loadValidation = exports.validateRole = exports.validateUser = exports.parseSQL = exports.getSageCompany = exports.getDBCompany = exports.decode_cell = exports.encode_cell = exports.xlsxMimeType = exports.sheet_add_aoa = exports.sheet_add_json = exports.json_to_sheet = exports.aoa_to_sheet = exports.parseDataForAOA = exports.addResultToExcelSheet = exports.buildWorkBook = exports.buildXLSXHeaders = exports.resultToExcelSheet = exports.getConnection = exports.pool = exports.mysql2Pool = exports.getTs36 = exports.getTs = exports.getLogoImageAttachment = exports.sendGmail = exports.sendEmail = exports.apiFetchJSON = exports.Response = exports.apiFetch = void 0;
 var api_fetch_1 = require("./api-fetch");
 Object.defineProperty(exports, "apiFetch", { enumerable: true, get: function () { return api_fetch_1.apiFetch; } });
 Object.defineProperty(exports, "Response", { enumerable: true, get: function () { return api_fetch_1.Response; } });
@@ -25,7 +25,6 @@ Object.defineProperty(exports, "sendGmail", { enumerable: true, get: function ()
 Object.defineProperty(exports, "getLogoImageAttachment", { enumerable: true, get: function () { return mailer_1.getLogoImageAttachment; } });
 Object.defineProperty(exports, "getTs", { enumerable: true, get: function () { return mailer_1.getTs; } });
 Object.defineProperty(exports, "getTs36", { enumerable: true, get: function () { return mailer_1.getTs36; } });
-Object.defineProperty(exports, "sendOldSESEmail", { enumerable: true, get: function () { return mailer_1.sendOldSESEmail; } });
 var mysql_1 = require("./mysql");
 Object.defineProperty(exports, "mysql2Pool", { enumerable: true, get: function () { return mysql_1.mysql2Pool; } });
 Object.defineProperty(exports, "pool", { enumerable: true, get: function () { return mysql_1.mysql2Pool; } });
