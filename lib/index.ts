@@ -1,5 +1,5 @@
 export {apiFetch, APIFetchOptions, Response, apiFetchJSON} from './api-fetch';
-export {sendEmail, sendGmail, getLogoImageAttachment, getTs, getTs36, sendMailProps, sendOldSESEmail} from './mailer';
+export {sendEmail, sendGmail, getLogoImageAttachment, getTs, getTs36, sendMailProps} from './mailer';
 export {mysql2Pool, mysql2Pool as pool, getConnection, Pool, QueryOptions, PoolConnection, Connection} from './mysql';
 export {
     resultToExcelSheet,
