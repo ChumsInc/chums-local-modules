@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = exports.sendGmail = exports.getLogoImageAttachment = exports.getTs36 = exports.getTs = void 0;
-const debug_1 = require("debug");
+const debug_1 = __importDefault(require("debug"));
 const nodemailer_1 = require("nodemailer");
 const debug = (0, debug_1.default)('chums:lib:mailer');
 const getTs = () => {

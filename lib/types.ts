@@ -1,5 +1,3 @@
-import {Request} from "express";
-
 export interface User {
     id: number,
     name: string,
@@ -12,26 +10,27 @@ export interface User {
     zip: string,
     country: string,
     accountType: 0 | 1 | 2 | 4 | 8,
-    active: 0|1|boolean,
-    notes: string|null,
-    created: string|null,
-    pwd_change_required: boolean|1|0,
+    active: 0 | 1 | boolean,
+    notes: string | null,
+    created: string | null,
+    pwd_change_required: boolean | 1 | 0,
     logins: number,
     accounts?: UserAccount[],
     roles?: string[],
 }
+
 export interface UserAccount {
     id: number,
     userid: number,
     Company: string,
     ARDivisionNo: string,
     CustomerNo: string,
-    CustomerName: string|null,
-    isRepAccount: boolean|1|0,
+    CustomerName: string | null,
+    isRepAccount: boolean | 1 | 0,
     SalespersonDivisionNo: string,
     SalespersonNo: string,
     SalespersonName: string,
-    primaryAccount: boolean|1|0,
+    primaryAccount: boolean | 1 | 0,
     customers: number,
     shipToCustomers: number,
 }
@@ -41,7 +40,7 @@ export interface UserProfile {
     user: User,
     accounts: UserAccount[],
     roles: string[],
-    picture?: string|null,
+    picture?: string | null,
 }
 
 export interface UserValidation {
@@ -58,4 +57,5 @@ export interface BaseJWTToken {
     iss?: string,
 }
 
-export interface UserJWTToken extends UserProfile, BaseJWTToken {}
+export interface UserJWTToken extends UserProfile, BaseJWTToken {
+}

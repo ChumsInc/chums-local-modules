@@ -1,12 +1,11 @@
-import {UserValidation} from "./types";
-
 const namedPlaceholders = require('named-placeholders')();
 const SqlString = require('sqlstring');
 
 export interface ParseSQLParams {
-    [key:string]: any,
+    [key: string]: any,
 }
-export function parseSQL(query:string, params:ParseSQLParams = {}):string {
+
+export function parseSQL(query: string, params: ParseSQLParams = {}): string {
     const prepared = namedPlaceholders(query, params || {});
     return SqlString.format(prepared[0], prepared[1]);
 }
@@ -17,16 +16,16 @@ export function parseSQL(query:string, params:ParseSQLParams = {}):string {
  * @param {String} company - Sage Company Code
  * @returns {String} chums|bc
  */
-export function getDBCompany(company:string = ''):string {
+export function getDBCompany(company: string = ''): string {
     switch (String(company).toUpperCase()) {
-    case 'CHI':
-    case 'CHUMS':
-        return 'chums';
-    case 'BCS':
-    case 'BC':
-        return 'bc';
-    default:
-        return 'chums';
+        case 'CHI':
+        case 'CHUMS':
+            return 'chums';
+        case 'BCS':
+        case 'BC':
+            return 'bc';
+        default:
+            return 'chums';
     }
 }
 
@@ -35,21 +34,21 @@ export function getDBCompany(company:string = ''):string {
  * @param {string} company
  * @returns {string} CHI|BCS|TST|BCT|SUH
  */
-export function getSageCompany(company:string = 'chums'):string {
+export function getSageCompany(company: string = 'chums'): string {
     switch (String(company).toLowerCase()) {
-    case 'chums':
-    case 'chi':
-        return 'CHI';
-    case 'bc':
-    case 'bcs':
-        return 'BCS';
-    case 'tst':
-        return 'TST';
-    case 'bct':
-        return 'BCT';
-    case 'suh':
-        return 'SUH';
-    default:
-        return 'CHI';
+        case 'chums':
+        case 'chi':
+            return 'CHI';
+        case 'bc':
+        case 'bcs':
+            return 'BCS';
+        case 'tst':
+            return 'TST';
+        case 'bct':
+            return 'BCT';
+        case 'suh':
+            return 'SUH';
+        default:
+            return 'CHI';
     }
 }

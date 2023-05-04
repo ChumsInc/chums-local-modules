@@ -1,6 +1,5 @@
 /// <reference types="node" />
-import * as WebSocket from 'ws';
-import { WebSocketServer } from 'ws';
+import { WebSocket } from 'ws';
 import { IncomingMessage } from 'http';
 import { Socket } from "net";
 import * as Buffer from "buffer";
@@ -10,11 +9,8 @@ export interface ExtWebSocket extends WebSocket {
     isAlive: boolean;
     profile?: UserProfile;
 }
-export interface ExtServer extends WebSocketServer {
-    clients: Set<ExtWebSocket>;
-}
 export declare function webSocketServer(): {
-    wsServer: ExtServer;
+    wsServer: import("ws").Server<ExtWebSocket>;
     onUpgrade: (request: IncomingMessage, socket: Socket, head: Buffer) => void;
 };
 /**

@@ -23,6 +23,6 @@ export {
 export {getDBCompany, getSageCompany, parseSQL} from './utils';
 export {validateUser, validateRole, loadValidation, getUserValidation} from './validate-user';
 export {validateUserAccount, ValidateUserAccountProps} from './validate-user-account';
-export {webSocketServer, ExtServer, ExtWebSocket, loadSocketValidation} from './websockets';
+export {webSocketServer, ExtWebSocket, loadSocketValidation} from './websockets';
 export {handleUpload, loadFileContents, expressUploadFile, UploadOptions, File as FormidableFile, DEFAULT_UPLOAD_PATH} from './file-upload';
 export * from './types';

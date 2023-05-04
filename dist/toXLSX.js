@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildXLSXHeaders = exports.buildWorkBook = exports.addResultToExcelSheet = exports.resultToExcelSheet = exports.parseDataForAOA = exports.xlsxMimeType = exports.sheet_add_aoa = exports.sheet_add_json = exports.json_to_sheet = exports.aoa_to_sheet = exports.encode_cell = exports.decode_cell = void 0;
-const debug_1 = require("debug");
+const debug_1 = __importDefault(require("debug"));
 const debug = (0, debug_1.default)('chums:local-modules:toXLSX');
 const xlsx_1 = require("xlsx");
 exports.decode_cell = xlsx_1.utils.decode_cell;

@@ -1,7 +1,5 @@
 import Debug from 'debug';
-import * as WebSocket from 'ws';
-import {WebSocketServer} from 'ws';
-import {Server} from 'ws';
+import {WebSocket, WebSocketServer} from 'ws';
 import {IncomingMessage} from 'http';
 import {Socket} from "net";
 import * as Buffer from "buffer";
@@ -20,13 +18,9 @@ export interface ExtWebSocket extends WebSocket {
     profile?: UserProfile,
 }
 
-export interface ExtServer extends WebSocketServer {
-    clients: Set<ExtWebSocket>;
-}
-
 export function webSocketServer() {
-    const wsServer: ExtServer = new WebSocketServer({noServer: true}) as ExtServer;
-    wsServer.on('connection', async (ws: ExtWebSocket, message: IncomingMessage) => {
+    const wsServer = new WebSocketServer<ExtWebSocket>({noServer: true});
+    wsServer.on('connection', async (ws, message) => {
         const {valid, status, profile} = await loadSocketValidation(message);
         if (!valid || status !== 'OK') {
             ws.close();
@@ -54,7 +48,7 @@ export function webSocketServer() {
     })
 
     setInterval(() => {
-        wsServer.clients.forEach((ws: ExtWebSocket) => {
+        wsServer.clients.forEach((ws) => {
             if (!ws.isAlive) {
                 return ws.terminate();
             }
@@ -80,7 +74,6 @@ export function webSocketServer() {
         onUpgrade,
     }
 }
-
 
 
 /**
@@ -112,7 +105,7 @@ export async function loadSocketValidation(message: IncomingMessage): Promise<Us
             // return Promise.reject(error);
         }
         return await response.json() as UserValidation;
-    } catch (err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             debug("loadValidation()", err.message);
             return Promise.reject(err);

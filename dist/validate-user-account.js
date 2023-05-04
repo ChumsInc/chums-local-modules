@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateUserAccount = void 0;
-const debug_1 = require("debug");
+const debug_1 = __importDefault(require("debug"));
 const api_fetch_1 = require("./api-fetch");
 const utils_1 = require("./utils");
 const debug = (0, debug_1.default)('chums:local-modules:validate-user-account');

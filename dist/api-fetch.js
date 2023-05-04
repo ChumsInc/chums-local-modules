@@ -1,8 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.apiFetchJSON = exports.apiFetch = exports.Response = void 0;
-const debug_1 = require("debug");
-const node_fetch_1 = require("node-fetch");
+const debug_1 = __importDefault(require("debug"));
+const node_fetch_1 = __importDefault(require("node-fetch"));
 const url_1 = require("url");
 var node_fetch_2 = require("node-fetch");
 Object.defineProperty(exports, "Response", { enumerable: true, get: function () { return node_fetch_2.Response; } });
