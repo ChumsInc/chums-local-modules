@@ -2,7 +2,7 @@ import Debug from 'debug';
 import {NextFunction, Request, Response} from 'express'
 import {default as fetch, Headers, RequestInit} from 'node-fetch';
 import {basicAuth, jwtToken} from './auth';
-import {UserJWTToken, UserProfile, UserValidation, ValidatedRequest} from "./types";
+import {UserJWTToken, UserProfile, UserValidation} from "./types";
 import {isBeforeExpiry, isLocalToken, validateToken} from './jwt-handler';
 
 const debug = Debug('chums:local-modules:validate-user');
@@ -20,7 +20,7 @@ const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
  * @param {function} next
  * @returns {Promise<void>}
  */
-export async function validateUser(req: ValidatedRequest, res: Response, next: NextFunction): Promise<void> {
+export async function validateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
         const {valid, status, profile} = await loadValidation(req);
         if (!valid) {
@@ -30,7 +30,7 @@ export async function validateUser(req: ValidatedRequest, res: Response, next: N
             res.status(401).json({error: 401, status});
         }
         res.locals.profile = profile;
-        req.userAuth = {valid, status, profile};
+        res.locals.auth = {valid, status, profile};
         next();
     } catch (err: unknown) {
         if (err instanceof Error) {
@@ -43,12 +43,24 @@ export async function validateUser(req: ValidatedRequest, res: Response, next: N
     }
 }
 
+function isUserValidation(auth: UserValidation | any): auth is UserValidation {
+    return !!auth && (auth as UserValidation).valid !== undefined;
+}
+
+/**
+ *
+ * @param {Express.Response} res - Express response object
+ * @returns {UserValidation|null} - returns UserValidation object | null
+ */
+export function getUserValidation(res: Response): UserValidation | null {
+    return isUserValidation(res.locals.auth) ? res.locals.auth : null;
+}
 
 /**
  * Executes validation request
  *  - validates JWT token from Authorization header "Bearer asdasd...asd" (from a standalone/web app)
- *  - validates req.cookies.PHPSESSID (from a logged in user)
- *  - validates basic authentication (from a API user)
+ *  - validates req.cookies.PHPSESSID (from a logged-in user)
+ *  - validates basic authentication (from an API user)
  * @param {Object} req - Express request object
  * @returns {Promise<{valid: boolean, profile: {roles: [], accounts: [], user}}|*>}
  */

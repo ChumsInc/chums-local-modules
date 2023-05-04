@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateRole = exports.loadValidation = exports.validateUser = void 0;
+exports.validateRole = exports.loadValidation = exports.getUserValidation = exports.validateUser = void 0;
 const debug_1 = require("debug");
 const node_fetch_1 = require("node-fetch");
 const auth_1 = require("./auth");
@@ -28,7 +28,7 @@ async function validateUser(req, res, next) {
             res.status(401).json({ error: 401, status });
         }
         res.locals.profile = profile;
-        req.userAuth = { valid, status, profile };
+        res.locals.auth = { valid, status, profile };
         next();
     }
     catch (err) {
@@ -42,11 +42,23 @@ async function validateUser(req, res, next) {
     }
 }
 exports.validateUser = validateUser;
+function isUserValidation(auth) {
+    return !!auth && auth.valid !== undefined;
+}
+/**
+ *
+ * @param {Express.Response} res - Express response object
+ * @returns {UserValidation|null} - returns UserValidation object | null
+ */
+function getUserValidation(res) {
+    return isUserValidation(res.locals.auth) ? res.locals.auth : null;
+}
+exports.getUserValidation = getUserValidation;
 /**
  * Executes validation request
  *  - validates JWT token from Authorization header "Bearer asdasd...asd" (from a standalone/web app)
- *  - validates req.cookies.PHPSESSID (from a logged in user)
- *  - validates basic authentication (from a API user)
+ *  - validates req.cookies.PHPSESSID (from a logged-in user)
+ *  - validates basic authentication (from an API user)
  * @param {Object} req - Express request object
  * @returns {Promise<{valid: boolean, profile: {roles: [], accounts: [], user}}|*>}
  */

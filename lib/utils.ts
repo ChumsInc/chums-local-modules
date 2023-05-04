@@ -1,3 +1,5 @@
+import {UserValidation} from "./types";
+
 const namedPlaceholders = require('named-placeholders')();
 const SqlString = require('sqlstring');
 
