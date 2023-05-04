@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { UserValidation } from "./types";
+import { UserValidation, ValidatedRequest } from "./types";
 /**
  * Requests validation from CHUMS /api/user service
  * - On success populates res.locals.profile = {user, roles, accounts} and executes next()
@@ -11,7 +11,7 @@ import { UserValidation } from "./types";
  * @param {function} next
  * @returns {Promise<void>}
  */
-export declare function validateUser(req: Request, res: Response, next: NextFunction): Promise<void>;
+export declare function validateUser(req: ValidatedRequest, res: Response, next: NextFunction): Promise<void>;
 /**
  * Executes validation request
  *  - validates JWT token from Authorization header "Bearer asdasd...asd" (from a standalone/web app)

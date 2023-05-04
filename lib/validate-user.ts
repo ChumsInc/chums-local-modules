@@ -2,7 +2,7 @@ import Debug from 'debug';
 import {NextFunction, Request, Response} from 'express'
 import {default as fetch, Headers, RequestInit} from 'node-fetch';
 import {basicAuth, jwtToken} from './auth';
-import {UserJWTToken, UserProfile, UserValidation} from "./types";
+import {UserJWTToken, UserProfile, UserValidation, ValidatedRequest} from "./types";
 import {isBeforeExpiry, isLocalToken, validateToken} from './jwt-handler';
 
 const debug = Debug('chums:local-modules:validate-user');
@@ -20,7 +20,7 @@ const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
  * @param {function} next
  * @returns {Promise<void>}
  */
-export async function validateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function validateUser(req: ValidatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
         const {valid, status, profile} = await loadValidation(req);
         if (!valid) {

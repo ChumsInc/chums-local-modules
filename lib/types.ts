@@ -1,3 +1,5 @@
+import {Request} from "express";
+
 export interface User {
     id: number,
     name: string,
@@ -57,3 +59,7 @@ export interface BaseJWTToken {
 }
 
 export interface UserJWTToken extends UserProfile, BaseJWTToken {}
+
+export interface ValidatedRequest extends Request {
+    userAuth?: UserValidation;
+}
