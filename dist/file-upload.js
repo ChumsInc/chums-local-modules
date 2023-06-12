@@ -1,7 +1,7 @@
 import Debug from 'debug';
 import { access, mkdir, readFile, rename, unlink } from 'fs/promises';
 import { constants } from 'node:fs';
-import { IncomingForm } from "formidable";
+import * as formidable from "formidable";
 import * as path from "node:path";
 export { File } from 'formidable';
 const debug = Debug('chums:lib:file-upload');
@@ -56,7 +56,7 @@ export async function handleUpload(req, options = {}) {
     try {
         await ensureUploadPathExists(options);
         return new Promise((resolve, reject) => {
-            const form = new IncomingForm({ uploadDir: uploadPath, keepExtensions: true });
+            const form = new formidable.IncomingForm({ uploadDir: uploadPath, keepExtensions: true });
             form.on('error', (err) => {
                 if (err instanceof Error) {
                     debug('handleUpload() form.on.error', err.message);

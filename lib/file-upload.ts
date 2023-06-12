@@ -2,7 +2,7 @@ import Debug from 'debug';
 import {access, mkdir, readFile, rename, unlink} from 'fs/promises';
 import {constants, PathLike} from 'node:fs';
 import * as formidable from "formidable";
-import {Fields, File, Files, IncomingForm} from "formidable";
+import {Fields, File, Files} from "formidable";
 import {Request} from 'express';
 import * as path from "node:path";
 
@@ -68,7 +68,7 @@ export async function handleUpload(req: Request, options: UploadOptions = {}): P
     try {
         await ensureUploadPathExists(options);
         return new Promise((resolve, reject) => {
-            const form = new IncomingForm({uploadDir: uploadPath, keepExtensions: true});
+            const form = new formidable.IncomingForm({uploadDir: uploadPath, keepExtensions: true});
             form.on('error', (err: any) => {
                 if (err instanceof Error) {
                     debug('handleUpload() form.on.error', err.message);
