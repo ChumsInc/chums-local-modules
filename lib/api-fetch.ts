@@ -71,7 +71,7 @@ export async function apiFetch(url: string | URL = '', options: APIFetchOptions 
 export async function apiFetchJSON<T = unknown>(url: string | URL, options: APIFetchOptions = {}): Promise<T> {
     try {
         const res = await apiFetch(url, options);
-        return await res.json()
+        return await res.json() as T;
     } catch (err: unknown) {
         if (err instanceof Error) {
             console.debug("apiFetchJSON()", err.message);
