@@ -21,8 +21,25 @@ export {
     decode_cell
 } from './toXLSX';
 export {getDBCompany, getSageCompany, parseSQL} from './utils';
-export {validateUser, validateRole, loadValidation, getUserValidation} from './validate-user';
-export {validateUserAccount, ValidateUserAccountProps} from './validate-user-account';
+export {
+    validateUser,
+    validateRole,
+    loadValidation,
+    getUserValidation
+} from './validate-user';
+export {
+    validateUserAccount,
+    ValidateUserAccountProps,
+    fetchCustomerValidation,
+    CustomerValidationResponse
+} from './validate-user-account';
 export {webSocketServer, ExtWebSocket, loadSocketValidation} from './websockets';
-export {handleUpload, loadFileContents, expressUploadFile, UploadOptions, File as FormidableFile, DEFAULT_UPLOAD_PATH} from './file-upload';
+export {
+    handleUpload,
+    loadFileContents,
+    expressUploadFile,
+    UploadOptions,
+    File as FormidableFile,
+    DEFAULT_UPLOAD_PATH
+} from './file-upload';
 export * from './types';
