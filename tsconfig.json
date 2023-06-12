@@ -4,7 +4,8 @@
   "compilerOptions": {
     "declaration": true,
     "emitDeclarationOnly": false,
-    "outDir": "dist"
+    "outDir": "dist",
+    "module": "ES2022",
   },
   "exclude": [
     "node_modules"

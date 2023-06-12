@@ -1,8 +1,8 @@
 import Debug from 'debug';
 import {WebSocket, WebSocketServer} from 'ws';
-import {IncomingMessage} from 'http';
-import {Socket} from "net";
-import * as Buffer from "buffer";
+import {IncomingMessage} from 'node:http';
+import {Socket} from "node:net";
+import * as Buffer from "node:buffer";
 import {UserProfile, UserValidation} from "./types";
 import {default as fetch, Headers, RequestInit} from "node-fetch";
 import * as cookie from 'cookie';

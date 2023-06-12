@@ -1,17 +1,11 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildXLSXHeaders = exports.buildWorkBook = exports.addResultToExcelSheet = exports.resultToExcelSheet = exports.parseDataForAOA = exports.xlsxMimeType = exports.sheet_add_aoa = exports.sheet_add_json = exports.json_to_sheet = exports.aoa_to_sheet = exports.encode_cell = exports.decode_cell = void 0;
-const debug_1 = __importDefault(require("debug"));
-const debug = (0, debug_1.default)('chums:local-modules:toXLSX');
-const xlsx_1 = require("xlsx");
-exports.decode_cell = xlsx_1.utils.decode_cell;
-exports.encode_cell = xlsx_1.utils.encode_cell;
-exports.aoa_to_sheet = xlsx_1.utils.aoa_to_sheet, exports.json_to_sheet = xlsx_1.utils.json_to_sheet, exports.sheet_add_json = xlsx_1.utils.sheet_add_json, exports.sheet_add_aoa = xlsx_1.utils.sheet_add_aoa;
-exports.xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-function parseDataForAOA(data, columnNames, onlyColumnNames) {
+import Debug from 'debug';
+const debug = Debug('chums:local-modules:toXLSX');
+import { utils, write } from 'xlsx';
+export const decode_cell = utils.decode_cell;
+export const encode_cell = utils.encode_cell;
+export const { aoa_to_sheet, json_to_sheet, sheet_add_json, sheet_add_aoa } = utils;
+export const xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+export function parseDataForAOA(data, columnNames, onlyColumnNames) {
     let rows = [];
     let fields = [];
     let columns = [];
@@ -42,17 +36,14 @@ function parseDataForAOA(data, columnNames, onlyColumnNames) {
     }
     return rows;
 }
-exports.parseDataForAOA = parseDataForAOA;
-function resultToExcelSheet(data, columnNames, onlyColumnNames) {
+export function resultToExcelSheet(data, columnNames, onlyColumnNames) {
     let rows = parseDataForAOA(data, columnNames, onlyColumnNames);
-    return xlsx_1.utils.aoa_to_sheet(rows);
+    return utils.aoa_to_sheet(rows);
 }
-exports.resultToExcelSheet = resultToExcelSheet;
-function addResultToExcelSheet(workSheet, newData, options) {
-    return xlsx_1.utils.sheet_add_aoa(workSheet, newData, options);
+export function addResultToExcelSheet(workSheet, newData, options) {
+    return utils.sheet_add_aoa(workSheet, newData, options);
 }
-exports.addResultToExcelSheet = addResultToExcelSheet;
-function buildWorkBook(sheets, options = {}) {
+export function buildWorkBook(sheets, options = {}) {
     const defaultOptions = {
         type: 'buffer',
         cellDates: false,
@@ -62,13 +53,11 @@ function buildWorkBook(sheets, options = {}) {
         compression: true,
     };
     const sheetNames = Object.keys(sheets);
-    return (0, xlsx_1.write)({ SheetNames: sheetNames, Sheets: sheets }, { ...defaultOptions, ...options });
+    return write({ SheetNames: sheetNames, Sheets: sheets }, { ...defaultOptions, ...options });
 }
-exports.buildWorkBook = buildWorkBook;
-function buildXLSXHeaders(filename) {
+export function buildXLSXHeaders(filename) {
     return {
         'Content-Disposition': `attachment; filename=${filename.replace(/[\s]+/g, '_')}`,
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     };
 }
-exports.buildXLSXHeaders = buildXLSXHeaders;

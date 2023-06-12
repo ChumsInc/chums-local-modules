@@ -1,8 +1,8 @@
 /// <reference types="node" />
 import { WebSocket } from 'ws';
-import { IncomingMessage } from 'http';
-import { Socket } from "net";
-import * as Buffer from "buffer";
+import { IncomingMessage } from 'node:http';
+import { Socket } from "node:net";
+import * as Buffer from "node:buffer";
 import { UserProfile, UserValidation } from "./types";
 export declare const VALIDATION_ERROR = "VALIDATION_ERROR";
 export interface ExtWebSocket extends WebSocket {

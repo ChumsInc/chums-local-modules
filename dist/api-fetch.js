@@ -1,22 +1,15 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.apiFetchJSON = exports.apiFetch = exports.Response = void 0;
-const debug_1 = __importDefault(require("debug"));
-const node_fetch_1 = __importDefault(require("node-fetch"));
-const url_1 = require("url");
-var node_fetch_2 = require("node-fetch");
-Object.defineProperty(exports, "Response", { enumerable: true, get: function () { return node_fetch_2.Response; } });
-const debug = (0, debug_1.default)('chums:local-modules:api-fetch');
+import Debug from 'debug';
+import fetch from 'node-fetch';
+import { URL } from 'node:url';
+export { Response } from 'node-fetch';
+const debug = Debug('chums:local-modules:api-fetch');
 const { CHUMS_API_USER = '', CHUMS_API_PASSWORD = '' } = process.env;
 const LOCAL_HOSTNAMES = ['localhost', 'intranet.chums.com'];
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
-async function apiFetch(url = '', options = {}) {
+export async function apiFetch(url = '', options = {}) {
     try {
         if (typeof url === 'string') {
-            url = new url_1.URL(url, API_HOST);
+            url = new URL(url, API_HOST);
         }
         if (!options.headers) {
             options.headers = {};
@@ -36,7 +29,7 @@ async function apiFetch(url = '', options = {}) {
             const auth = Buffer.from(`${CHUMS_API_USER}:${CHUMS_API_PASSWORD}`).toString('base64');
             options.headers.Authorization = `Basic ${auth}`;
         }
-        return await (0, node_fetch_1.default)(url, options);
+        return await fetch(url, options);
     }
     catch (err) {
         if (err instanceof Error) {
@@ -47,8 +40,7 @@ async function apiFetch(url = '', options = {}) {
         return Promise.reject(err);
     }
 }
-exports.apiFetch = apiFetch;
-async function apiFetchJSON(url, options = {}) {
+export async function apiFetchJSON(url, options = {}) {
     try {
         const res = await apiFetch(url, options);
         return await res.json();
@@ -62,4 +54,3 @@ async function apiFetchJSON(url, options = {}) {
         return Promise.reject(new Error('Error in apiFetchJSON()'));
     }
 }
-exports.apiFetchJSON = apiFetchJSON;

@@ -1,12 +1,6 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isLocalToken = exports.isBeforeExpiry = exports.validateToken = void 0;
-const debug_1 = __importDefault(require("debug"));
-const jsonwebtoken_1 = require("jsonwebtoken");
-const debug = (0, debug_1.default)('chums:local-modules:jwt-handler');
+import Debug from 'debug';
+import { verify, decode } from 'jsonwebtoken';
+const debug = Debug('chums:local-modules:jwt-handler');
 const { JWT_ISSUER = 'NOT THE ISSUER', JWT_SECRET = 'NOT THE SECRET' } = process.env;
 const ERR_TOKEN_EXPIRED = 'TokenExpiredError';
 /**
@@ -14,16 +8,16 @@ const ERR_TOKEN_EXPIRED = 'TokenExpiredError';
  * @param {String} token - A JWT token to be validated
  * @return {Promise<BaseJWTToken|Error>}
  */
-const validateToken = async (token) => {
+export const validateToken = async (token) => {
     try {
-        const payload = (0, jsonwebtoken_1.decode)(token);
-        if (!(0, exports.isLocalToken)(payload)) {
-            if ((0, exports.isBeforeExpiry)(token)) {
+        const payload = decode(token);
+        if (!isLocalToken(payload)) {
+            if (isBeforeExpiry(token)) {
                 return payload;
             }
             return Promise.reject(new Error('Invalid Token: token may be invalid or expired'));
         }
-        return await (0, jsonwebtoken_1.verify)(token, JWT_SECRET);
+        return await verify(token, JWT_SECRET);
     }
     catch (err) {
         if (!(err instanceof Error)) {
@@ -35,13 +29,12 @@ const validateToken = async (token) => {
         return Promise.reject(err);
     }
 };
-exports.validateToken = validateToken;
 /**
  * Validates a token expiration timestamp
  */
-const isBeforeExpiry = (payload) => {
+export const isBeforeExpiry = (payload) => {
     if (typeof payload === 'string') {
-        payload = (0, jsonwebtoken_1.decode)(payload);
+        payload = decode(payload);
     }
     if (!payload || typeof payload === 'string') {
         return false;
@@ -50,13 +43,12 @@ const isBeforeExpiry = (payload) => {
     const now = new Date().valueOf() / 1000;
     return !!exp && exp > now;
 };
-exports.isBeforeExpiry = isBeforeExpiry;
 /**
  * Checks to see if a token is locally issued
  */
-const isLocalToken = (payload) => {
+export const isLocalToken = (payload) => {
     if (typeof payload === 'string') {
-        payload = (0, jsonwebtoken_1.decode)(payload);
+        payload = decode(payload);
     }
     if (!payload || typeof payload === 'string') {
         return false;
@@ -64,4 +56,3 @@ const isLocalToken = (payload) => {
     const { iss } = payload;
     return !!iss && iss === JWT_ISSUER;
 };
-exports.isLocalToken = isLocalToken;

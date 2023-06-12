@@ -12,6 +12,7 @@
     "test-email": "node test-email.js",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/UtahGooner/chums-local-modules.git"

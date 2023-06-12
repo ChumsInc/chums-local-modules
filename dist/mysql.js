@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.mysql2Pool = exports.getConnection = void 0;
-const promise_1 = require("mysql2/promise");
+import { createPool, createConnection } from 'mysql2/promise';
 const config = {
     connectionLimit: Number(process.env.MYSQL_POOL_LIMIT) || 5,
     host: process.env.MYSQL_SERVER || '',
@@ -11,9 +8,8 @@ const config = {
     database: process.env.MYSQL_DB || '',
     namedPlaceholders: true,
 };
-async function getConnection() {
+export async function getConnection() {
     const { connectionLimit, ...connectionConfig } = config;
-    return (0, promise_1.createConnection)({ ...connectionConfig });
+    return createConnection({ ...connectionConfig });
 }
-exports.getConnection = getConnection;
-exports.mysql2Pool = (0, promise_1.createPool)({ ...config });
+export const mysql2Pool = createPool({ ...config });

@@ -4,7 +4,7 @@ import {constants, PathLike} from 'fs';
 import * as formidable from "formidable";
 import {Fields, File, Files, IncomingForm} from "formidable";
 import {Request} from 'express';
-import * as path from "path";
+import * as path from "node:path";
 
 export {File} from 'formidable';
 

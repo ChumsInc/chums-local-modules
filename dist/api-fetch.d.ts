@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import { RequestInit, Response } from 'node-fetch';
-import { URL } from 'url';
+import { URL } from 'node:url';
 export { Response } from 'node-fetch';
 /**
  * Makes a request to an API, defaults to chums intranet API if not including options.headers.Authorization
