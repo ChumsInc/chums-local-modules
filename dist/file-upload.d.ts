@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { PathLike } from 'fs';
+import { PathLike } from 'node:fs';
 import * as formidable from "formidable";
 import { Request } from 'express';
 export { File } from 'formidable';
