@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import { verify, decode } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 const debug = Debug('chums:local-modules:jwt-handler');
 const { JWT_ISSUER = 'NOT THE ISSUER', JWT_SECRET = 'NOT THE SECRET' } = process.env;
 const ERR_TOKEN_EXPIRED = 'TokenExpiredError';
@@ -10,14 +10,14 @@ const ERR_TOKEN_EXPIRED = 'TokenExpiredError';
  */
 export const validateToken = async (token) => {
     try {
-        const payload = decode(token);
+        const payload = jwt.decode(token);
         if (!isLocalToken(payload)) {
             if (isBeforeExpiry(token)) {
                 return payload;
             }
             return Promise.reject(new Error('Invalid Token: token may be invalid or expired'));
         }
-        return await verify(token, JWT_SECRET);
+        return await jwt.verify(token, JWT_SECRET);
     }
     catch (err) {
         if (!(err instanceof Error)) {
@@ -34,7 +34,7 @@ export const validateToken = async (token) => {
  */
 export const isBeforeExpiry = (payload) => {
     if (typeof payload === 'string') {
-        payload = decode(payload);
+        payload = jwt.decode(payload);
     }
     if (!payload || typeof payload === 'string') {
         return false;
@@ -48,7 +48,7 @@ export const isBeforeExpiry = (payload) => {
  */
 export const isLocalToken = (payload) => {
     if (typeof payload === 'string') {
-        payload = decode(payload);
+        payload = jwt.decode(payload);
     }
     if (!payload || typeof payload === 'string') {
         return false;
