@@ -103,3 +103,29 @@ const {getCompany, getSageCompany} = require('chums-local-modules');
 const company = getCompany('CHI'); // returns 'chums'
 const companyCode = getSageCompany(company); // returns 'CHI'
 ```
+
+### XLSX
+Uses https://docs.sheetjs.com/docs/getting-started/installation/nodejs
+See link for updates.
+```javascript
+import {buildWorkBook, mysql2Pool, resultToExcelSheet} from 'chums-local-modules';
+
+const {sqlSort, fields, filters, periods} = await parse(req.body, res.locals.profile.user);
+const {rows} = await loadAccounts({filters, periods, sqlSort});
+const columnNames = {};
+['account', ...fields].forEach(field => {
+    columnNames[field] = titles[field](periods);
+});
+const sheet = resultToExcelSheet(rows, columnNames, true);
+const sheets = {'Account List': sheet};
+const workbook = await buildWorkBook(sheets, {
+    bookType: 'xlsx',
+    bookSST: true,
+    type: 'buffer',
+    compression: true
+});
+const filename = new Date().toISOString();
+res.setHeader('Content-disposition', `attachment; filename=AccountList-${filename}.xlsx`);
+res.setHeader('Content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+res.send(workbook);
+```
