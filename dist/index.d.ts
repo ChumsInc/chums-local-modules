@@ -6,5 +6,6 @@ export { getDBCompany, getSageCompany, parseSQL } from './utils.js';
 export { validateUser, validateRole, loadValidation, getUserValidation } from './validate-user.js';
 export { validateUserAccount, ValidateUserAccountProps, fetchCustomerValidation, CustomerValidationResponse } from './validate-user-account.js';
 export { webSocketServer, ExtWebSocket, loadSocketValidation } from './websockets.js';
-export { handleUpload, loadFileContents, expressUploadFile, UploadOptions, File as FormidableFile, DEFAULT_UPLOAD_PATH } from './file-upload.js';
+export { handleUpload, loadFileContents, expressUploadFile, UploadOptions, DEFAULT_UPLOAD_PATH } from './file-upload.js';
 export * from './types.js';
+export type { File as FormidableFile } from 'formidable';

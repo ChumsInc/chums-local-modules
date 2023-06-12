@@ -3,7 +3,6 @@ import { access, mkdir, readFile, rename, unlink } from 'fs/promises';
 import { constants } from 'node:fs';
 import * as formidable from "formidable";
 import * as path from "node:path";
-export { File } from 'formidable';
 const debug = Debug('chums:lib:file-upload');
 const ROOT_PATH = '/var/tmp';
 export const DEFAULT_UPLOAD_PATH = ROOT_PATH + '/chums';

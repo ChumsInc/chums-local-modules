@@ -2,11 +2,10 @@ import Debug from 'debug';
 import {access, mkdir, readFile, rename, unlink} from 'fs/promises';
 import {constants, PathLike} from 'node:fs';
 import * as formidable from "formidable";
-import {Fields, File, Files} from "formidable";
+import {Fields, Files} from "formidable";
 import {Request} from 'express';
 import * as path from "node:path";
 
-export {File} from 'formidable';
 
 const debug = Debug('chums:lib:file-upload');
 const ROOT_PATH = '/var/tmp';

@@ -39,7 +39,8 @@ export {
     loadFileContents,
     expressUploadFile,
     UploadOptions,
-    File as FormidableFile,
     DEFAULT_UPLOAD_PATH
 } from './file-upload.js';
 export * from './types.js';
+
+export type {File as FormidableFile} from 'formidable'

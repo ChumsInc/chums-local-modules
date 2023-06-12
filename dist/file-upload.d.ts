@@ -2,7 +2,6 @@
 import { PathLike } from 'node:fs';
 import * as formidable from "formidable";
 import { Request } from 'express';
-export { File } from 'formidable';
 export declare const DEFAULT_UPLOAD_PATH: string;
 export interface UploadOptions {
     uploadPath?: string;
