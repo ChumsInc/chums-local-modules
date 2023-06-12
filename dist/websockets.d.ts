@@ -10,7 +10,7 @@ export interface ExtWebSocket extends WebSocket {
     profile?: UserProfile;
 }
 export declare function webSocketServer(): {
-    wsServer: import("ws").Server<ExtWebSocket>;
+    wsServer: import("ws").Server<ExtWebSocket, typeof IncomingMessage>;
     onUpgrade: (request: IncomingMessage, socket: Socket, head: Buffer) => void;
 };
 /**

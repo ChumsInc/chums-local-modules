@@ -9,8 +9,8 @@ export declare const aoa_to_sheet: {
     <T>(data: T[], opts?: import("xlsx").JSON2SheetOpts | undefined): WorkSheet;
     (data: any[], opts?: import("xlsx").JSON2SheetOpts | undefined): WorkSheet;
 }, sheet_add_json: {
-    (ws: WorkSheet, data: any[], opts?: import("xlsx").SheetJSONOpts | undefined): WorkSheet;
-    <T>(ws: WorkSheet, data: T[], opts?: import("xlsx").SheetJSONOpts | undefined): WorkSheet;
+    (ws: WorkSheet, data: any[], opts?: import("xlsx").JSON2SheetOpts | undefined): WorkSheet;
+    <T>(ws: WorkSheet, data: T[], opts?: import("xlsx").JSON2SheetOpts | undefined): WorkSheet;
 }, sheet_add_aoa: {
     <T>(ws: WorkSheet, data: T[][], opts?: SheetAOAOpts | undefined): WorkSheet;
     (ws: WorkSheet, data: any[][], opts?: SheetAOAOpts | undefined): WorkSheet;

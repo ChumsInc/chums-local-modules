@@ -35,6 +35,7 @@ const debug = (0, debug_1.default)('chums:lib:websockets');
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
 exports.VALIDATION_ERROR = 'VALIDATION_ERROR';
 function webSocketServer() {
+    // @ts-ignore
     const wsServer = new ws_1.WebSocketServer({ noServer: true });
     wsServer.on('connection', async (ws, message) => {
         const { valid, status, profile } = await loadSocketValidation(message);

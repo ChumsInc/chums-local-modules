@@ -19,6 +19,7 @@ export interface ExtWebSocket extends WebSocket {
 }
 
 export function webSocketServer() {
+    // @ts-ignore
     const wsServer = new WebSocketServer<ExtWebSocket>({noServer: true});
     wsServer.on('connection', async (ws, message) => {
         const {valid, status, profile} = await loadSocketValidation(message);

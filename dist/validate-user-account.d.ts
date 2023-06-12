@@ -1,3 +1,5 @@
+import { CustomerValidationResponse } from 'chums-types';
+export { CustomerValidationResponse } from 'chums-types';
 /**
  *
  * @param {string|number} id - User ID
@@ -11,5 +13,7 @@ export interface ValidateUserAccountProps {
     Company: string;
     ARDivisionNo: string;
     CustomerNo: string;
+    ShipToCode?: string;
 }
-export declare function validateUserAccount({ id, Company, ARDivisionNo, CustomerNo }: ValidateUserAccountProps): Promise<boolean>;
+export declare function validateUserAccount({ id, Company, ARDivisionNo, CustomerNo, ShipToCode }: ValidateUserAccountProps): Promise<boolean>;
+export declare function fetchCustomerValidation({ id, Company, ARDivisionNo, CustomerNo }: ValidateUserAccountProps): Promise<CustomerValidationResponse>;
