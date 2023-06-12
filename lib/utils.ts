@@ -1,5 +1,8 @@
-const namedPlaceholders = require('named-placeholders')();
-const SqlString = require('sqlstring');
+import SqlString from 'sqlstring';
+// @ts-ignore
+import NamedPlaceholders from 'named-placeholders';
+
+const namedPlaceholders = NamedPlaceholders();
 
 export interface ParseSQLParams {
     [key: string]: any,

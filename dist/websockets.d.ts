@@ -3,7 +3,7 @@ import { WebSocket } from 'ws';
 import { IncomingMessage } from 'node:http';
 import { Socket } from "node:net";
 import * as Buffer from "node:buffer";
-import { UserProfile, UserValidation } from "./types";
+import { UserProfile, UserValidation } from "./types.js";
 export declare const VALIDATION_ERROR = "VALIDATION_ERROR";
 export interface ExtWebSocket extends WebSocket {
     isAlive: boolean;

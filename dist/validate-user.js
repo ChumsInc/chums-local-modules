@@ -1,7 +1,7 @@
 import Debug from 'debug';
 import { default as fetch, Headers } from 'node-fetch';
-import { basicAuth, jwtToken } from './auth';
-import { isBeforeExpiry, isLocalToken, validateToken } from './jwt-handler';
+import { basicAuth, jwtToken } from './auth.js';
+import { isBeforeExpiry, isLocalToken, validateToken } from './jwt-handler.js';
 const debug = Debug('chums:local-modules:validate-user');
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
 /**

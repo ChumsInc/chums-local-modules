@@ -1,6 +1,6 @@
 import Debug from 'debug';
-import { apiFetch } from './api-fetch';
-import { getDBCompany } from './utils';
+import { apiFetch } from './api-fetch.js';
+import { getDBCompany } from './utils.js';
 const debug = Debug('chums:local-modules:validate-user-account');
 const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo';
 const VALIDATE_SHIP_TO_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo-:ShipToCode';

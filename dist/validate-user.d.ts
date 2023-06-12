@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { UserValidation } from "./types";
+import { UserValidation } from "./types.js";
 /**
  * Requests validation from CHUMS /api/user service
  * - On success populates res.locals.profile = {user, roles, accounts} and executes next()

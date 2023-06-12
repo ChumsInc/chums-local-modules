@@ -1,6 +1,6 @@
 import Debug from 'debug';
 import {verify, decode, JwtPayload} from 'jsonwebtoken';
-import {BaseJWTToken} from "./types";
+import {BaseJWTToken} from "./types.js";
 
 const debug = Debug('chums:local-modules:jwt-handler');
 

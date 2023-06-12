@@ -1,9 +1,9 @@
 import Debug from 'debug';
 import {NextFunction, Request, Response} from 'express'
 import {default as fetch, Headers, RequestInit} from 'node-fetch';
-import {basicAuth, jwtToken} from './auth';
-import {UserJWTToken, UserProfile, UserValidation} from "./types";
-import {isBeforeExpiry, isLocalToken, validateToken} from './jwt-handler';
+import {basicAuth, jwtToken} from './auth.js';
+import {UserJWTToken, UserProfile, UserValidation} from "./types.js";
+import {isBeforeExpiry, isLocalToken, validateToken} from './jwt-handler.js';
 
 const debug = Debug('chums:local-modules:validate-user');
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';

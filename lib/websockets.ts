@@ -3,7 +3,7 @@ import {WebSocket, WebSocketServer} from 'ws';
 import {IncomingMessage} from 'node:http';
 import {Socket} from "node:net";
 import * as Buffer from "node:buffer";
-import {UserProfile, UserValidation} from "./types";
+import {UserProfile, UserValidation} from "./types.js";
 import {default as fetch, Headers, RequestInit} from "node-fetch";
 import * as cookie from 'cookie';
 

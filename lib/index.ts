@@ -1,6 +1,6 @@
-export {apiFetch, APIFetchOptions, Response, apiFetchJSON} from './api-fetch';
-export {sendEmail, sendGmail, getLogoImageAttachment, getTs, getTs36, sendMailProps} from './mailer';
-export {mysql2Pool, mysql2Pool as pool, getConnection, Pool, QueryOptions, PoolConnection, Connection} from './mysql';
+export {apiFetch, APIFetchOptions, Response, apiFetchJSON} from './api-fetch.js';
+export {sendEmail, sendGmail, getLogoImageAttachment, getTs, getTs36, sendMailProps} from './mailer.js';
+export {mysql2Pool, mysql2Pool as pool, getConnection, Pool, QueryOptions, PoolConnection, Connection} from './mysql.js';
 export {
     resultToExcelSheet,
     buildXLSXHeaders,
@@ -19,21 +19,21 @@ export {
     xlsxMimeType,
     encode_cell,
     decode_cell
-} from './toXLSX';
-export {getDBCompany, getSageCompany, parseSQL} from './utils';
+} from './toXLSX.js';
+export {getDBCompany, getSageCompany, parseSQL} from './utils.js';
 export {
     validateUser,
     validateRole,
     loadValidation,
     getUserValidation
-} from './validate-user';
+} from './validate-user.js';
 export {
     validateUserAccount,
     ValidateUserAccountProps,
     fetchCustomerValidation,
     CustomerValidationResponse
-} from './validate-user-account';
-export {webSocketServer, ExtWebSocket, loadSocketValidation} from './websockets';
+} from './validate-user-account.js';
+export {webSocketServer, ExtWebSocket, loadSocketValidation} from './websockets.js';
 export {
     handleUpload,
     loadFileContents,
@@ -41,5 +41,5 @@ export {
     UploadOptions,
     File as FormidableFile,
     DEFAULT_UPLOAD_PATH
-} from './file-upload';
-export * from './types';
+} from './file-upload.js';
+export * from './types.js';

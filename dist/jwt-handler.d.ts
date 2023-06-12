@@ -1,5 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken';
-import { BaseJWTToken } from "./types";
+import { BaseJWTToken } from "./types.js";
 /**
  * Validates a JTW Token
  * @param {String} token - A JWT token to be validated

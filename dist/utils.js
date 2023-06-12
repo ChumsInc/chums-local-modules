@@ -1,5 +1,7 @@
-const namedPlaceholders = require('named-placeholders')();
-const SqlString = require('sqlstring');
+import SqlString from 'sqlstring';
+// @ts-ignore
+import NamedPlaceholders from 'named-placeholders';
+const namedPlaceholders = NamedPlaceholders();
 export function parseSQL(query, params = {}) {
     const prepared = namedPlaceholders(query, params || {});
     return SqlString.format(prepared[0], prepared[1]);

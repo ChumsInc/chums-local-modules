@@ -1,6 +1,6 @@
 import Debug from 'debug';
-import {apiFetch} from './api-fetch';
-import {getDBCompany} from './utils';
+import {apiFetch} from './api-fetch.js';
+import {getDBCompany} from './utils.js';
 import {CustomerValidationResponse} from 'chums-types'
 export {CustomerValidationResponse} from 'chums-types'
 
