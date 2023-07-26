@@ -80,21 +80,21 @@ export async function loadValidation(req) {
             const credentials = Buffer.from(`${user}:${pass}`).toString('base64');
             headers.set('Authorization', `Basic ${credentials}`);
         }
-        else if (!!session) {
-            url += `/${encodeURIComponent(session)}`;
-        }
         else if (!!token) {
             url += '/google';
             fetchOptions.method = 'post';
             fetchOptions.body = JSON.stringify({ token });
             headers.set('Content-Type', 'application/json');
         }
+        else if (!!session) {
+            url += `/${encodeURIComponent(session)}`;
+        }
         fetchOptions.headers = headers;
         const response = await fetch(url, fetchOptions);
         if (!response.ok) {
             return Promise.reject(new Error(`${response.status} ${response.statusText}`));
         }
-        return await response.json();
+        return await response.json() ?? null;
     }
     catch (err) {
         if (err instanceof Error) {

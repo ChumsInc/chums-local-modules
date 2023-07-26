@@ -1,3 +1,4 @@
+import { JwtPayload } from "jsonwebtoken";
 export interface User {
     id: number;
     name: string;
@@ -45,11 +46,19 @@ export interface UserValidation {
     status?: string;
     profile?: UserProfile;
 }
-export interface BaseJWTToken {
+export interface BaseJWTToken extends JwtPayload {
     aud?: string;
     iat?: number;
     exp?: number;
     iss?: string;
 }
-export interface UserJWTToken extends UserProfile, BaseJWTToken {
+export interface UserJWTToken extends UserProfile, JwtPayload {
+}
+export interface GoogleJWTToken extends JwtPayload {
+    email: string;
+    email_verified?: boolean;
+    name?: string;
+    picture?: string;
+    given_name?: string;
+    family_name?: string;
 }

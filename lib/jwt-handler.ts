@@ -1,6 +1,6 @@
 import Debug from 'debug';
 import jwt, {JwtPayload} from 'jsonwebtoken';
-import {BaseJWTToken} from "./types.js";
+import {BaseJWTToken, GoogleJWTToken, UserJWTToken} from "./types.js";
 
 const debug = Debug('chums:local-modules:jwt-handler');
 
@@ -10,18 +10,18 @@ const ERR_TOKEN_EXPIRED = 'TokenExpiredError';
 /**
  * Validates a JTW Token
  * @param {String} token - A JWT token to be validated
- * @return {Promise<BaseJWTToken|Error>}
+ * @return {Promise<BaseJWTToken|GoogleJWTToken|JwtPayload|Error>}
  */
-export const validateToken = async (token: string): Promise<BaseJWTToken> => {
+export async function validateToken<T = JwtPayload>(token: string): Promise<T> {
     try {
         const payload = jwt.decode(token);
         if (!isLocalToken(payload)) {
             if (isBeforeExpiry(token)) {
-                return payload as BaseJWTToken;
+                return payload as T;
             }
             return Promise.reject(new Error('Invalid Token: token may be invalid or expired'));
         }
-        return await jwt.verify(token, JWT_SECRET) as BaseJWTToken;
+        return await jwt.verify(token, JWT_SECRET) as T;
     } catch (err:unknown) {
         if (!(err instanceof Error)) {
             return Promise.reject(err);
@@ -36,7 +36,7 @@ export const validateToken = async (token: string): Promise<BaseJWTToken> => {
 /**
  * Validates a token expiration timestamp
  */
-export const isBeforeExpiry = (payload: BaseJWTToken|JwtPayload|null|string): boolean => {
+export const isBeforeExpiry = (payload: JwtPayload|null|string): boolean => {
     if (typeof payload === 'string') {
         payload = jwt.decode(payload);
     }
@@ -51,7 +51,7 @@ export const isBeforeExpiry = (payload: BaseJWTToken|JwtPayload|null|string): bo
 /**
  * Checks to see if a token is locally issued
  */
-export const isLocalToken = (payload: BaseJWTToken|JwtPayload|null|string): boolean => {
+export const isLocalToken = (payload: UserJWTToken|JwtPayload|null|string): payload is UserJWTToken  => {
     if (typeof payload === 'string') {
         payload = jwt.decode(payload);
     }
@@ -61,3 +61,14 @@ export const isLocalToken = (payload: BaseJWTToken|JwtPayload|null|string): bool
     const {iss} = payload;
     return !!iss && iss === JWT_ISSUER;
 };
+
+export const isGoogleToken = (payload:GoogleJWTToken|JwtPayload|null|string):payload is GoogleJWTToken => {
+    if (typeof payload === 'string') {
+        payload = jwt.decode(payload);
+    }
+    if (!payload || typeof payload === 'string') {
+        return false;
+    }
+    const {iss} = payload;
+    return !!iss && iss === 'https://accounts.google.com';
+}

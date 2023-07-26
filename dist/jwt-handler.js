@@ -6,9 +6,9 @@ const ERR_TOKEN_EXPIRED = 'TokenExpiredError';
 /**
  * Validates a JTW Token
  * @param {String} token - A JWT token to be validated
- * @return {Promise<BaseJWTToken|Error>}
+ * @return {Promise<BaseJWTToken|GoogleJWTToken|JwtPayload|Error>}
  */
-export const validateToken = async (token) => {
+export async function validateToken(token) {
     try {
         const payload = jwt.decode(token);
         if (!isLocalToken(payload)) {
@@ -28,7 +28,7 @@ export const validateToken = async (token) => {
         }
         return Promise.reject(err);
     }
-};
+}
 /**
  * Validates a token expiration timestamp
  */
@@ -55,4 +55,14 @@ export const isLocalToken = (payload) => {
     }
     const { iss } = payload;
     return !!iss && iss === JWT_ISSUER;
+};
+export const isGoogleToken = (payload) => {
+    if (typeof payload === 'string') {
+        payload = jwt.decode(payload);
+    }
+    if (!payload || typeof payload === 'string') {
+        return false;
+    }
+    const { iss } = payload;
+    return !!iss && iss === 'https://accounts.google.com';
 };
