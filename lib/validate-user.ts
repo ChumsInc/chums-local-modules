@@ -2,7 +2,7 @@ import Debug from 'debug';
 import {NextFunction, Request, Response} from 'express'
 import {default as fetch, Headers, RequestInit} from 'node-fetch';
 import {basicAuth, jwtToken} from './auth.js';
-import {UserJWTToken, UserProfile, UserValidation} from "./types.js";
+import {GoogleJWTToken, UserJWTToken, UserProfile, UserValidation} from "./types.js";
 import {isBeforeExpiry, isLocalToken, validateToken} from './jwt-handler.js';
 
 const debug = Debug('chums:local-modules:validate-user');
@@ -68,7 +68,7 @@ export async function loadValidation(req: Request): Promise<UserValidation> {
     try {
         const {token} = jwtToken(req);
         if (token) {
-            const decoded = await validateToken(token) as UserJWTToken;
+            const decoded = await validateToken<UserJWTToken | GoogleJWTToken>(token);
             if (isLocalToken(decoded) && isBeforeExpiry(decoded)) {
                 const {user, roles = [], accounts = []} = decoded;
                 user.roles = roles
@@ -90,13 +90,13 @@ export async function loadValidation(req: Request): Promise<UserValidation> {
         if (!!user && !!pass) {
             const credentials = Buffer.from(`${user}:${pass}`).toString('base64');
             headers.set('Authorization', `Basic ${credentials}`);
-        } else if (!!session) {
-            url += `/${encodeURIComponent(session)}`;
         } else if (!!token) {
             url += '/google';
             fetchOptions.method = 'post';
             fetchOptions.body = JSON.stringify({token});
             headers.set('Content-Type', 'application/json');
+        } else if (!!session) {
+            url += `/${encodeURIComponent(session)}`;
         }
 
         fetchOptions.headers = headers;
@@ -104,7 +104,7 @@ export async function loadValidation(req: Request): Promise<UserValidation> {
         if (!response.ok) {
             return Promise.reject(new Error(`${response.status} ${response.statusText}`));
         }
-        return await response.json();
+        return await response.json() ?? null;
     } catch (err: unknown) {
         if (err instanceof Error) {
             debug("loadValidation()", err.message);
@@ -137,4 +137,3 @@ export const validateRole = (validRoles: string | string[] = []) =>
         debug('validateRole() Not Authorized', res.locals.profile.user.id, validRoles);
         res.status(403).json({error: 403, status: 'Forbidden'});
     }
-
