@@ -8,6 +8,9 @@ const debug = Debug('chums:local-modules:validate-user-account');
 const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo';
 const VALIDATE_SHIP_TO_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo-:ShipToCode';
 
+export interface SuccessResponse {
+    success?: boolean;
+}
 /**
  *
  * @param {string|number} id - User ID
@@ -38,8 +41,8 @@ export async function validateUserAccount({id, Company, ARDivisionNo, CustomerNo
             debug('validateAccount()', res.status, res.statusText);
             return Promise.reject(new Error(`Error ${res.status}: ${res.statusText}`));
         }
-        const {success} = await res.json();
-        return success === true;
+        const response = await res.json() as SuccessResponse;
+        return response.success === true;
     } catch (err: unknown) {
         if (err instanceof Error) {
             debug("validateAccount()", err.message);

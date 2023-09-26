@@ -22,7 +22,12 @@ const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
  */
 export async function validateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-        const {valid, status, profile} = await loadValidation(req);
+        const validation = await loadValidation(req);
+        if (!validation) {
+            res.status(401).json({error: 'Not authorized', message: 'Invalid validation response'});
+            return;
+        }
+        const {valid, status, profile} = validation;
         if (!valid) {
             if (res.locals.debug) {
                 debug('validateUser()', valid, status, req.method, req.originalUrl, req.get('referer'));
@@ -64,7 +69,7 @@ export function getUserValidation(res: Response): UserValidation | null {
  * @param {Object} req - Express request object
  * @returns {Promise<{valid: boolean, profile: {roles: [], accounts: [], user}}|*>}
  */
-export async function loadValidation(req: Request): Promise<UserValidation> {
+export async function loadValidation(req: Request): Promise<UserValidation|null> {
     try {
         const {token} = jwtToken(req);
         if (token) {
@@ -104,7 +109,7 @@ export async function loadValidation(req: Request): Promise<UserValidation> {
         if (!response.ok) {
             return Promise.reject(new Error(`${response.status} ${response.statusText}`));
         }
-        return await response.json() ?? null;
+        return await response.json() as UserValidation ?? null;
     } catch (err: unknown) {
         if (err instanceof Error) {
             debug("loadValidation()", err.message);

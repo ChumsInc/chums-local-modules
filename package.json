@@ -15,16 +15,16 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/UtahGooner/chums-local-modules.git"
+    "url": "git+https://github.com/ChumsInc/chums-local-modules.git"
   },
   "author": "Steve Montgomery",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/UtahGooner/chums-local-modules/issues"
+    "url": "https://github.com/ChumsInc/chums-local-modules/issues"
   },
-  "homepage": "https://github.com/UtahGooner/chums-local-modules#readme",
+  "homepage": "https://github.com/ChumsInc/chums-local-modules#readme",
   "devDependencies": {
-    "@tsconfig/node18": "^2.0.0",
+    "@tsconfig/node18": "^18.2.2",
     "auto-changelog": "^2.4.0",
     "rimraf": "^5.0.0",
     "typescript": "^5.0.4"
@@ -34,20 +34,20 @@
     "@types/cookie": "^0.5.1",
     "@types/debug": "^4.1.7",
     "@types/express": "^4.17.13",
-    "@types/formidable": "^2.0.3",
+    "@types/formidable": "^3.4.3",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/node-fetch": "^2.6.1",
     "@types/nodemailer": "^6.4.4",
     "@types/sqlstring": "^2.3.0",
     "@types/ws": "^8.5.2",
-    "chums-types": "github:UtahGooner/chums-types",
+    "chums-types": "github:ChumsInc/chums-types",
     "cookie": "^0.5.0",
     "debug": "^4.3.3",
     "dotenv": "^16.0.0",
-    "formidable": "^2.0.1",
+    "formidable": "^3.5.1",
     "jsonwebtoken": "^9.0.0",
     "named-placeholders": "^1.1.2",
-    "node-fetch": "^2.6.7",
+    "node-fetch": "^3.3.2",
     "nodemailer": "^6.5.0",
     "sqlstring": "^2.3.2",
     "ws": "^8.5.0",

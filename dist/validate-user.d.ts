@@ -26,7 +26,7 @@ export declare function getUserValidation(res: Response): UserValidation | null;
  * @param {Object} req - Express request object
  * @returns {Promise<{valid: boolean, profile: {roles: [], accounts: [], user}}|*>}
  */
-export declare function loadValidation(req: Request): Promise<UserValidation>;
+export declare function loadValidation(req: Request): Promise<UserValidation | null>;
 /**
  * Validates a user role, stored in res.locals.profile.roles
  *  - On success executes next()

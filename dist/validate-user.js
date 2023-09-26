@@ -17,7 +17,12 @@ const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
  */
 export async function validateUser(req, res, next) {
     try {
-        const { valid, status, profile } = await loadValidation(req);
+        const validation = await loadValidation(req);
+        if (!validation) {
+            res.status(401).json({ error: 'Not authorized', message: 'Invalid validation response' });
+            return;
+        }
+        const { valid, status, profile } = validation;
         if (!valid) {
             if (res.locals.debug) {
                 debug('validateUser()', valid, status, req.method, req.originalUrl, req.get('referer'));

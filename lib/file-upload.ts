@@ -87,11 +87,13 @@ export async function handleUpload(req: Request, options: UploadOptions = {}): P
                 if (!fileValues.length) {
                     return Promise.reject(new Error('No files found'));
                 }
-                const [file] = fileValues;
-                if (!file || Array.isArray(file)) {
-                    debug('file was not found?', file);
+
+                const [fileValue] = fileValues;
+                if (!fileValue || fileValue.length === 0) {
+                    debug('file was not found?', fileValue);
                     return reject(new Error('file was not found'));
                 }
+                const [file] = fileValue;
                 if (options.keepOriginalFilename && !!file.originalFilename) {
                     await rename(path.join(uploadPath, file.newFilename), path.join(uploadPath, file.originalFilename))
                 }

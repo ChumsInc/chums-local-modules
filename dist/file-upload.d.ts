@@ -1,4 +1,4 @@
-/// <reference types="node" />
+/// <reference types="node" resolution-mode="require"/>
 import { PathLike } from 'node:fs';
 import * as formidable from "formidable";
 import { Request } from 'express';

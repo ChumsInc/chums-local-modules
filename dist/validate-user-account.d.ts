@@ -1,5 +1,8 @@
 import { CustomerValidationResponse } from 'chums-types';
 export { CustomerValidationResponse } from 'chums-types';
+export interface SuccessResponse {
+    success?: boolean;
+}
 /**
  *
  * @param {string|number} id - User ID

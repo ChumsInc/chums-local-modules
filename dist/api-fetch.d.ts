@@ -1,4 +1,4 @@
-/// <reference types="node" />
+/// <reference types="node" resolution-mode="require"/>
 import { RequestInit, Response } from 'node-fetch';
 import { URL } from 'node:url';
 export { Response } from 'node-fetch';

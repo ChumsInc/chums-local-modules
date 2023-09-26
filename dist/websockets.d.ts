@@ -1,4 +1,4 @@
-/// <reference types="node" />
+/// <reference types="node" resolution-mode="require"/>
 import { WebSocket } from 'ws';
 import { IncomingMessage } from 'node:http';
 import { Socket } from "node:net";

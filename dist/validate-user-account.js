@@ -17,8 +17,8 @@ export async function validateUserAccount({ id, Company, ARDivisionNo, CustomerN
             debug('validateAccount()', res.status, res.statusText);
             return Promise.reject(new Error(`Error ${res.status}: ${res.statusText}`));
         }
-        const { success } = await res.json();
-        return success === true;
+        const response = await res.json();
+        return response.success === true;
     }
     catch (err) {
         if (err instanceof Error) {
