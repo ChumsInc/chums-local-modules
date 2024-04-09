@@ -78,9 +78,7 @@ export async function loadValidation(req) {
         const session = req.cookies.PHPSESSID;
         const fetchOptions = {};
         const headers = new Headers();
-        if (req.ip) {
-            headers.set('X-Forwarded-For', req.ip);
-        }
+        headers.set('X-Forwarded-For', req.ip ?? 'unknown');
         headers.set('referrer', req.get('referrer') || req.originalUrl);
         let url = `${API_HOST}/api/user/validate`;
         if (!!user && !!pass) {
