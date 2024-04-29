@@ -2,7 +2,7 @@ export interface Address {
     name: string;
     address: string;
 }
-export interface sendMailProps {
+export interface SendMailProps {
     to: (string | Address) | (string | Address)[];
     cc?: (string | Address) | (string | Address)[];
     bcc?: (string | Address) | (string | Address)[];
@@ -13,6 +13,7 @@ export interface sendMailProps {
     textContent?: string;
     attachments?: any;
 }
+export type sendMailProps = SendMailProps;
 export declare const getTs: () => number;
 export declare const getTs36: () => string;
 /**
@@ -25,5 +26,5 @@ export declare const getLogoImageAttachment: (ts?: string) => {
     path: string;
     cid: string;
 };
-export declare const sendGmail: ({ to, cc, bcc, replyTo, from, subject, html, textContent, attachments }: sendMailProps) => Promise<import("nodemailer/lib/smtp-transport/index.js").SentMessageInfo>;
-export declare const sendEmail: ({ to, cc, bcc, replyTo, from, subject, html, textContent, attachments }: sendMailProps) => Promise<import("nodemailer/lib/smtp-transport/index.js").SentMessageInfo>;
+export declare const sendGmail: ({ to, cc, bcc, replyTo, from, subject, html, textContent, attachments }: SendMailProps) => Promise<import("nodemailer/lib/smtp-transport/index.js").SentMessageInfo>;
+export declare const sendEmail: ({ to, cc, bcc, replyTo, from, subject, html, textContent, attachments }: SendMailProps) => Promise<import("nodemailer/lib/smtp-transport/index.js").SentMessageInfo>;

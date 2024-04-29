@@ -15,7 +15,7 @@ export declare const aoa_to_sheet: {
     <T>(ws: WorkSheet, data: T[][], opts?: SheetAOAOpts | undefined): WorkSheet;
     (ws: WorkSheet, data: any[][], opts?: SheetAOAOpts | undefined): WorkSheet;
 };
-export { WorkSheet, WritingOptions, SheetAOAOpts } from 'xlsx';
+export type { WorkSheet, WritingOptions, SheetAOAOpts } from 'xlsx';
 export declare const xlsxMimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 export interface ColumnNames {
     [key: string]: string;

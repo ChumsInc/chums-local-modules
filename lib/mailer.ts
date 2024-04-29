@@ -8,7 +8,7 @@ export interface Address {
     address: string;
 }
 
-export interface sendMailProps {
+export interface SendMailProps {
     to: (string|Address) | (string|Address)[],
     cc?: (string|Address) | (string|Address)[],
     bcc?: (string|Address) | (string|Address)[],
@@ -19,6 +19,8 @@ export interface sendMailProps {
     textContent?: string,
     attachments?: any,
 }
+
+export type sendMailProps = SendMailProps;
 
 
 export const getTs = () => {
@@ -52,7 +54,7 @@ export const sendGmail = async ({
                                     html,
                                     textContent,
                                     attachments
-                                }: sendMailProps) => {
+                                }: SendMailProps) => {
     try {
         to = !Array.isArray(to) ? [to] : to;
         cc = !Array.isArray(cc) ? [cc] : cc;
