@@ -102,10 +102,10 @@ export async function handleUpload(req: Request, options: UploadOptions = {}): P
         })
     } catch (error: unknown) {
         if (error instanceof Error) {
-            console.log("handleUpload()", error.message);
+            debug("handleUpload()", error.message);
             return Promise.reject(error);
         }
-        console.error("handleUpload()", error);
+        debug("handleUpload()", error);
         return Promise.reject(new Error(`Unknown error in handleUpload(): ${error}`));
     }
 }
@@ -125,10 +125,10 @@ export async function expressUploadFile(req: Request, options: UploadOptions = {
         return loadFileContents(file.filepath, options.preserveFile === false);
     } catch (error: unknown) {
         if (error instanceof Error) {
-            console.log("expressUpload()", error.message);
+            debug("expressUpload()", error.message);
             return Promise.reject(error);
         }
-        console.error("expressUpload()", error);
+        debug("expressUpload()", error);
         return Promise.reject(new Error(`error in expressUpload(): ${error}`));
     }
 }

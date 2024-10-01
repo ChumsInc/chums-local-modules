@@ -88,10 +88,10 @@ export async function handleUpload(req, options = {}) {
     }
     catch (error) {
         if (error instanceof Error) {
-            console.log("handleUpload()", error.message);
+            debug("handleUpload()", error.message);
             return Promise.reject(error);
         }
-        console.error("handleUpload()", error);
+        debug("handleUpload()", error);
         return Promise.reject(new Error(`Unknown error in handleUpload(): ${error}`));
     }
 }
@@ -111,10 +111,10 @@ export async function expressUploadFile(req, options = {}) {
     }
     catch (error) {
         if (error instanceof Error) {
-            console.log("expressUpload()", error.message);
+            debug("expressUpload()", error.message);
             return Promise.reject(error);
         }
-        console.error("expressUpload()", error);
+        debug("expressUpload()", error);
         return Promise.reject(new Error(`error in expressUpload(): ${error}`));
     }
 }

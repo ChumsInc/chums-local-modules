@@ -45,10 +45,10 @@ export async function fetchCustomerValidation({ id, Company, ARDivisionNo, Custo
     }
     catch (err) {
         if (err instanceof Error) {
-            console.debug("validateUserCustomerAccess()", err.message);
+            debug("validateUserCustomerAccess()", err.message);
             return Promise.reject(err);
         }
-        console.debug("validateUserCustomerAccess()", err);
+        debug("validateUserCustomerAccess()", err);
         return Promise.reject(new Error('Error in validateUserCustomerAccess()'));
     }
 }
