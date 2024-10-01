@@ -25,6 +25,7 @@ async function ensureUploadPathExists(options: UploadOptions = {}): Promise<bool
     try {
         await access(uploadPath, constants.R_OK | constants.W_OK);
         return true;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err: unknown) {
         try {
             await mkdir(uploadPath);
@@ -68,13 +69,13 @@ export async function handleUpload(req: Request, options: UploadOptions = {}): P
         await ensureUploadPathExists(options);
         return new Promise((resolve, reject) => {
             const form = new formidable.IncomingForm({uploadDir: uploadPath, keepExtensions: true});
-            form.on('error', (err: any) => {
+            form.on('error', (err: unknown) => {
                 if (err instanceof Error) {
                     debug('handleUpload() form.on.error', err.message);
                     return Promise.reject(err);
                 }
                 debug('error', err);
-                return reject(new Error(err));
+                return reject(new Error('Unknown error in handleUpload()'));
             });
 
             form.on('aborted', () => {
@@ -82,7 +83,7 @@ export async function handleUpload(req: Request, options: UploadOptions = {}): P
                 return reject(new Error('upload aborted'));
             });
 
-            form.parse(req, async (err: any, fields: Fields, files: Files) => {
+            form.parse(req, async (err: unknown, fields: Fields, files: Files) => {
                 const fileValues = Object.values(files);
                 if (!fileValues.length) {
                     return Promise.reject(new Error('No files found'));
@@ -111,11 +112,6 @@ export async function handleUpload(req: Request, options: UploadOptions = {}): P
 }
 
 /**
- *
- * @param {Request} req
- * @param {UploadOptions} options
- * @return {Promise<string>}
- *
  * If options.preserveFile is explicitly false then the uploaded file is removed after contents are read
  */
 export async function expressUploadFile(req: Request, options: UploadOptions = {}): Promise<string> {

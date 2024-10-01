@@ -9,11 +9,6 @@ const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
  * - On success populates res.locals.profile = {user, roles, accounts} and executes next()
  * - On success populates req.userAuth = {valid, status, profile}
  * - On failure sends status 401 {error: 401, status: 'StatusText'}
- *
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @param {function} next
- * @returns {Promise<void>}
  */
 export async function validateUser(req, res, next) {
     try {
@@ -46,11 +41,6 @@ export async function validateUser(req, res, next) {
 function isUserValidation(auth) {
     return !!auth && auth.valid !== undefined;
 }
-/**
- *
- * @param {Express.Response} res - Express response object
- * @returns {UserValidation|null} - returns UserValidation object | null
- */
 export function getUserValidation(res) {
     return isUserValidation(res.locals.auth) ? res.locals.auth : null;
 }
@@ -59,8 +49,6 @@ export function getUserValidation(res) {
  *  - validates JWT token from Authorization header "Bearer asdasd...asd" (from a standalone/web app)
  *  - validates req.cookies.PHPSESSID (from a logged-in user)
  *  - validates basic authentication (from an API user)
- * @param {Object} req - Express request object
- * @returns {Promise<{valid: boolean, profile: {roles: [], accounts: [], user}}|*>}
  */
 export async function loadValidation(req) {
     try {

@@ -5,8 +5,6 @@ const { JWT_ISSUER = 'NOT THE ISSUER', JWT_SECRET = 'NOT THE SECRET' } = process
 const ERR_TOKEN_EXPIRED = 'TokenExpiredError';
 /**
  * Validates a JTW Token
- * @param {String} token - A JWT token to be validated
- * @return {Promise<BaseJWTToken|GoogleJWTToken|JwtPayload|Error>}
  */
 export async function validateToken(token) {
     try {
@@ -17,7 +15,7 @@ export async function validateToken(token) {
             }
             return Promise.reject(new Error('Invalid Token: token may be invalid or expired'));
         }
-        return await jwt.verify(token, JWT_SECRET);
+        return jwt.verify(token, JWT_SECRET);
     }
     catch (err) {
         if (!(err instanceof Error)) {

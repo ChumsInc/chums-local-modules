@@ -10,11 +10,6 @@ export interface UploadOptions {
 export declare function loadFileContents(path: PathLike, removeFile?: boolean): Promise<string>;
 export declare function handleUpload(req: Request, options?: UploadOptions): Promise<formidable.File>;
 /**
- *
- * @param {Request} req
- * @param {UploadOptions} options
- * @return {Promise<string>}
- *
  * If options.preserveFile is explicitly false then the uploaded file is removed after contents are read
  */
 export declare function expressUploadFile(req: Request, options?: UploadOptions): Promise<string>;

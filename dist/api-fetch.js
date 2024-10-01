@@ -6,6 +6,10 @@ const debug = Debug('chums:local-modules:api-fetch');
 const { CHUMS_API_USER = '', CHUMS_API_PASSWORD = '' } = process.env;
 const LOCAL_HOSTNAMES = ['localhost', 'intranet.chums.com'];
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
+/**
+ * Makes a request to an API, defaults to chums intranet API if not including options.headers.Authorization
+ *
+ */
 export async function apiFetch(url = '', options = {}) {
     try {
         if (typeof url === 'string') {

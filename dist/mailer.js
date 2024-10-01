@@ -39,7 +39,7 @@ export const sendGmail = async ({ to = [], cc = [], bcc = [], replyTo, from, sub
                 pass: process.env.GMAIL_APP_PASSWORD,
             }
         });
-        let mailOptions = {
+        const mailOptions = {
             from,
             to,
             cc,
@@ -52,7 +52,7 @@ export const sendGmail = async ({ to = [], cc = [], bcc = [], replyTo, from, sub
         };
         debug('sendGmail()', { to, from, subject, replyTo });
         // return mailOptions;
-        return await transporter.sendMail(mailOptions);
+        return transporter.sendMail(mailOptions);
     }
     catch (err) {
         if (err instanceof Error) {
