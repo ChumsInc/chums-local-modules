@@ -23,7 +23,7 @@ export interface ColumnNames {
 export interface WorkBookSheets {
     [key: string]: WorkSheet;
 }
-export declare function parseDataForAOA<T = unknown>(data: RowDataPacket[], columnNames: ColumnNames, onlyColumnNames: boolean): (T | string)[];
+export declare function parseDataForAOA<T = unknown>(data: RowDataPacket[], columnNames: ColumnNames, onlyColumnNames: boolean): (T)[][];
 export declare function resultToExcelSheet<T = unknown>(data: RowDataPacket[], columnNames: ColumnNames, onlyColumnNames: boolean): WorkSheet;
 export declare function addResultToExcelSheet<T = unknown>(workSheet: WorkSheet, newData: T[][], options: SheetAOAOpts): WorkSheet;
 export declare function buildWorkBook(sheets: WorkBookSheets, options?: WritingOptions): any;

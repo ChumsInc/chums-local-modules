@@ -6,7 +6,7 @@ const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:Cus
 const VALIDATE_SHIP_TO_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo-:ShipToCode';
 export async function validateUserAccount({ id, Company, ARDivisionNo, CustomerNo, ShipToCode }) {
     try {
-        const url = (!!ShipToCode ? VALIDATE_SHIP_TO_URL : VALIDATE_URL)
+        const url = (ShipToCode ? VALIDATE_SHIP_TO_URL : VALIDATE_URL)
             .replace(':id', encodeURIComponent(id))
             .replace(':Company', encodeURIComponent(getDBCompany(Company)))
             .replace(':ARDivisionNo', encodeURIComponent(ARDivisionNo))

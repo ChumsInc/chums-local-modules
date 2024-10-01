@@ -19,7 +19,5 @@ export declare function loadValidation(req: Request): Promise<UserValidation | n
  * Validates a user role, stored in res.locals.profile.roles
  *  - On success executes next()
  *  - On failure sends status 403 Forbidden, {error: 403, status: 'Forbidden'}
- * @param {String | String[]} validRoles - array of valid roles
- * @returns {function(*, *, *): (*|undefined)}
  */
 export declare const validateRole: (validRoles?: string | string[]) => (req: Request, res: Response, next: NextFunction) => void;

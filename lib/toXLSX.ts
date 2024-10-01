@@ -18,8 +18,8 @@ export interface WorkBookSheets {
     [key:string]: WorkSheet,
 }
 
-export function parseDataForAOA<T = unknown>(data:RowDataPacket[], columnNames: ColumnNames, onlyColumnNames: boolean):(T|string)[] {
-    let rows:(T|string)[] = [];
+export function parseDataForAOA<T = unknown>(data:RowDataPacket[], columnNames: ColumnNames, onlyColumnNames: boolean):(T)[][] {
+    let rows:(T)[][] = [];
     let fields:string[] = [];
     let columns:string[] = [];
     if (onlyColumnNames) {

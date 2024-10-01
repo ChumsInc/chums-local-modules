@@ -1,11 +1,14 @@
 import SqlString from 'sqlstring';
+/**
+ * there is no @types/named-placeholders or built in typings
+ */
 // @ts-ignore
 import NamedPlaceholders from 'named-placeholders';
 
 const namedPlaceholders = NamedPlaceholders();
 
 export interface ParseSQLParams {
-    [key: string]: any,
+    [key: string]: unknown,
 }
 
 export function parseSQL(query: string, params: ParseSQLParams = {}): string {

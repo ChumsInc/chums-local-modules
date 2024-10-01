@@ -43,7 +43,7 @@ export async function validateUser(req: Request, res: Response, next: NextFuncti
     }
 }
 
-function isUserValidation(auth: UserValidation | any): auth is UserValidation {
+function isUserValidation(auth: UserValidation | unknown): auth is UserValidation {
     return !!auth && (auth as UserValidation).valid !== undefined;
 }
 
@@ -83,12 +83,12 @@ export async function loadValidation(req: Request): Promise<UserValidation|null>
         if (!!user && !!pass) {
             const credentials = Buffer.from(`${user}:${pass}`).toString('base64');
             headers.set('Authorization', `Basic ${credentials}`);
-        } else if (!!token) {
+        } else if (token) {
             url += '/google';
             fetchOptions.method = 'post';
             fetchOptions.body = JSON.stringify({token});
             headers.set('Content-Type', 'application/json');
-        } else if (!!session) {
+        } else if (session) {
             url += `/${encodeURIComponent(session)}`;
         }
 
@@ -113,8 +113,6 @@ export async function loadValidation(req: Request): Promise<UserValidation|null>
  * Validates a user role, stored in res.locals.profile.roles
  *  - On success executes next()
  *  - On failure sends status 403 Forbidden, {error: 403, status: 'Forbidden'}
- * @param {String | String[]} validRoles - array of valid roles
- * @returns {function(*, *, *): (*|undefined)}
  */
 export const validateRole = (validRoles: string | string[] = []) =>
     (req: Request, res: Response, next: NextFunction) => {

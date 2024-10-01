@@ -2,7 +2,6 @@ import Debug from 'debug';
 import {WebSocket, WebSocketServer} from 'ws';
 import {IncomingMessage} from 'node:http';
 import {Socket} from "node:net";
-import * as Buffer from "node:buffer";
 import {UserProfile, UserValidation} from "./types.js";
 import {default as fetch, Headers, RequestInit} from "node-fetch";
 import * as cookie from 'cookie';
@@ -39,11 +38,11 @@ export function webSocketServer() {
             ws.isAlive = true;
         });
 
-        ws.on('close', (ev: any) => {
+        ws.on('close', (ev: unknown) => {
             debug('wsServer.onClose()', ev);
         });
 
-        ws.on('error', (ev: any) => {
+        ws.on('error', (ev: unknown) => {
             debug('wsServer.onError()', ev);
         });
     })
@@ -80,8 +79,6 @@ export function webSocketServer() {
 /**
  * Executes validation request
  *  - validates req.cookies.PHPSESSID (from a logged in user)
- * @param {IncomingMessage} message - Socket message
- * @returns {Promise<{valid: boolean, profile: {roles: [], accounts: [], user}}|*>}
  */
 export async function loadSocketValidation(message: IncomingMessage): Promise<UserValidation> {
     try {
@@ -96,7 +93,7 @@ export async function loadSocketValidation(message: IncomingMessage): Promise<Us
         const headers = new Headers();
         headers.set('X-Forwarded-For', message.socket.remoteAddress || 'localhost');
 
-        let url = `${API_HOST}/api/user/validate/${encodeURIComponent(cookies.PHPSESSID)}`;
+        const url = `${API_HOST}/api/user/validate/${encodeURIComponent(cookies.PHPSESSID)}`;
         fetchOptions.headers = headers;
         const response = await fetch(url, fetchOptions);
         if (!response.ok) {
