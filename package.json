@@ -39,14 +39,14 @@
     "auto-changelog": "^2.4.0",
     "eslint": "^9.11.1",
     "globals": "^15.10.0",
-    "rimraf": "^5.0.0",
+    "rimraf": "^6.0.1",
     "typescript": "^5.0.4",
     "typescript-eslint": "^8.8.0"
   },
   "typings": "./dist/index.d.ts",
   "dependencies": {
     "chums-types": "github:ChumsInc/chums-types",
-    "cookie": "^0.6.0",
+    "cookie": "^1.0.0",
     "debug": "^4.3.3",
     "dotenv": "^16.0.0",
     "formidable": "^3.5.1",
