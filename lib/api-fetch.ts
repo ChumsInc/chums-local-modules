@@ -10,17 +10,6 @@ const {CHUMS_API_USER = '', CHUMS_API_PASSWORD = ''} = process.env;
 const LOCAL_HOSTNAMES = ['localhost', 'intranet.chums.com'];
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
 
-/**
- * Makes a request to an API, defaults to chums intranet API if not including options.headers.Authorization
- *
- * @param {String|URL} url
- * @param {Object} options
- * @param {Object} [options.headers]
- * @param {String} [options.headers.Authorization]
- * @param {String} [options.method]
- * @param {String} [options.referrer]
- * @returns {Promise<Error|*>}
- */
 
 export interface APIFetchOptions extends RequestInit {
     headers?: {
@@ -32,6 +21,11 @@ export interface APIFetchOptions extends RequestInit {
     referrer?: string,
 }
 
+
+/**
+ * Makes a request to an API, defaults to chums intranet API if not including options.headers.Authorization
+ *
+ */
 export async function apiFetch(url: string | URL = '', options: APIFetchOptions = {}): Promise<Response> {
     try {
         if (typeof url === 'string') {
@@ -71,13 +65,18 @@ export async function apiFetch(url: string | URL = '', options: APIFetchOptions 
 export async function apiFetchJSON<T = unknown>(url: string | URL, options: APIFetchOptions = {}): Promise<T> {
     try {
         const res = await apiFetch(url, options);
+        if (res.headers.get('content-type') !== 'application/json') {
+            const content = await res.text();
+            debug('apiFetchJSON()', content);
+            return Promise.reject(new Error(`Invalid content returned: ${res.headers.get('content-type')}`));
+        }
         return await res.json() as T;
     } catch (err: unknown) {
         if (err instanceof Error) {
-            console.debug("apiFetchJSON()", err.message);
+            debug("apiFetchJSON()", err.message);
             return Promise.reject(err);
         }
-        console.debug("apiFetchJSON()", err);
+        debug("apiFetchJSON()", err);
         return Promise.reject(new Error('Error in apiFetchJSON()'));
     }
 }

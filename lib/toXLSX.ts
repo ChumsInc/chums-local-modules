@@ -5,7 +5,7 @@ import {RowDataPacket} from "mysql2";
 export const decode_cell = utils.decode_cell;
 export const encode_cell = utils.encode_cell;
 export const {aoa_to_sheet, json_to_sheet, sheet_add_json, sheet_add_aoa} = utils;
-export {WorkSheet, WritingOptions, SheetAOAOpts} from 'xlsx';
+export type {WorkSheet, WritingOptions, SheetAOAOpts} from 'xlsx';
 
 
 export const xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -18,8 +18,8 @@ export interface WorkBookSheets {
     [key:string]: WorkSheet,
 }
 
-export function parseDataForAOA(data:RowDataPacket[], columnNames: ColumnNames, onlyColumnNames: boolean):any[][] {
-    let rows:any[] = [];
+export function parseDataForAOA<T = unknown>(data:RowDataPacket[], columnNames: ColumnNames, onlyColumnNames: boolean):(T)[][] {
+    let rows:(T)[][] = [];
     let fields:string[] = [];
     let columns:string[] = [];
     if (onlyColumnNames) {
@@ -49,12 +49,12 @@ export function parseDataForAOA(data:RowDataPacket[], columnNames: ColumnNames, 
     return rows;
 }
 
-export function resultToExcelSheet(data:RowDataPacket[], columnNames:ColumnNames, onlyColumnNames:boolean):WorkSheet {
-    let rows:any[] = parseDataForAOA(data, columnNames, onlyColumnNames);
+export function resultToExcelSheet<T = unknown>(data:RowDataPacket[], columnNames:ColumnNames, onlyColumnNames:boolean):WorkSheet {
+    const rows:T[][] = parseDataForAOA(data, columnNames, onlyColumnNames);
     return utils.aoa_to_sheet(rows);
 }
 
-export function addResultToExcelSheet(workSheet:WorkSheet, newData:any[][], options:SheetAOAOpts):WorkSheet {
+export function addResultToExcelSheet<T = unknown>(workSheet:WorkSheet, newData:T[][], options:SheetAOAOpts):WorkSheet {
     return utils.sheet_add_aoa(workSheet, newData, options);
 }
 

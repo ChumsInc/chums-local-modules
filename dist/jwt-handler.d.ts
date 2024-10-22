@@ -2,8 +2,6 @@ import { JwtPayload } from 'jsonwebtoken';
 import { GoogleJWTToken, UserJWTToken } from "./types.js";
 /**
  * Validates a JTW Token
- * @param {String} token - A JWT token to be validated
- * @return {Promise<BaseJWTToken|GoogleJWTToken|JwtPayload|Error>}
  */
 export declare function validateToken<T = JwtPayload>(token: string): Promise<T>;
 /**

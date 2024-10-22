@@ -1,5 +1,6 @@
 import Debug from 'debug';
 import {createTransport} from 'nodemailer';
+import {Attachment} from "nodemailer/lib/mailer/index.js";
 
 const debug = Debug('chums:lib:mailer');
 
@@ -8,7 +9,7 @@ export interface Address {
     address: string;
 }
 
-export interface sendMailProps {
+export interface SendMailProps {
     to: (string|Address) | (string|Address)[],
     cc?: (string|Address) | (string|Address)[],
     bcc?: (string|Address) | (string|Address)[],
@@ -17,8 +18,10 @@ export interface sendMailProps {
     subject?: string,
     html: string,
     textContent?: string,
-    attachments?: any,
+    attachments?: Attachment[],
 }
+
+export type sendMailProps = SendMailProps;
 
 
 export const getTs = () => {
@@ -52,7 +55,7 @@ export const sendGmail = async ({
                                     html,
                                     textContent,
                                     attachments
-                                }: sendMailProps) => {
+                                }: SendMailProps) => {
     try {
         to = !Array.isArray(to) ? [to] : to;
         cc = !Array.isArray(cc) ? [cc] : cc;
@@ -75,7 +78,7 @@ export const sendGmail = async ({
                 pass: process.env.GMAIL_APP_PASSWORD,
             }
         });
-        let mailOptions = {
+        const mailOptions = {
             from,
             to,
             cc,
@@ -89,7 +92,7 @@ export const sendGmail = async ({
         debug('sendGmail()', {to, from, subject, replyTo});
 
         // return mailOptions;
-        return await transporter.sendMail(mailOptions);
+        return transporter.sendMail(mailOptions);
     } catch (err:unknown) {
         if (err instanceof Error) {
             debug("sendGmail()", err.message);

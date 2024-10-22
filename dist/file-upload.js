@@ -14,6 +14,7 @@ async function ensureUploadPathExists(options = {}) {
     try {
         await access(uploadPath, constants.R_OK | constants.W_OK);
         return true;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     }
     catch (err) {
         try {
@@ -62,7 +63,7 @@ export async function handleUpload(req, options = {}) {
                     return Promise.reject(err);
                 }
                 debug('error', err);
-                return reject(new Error(err));
+                return reject(new Error('Unknown error in handleUpload()'));
             });
             form.on('aborted', () => {
                 debug('aborted');
@@ -88,19 +89,14 @@ export async function handleUpload(req, options = {}) {
     }
     catch (error) {
         if (error instanceof Error) {
-            console.log("handleUpload()", error.message);
+            debug("handleUpload()", error.message);
             return Promise.reject(error);
         }
-        console.error("handleUpload()", error);
+        debug("handleUpload()", error);
         return Promise.reject(new Error(`Unknown error in handleUpload(): ${error}`));
     }
 }
 /**
- *
- * @param {Request} req
- * @param {UploadOptions} options
- * @return {Promise<string>}
- *
  * If options.preserveFile is explicitly false then the uploaded file is removed after contents are read
  */
 export async function expressUploadFile(req, options = {}) {
@@ -111,10 +107,10 @@ export async function expressUploadFile(req, options = {}) {
     }
     catch (error) {
         if (error instanceof Error) {
-            console.log("expressUpload()", error.message);
+            debug("expressUpload()", error.message);
             return Promise.reject(error);
         }
-        console.error("expressUpload()", error);
+        debug("expressUpload()", error);
         return Promise.reject(new Error(`error in expressUpload(): ${error}`));
     }
 }

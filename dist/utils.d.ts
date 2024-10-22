@@ -1,5 +1,5 @@
 export interface ParseSQLParams {
-    [key: string]: any;
+    [key: string]: unknown;
 }
 export declare function parseSQL(query: string, params?: ParseSQLParams): string;
 /**

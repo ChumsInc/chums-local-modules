@@ -14,11 +14,6 @@ const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
  * - On success populates res.locals.profile = {user, roles, accounts} and executes next()
  * - On success populates req.userAuth = {valid, status, profile}
  * - On failure sends status 401 {error: 401, status: 'StatusText'}
- *
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @param {function} next
- * @returns {Promise<void>}
  */
 export async function validateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
@@ -48,15 +43,10 @@ export async function validateUser(req: Request, res: Response, next: NextFuncti
     }
 }
 
-function isUserValidation(auth: UserValidation | any): auth is UserValidation {
+function isUserValidation(auth: UserValidation | unknown): auth is UserValidation {
     return !!auth && (auth as UserValidation).valid !== undefined;
 }
 
-/**
- *
- * @param {Express.Response} res - Express response object
- * @returns {UserValidation|null} - returns UserValidation object | null
- */
 export function getUserValidation(res: Response): UserValidation | null {
     return isUserValidation(res.locals.auth) ? res.locals.auth : null;
 }
@@ -66,8 +56,6 @@ export function getUserValidation(res: Response): UserValidation | null {
  *  - validates JWT token from Authorization header "Bearer asdasd...asd" (from a standalone/web app)
  *  - validates req.cookies.PHPSESSID (from a logged-in user)
  *  - validates basic authentication (from an API user)
- * @param {Object} req - Express request object
- * @returns {Promise<{valid: boolean, profile: {roles: [], accounts: [], user}}|*>}
  */
 export async function loadValidation(req: Request): Promise<UserValidation|null> {
     try {
@@ -95,12 +83,12 @@ export async function loadValidation(req: Request): Promise<UserValidation|null>
         if (!!user && !!pass) {
             const credentials = Buffer.from(`${user}:${pass}`).toString('base64');
             headers.set('Authorization', `Basic ${credentials}`);
-        } else if (!!token) {
+        } else if (token) {
             url += '/google';
             fetchOptions.method = 'post';
             fetchOptions.body = JSON.stringify({token});
             headers.set('Content-Type', 'application/json');
-        } else if (!!session) {
+        } else if (session) {
             url += `/${encodeURIComponent(session)}`;
         }
 
@@ -125,8 +113,6 @@ export async function loadValidation(req: Request): Promise<UserValidation|null>
  * Validates a user role, stored in res.locals.profile.roles
  *  - On success executes next()
  *  - On failure sends status 403 Forbidden, {error: 403, status: 'Forbidden'}
- * @param {String | String[]} validRoles - array of valid roles
- * @returns {function(*, *, *): (*|undefined)}
  */
 export const validateRole = (validRoles: string | string[] = []) =>
     (req: Request, res: Response, next: NextFunction) => {

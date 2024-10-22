@@ -37,7 +37,7 @@ export function parseDataForAOA(data, columnNames, onlyColumnNames) {
     return rows;
 }
 export function resultToExcelSheet(data, columnNames, onlyColumnNames) {
-    let rows = parseDataForAOA(data, columnNames, onlyColumnNames);
+    const rows = parseDataForAOA(data, columnNames, onlyColumnNames);
     return utils.aoa_to_sheet(rows);
 }
 export function addResultToExcelSheet(workSheet, newData, options) {

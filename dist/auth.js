@@ -1,8 +1,6 @@
 'use strict';
 /**
  * Gets a user, password from http basic authorization header
- * @param {Object} req - Express Request object
- * @returns {{pass: string|null, user: string|null}}
  */
 export const basicAuth = (req) => {
     const nullUser = { user: null, pass: null };

@@ -9,8 +9,6 @@ const ERR_TOKEN_EXPIRED = 'TokenExpiredError';
 
 /**
  * Validates a JTW Token
- * @param {String} token - A JWT token to be validated
- * @return {Promise<BaseJWTToken|GoogleJWTToken|JwtPayload|Error>}
  */
 export async function validateToken<T = JwtPayload>(token: string): Promise<T> {
     try {
@@ -21,8 +19,8 @@ export async function validateToken<T = JwtPayload>(token: string): Promise<T> {
             }
             return Promise.reject(new Error('Invalid Token: token may be invalid or expired'));
         }
-        return await jwt.verify(token, JWT_SECRET) as T;
-    } catch (err:unknown) {
+        return jwt.verify(token, JWT_SECRET) as T;
+    } catch (err: unknown) {
         if (!(err instanceof Error)) {
             return Promise.reject(err);
         }
@@ -36,7 +34,7 @@ export async function validateToken<T = JwtPayload>(token: string): Promise<T> {
 /**
  * Validates a token expiration timestamp
  */
-export const isBeforeExpiry = (payload: JwtPayload|null|string): boolean => {
+export const isBeforeExpiry = (payload: JwtPayload | null | string): boolean => {
     if (typeof payload === 'string') {
         payload = jwt.decode(payload);
     }
@@ -51,7 +49,7 @@ export const isBeforeExpiry = (payload: JwtPayload|null|string): boolean => {
 /**
  * Checks to see if a token is locally issued
  */
-export const isLocalToken = (payload: UserJWTToken|JwtPayload|null|string): payload is UserJWTToken  => {
+export const isLocalToken = (payload: UserJWTToken | JwtPayload | null | string): payload is UserJWTToken => {
     if (typeof payload === 'string') {
         payload = jwt.decode(payload);
     }
@@ -62,7 +60,7 @@ export const isLocalToken = (payload: UserJWTToken|JwtPayload|null|string): payl
     return !!iss && iss === JWT_ISSUER;
 };
 
-export const isGoogleToken = (payload:GoogleJWTToken|JwtPayload|null|string):payload is GoogleJWTToken => {
+export const isGoogleToken = (payload: GoogleJWTToken | JwtPayload | null | string): payload is GoogleJWTToken => {
     if (typeof payload === 'string') {
         payload = jwt.decode(payload);
     }

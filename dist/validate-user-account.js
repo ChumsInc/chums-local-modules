@@ -6,7 +6,7 @@ const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:Cus
 const VALIDATE_SHIP_TO_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo-:ShipToCode';
 export async function validateUserAccount({ id, Company, ARDivisionNo, CustomerNo, ShipToCode }) {
     try {
-        const url = (!!ShipToCode ? VALIDATE_SHIP_TO_URL : VALIDATE_URL)
+        const url = (ShipToCode ? VALIDATE_SHIP_TO_URL : VALIDATE_URL)
             .replace(':id', encodeURIComponent(id))
             .replace(':Company', encodeURIComponent(getDBCompany(Company)))
             .replace(':ARDivisionNo', encodeURIComponent(ARDivisionNo))
@@ -45,10 +45,10 @@ export async function fetchCustomerValidation({ id, Company, ARDivisionNo, Custo
     }
     catch (err) {
         if (err instanceof Error) {
-            console.debug("validateUserCustomerAccess()", err.message);
+            debug("validateUserCustomerAccess()", err.message);
             return Promise.reject(err);
         }
-        console.debug("validateUserCustomerAccess()", err);
+        debug("validateUserCustomerAccess()", err);
         return Promise.reject(new Error('Error in validateUserCustomerAccess()'));
     }
 }

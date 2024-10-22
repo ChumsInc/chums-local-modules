@@ -1,8 +1,9 @@
 {
   "name": "chums-local-modules",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "modules shared across chums node server instances",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "npm run clean && npm run build-ts",
     "build-ts": "tsc",
@@ -24,24 +25,28 @@
   },
   "homepage": "https://github.com/ChumsInc/chums-local-modules#readme",
   "devDependencies": {
+    "@eslint/js": "^9.11.1",
     "@tsconfig/node18": "^18.2.2",
-    "auto-changelog": "^2.4.0",
-    "rimraf": "^6.0.1",
-    "typescript": "^5.0.4"
-  },
-  "typings": "./dist/index.d.ts",
-  "dependencies": {
     "@types/cookie": "^0.6.0",
     "@types/debug": "^4.1.7",
-    "@types/express": "^4.17.13",
+    "@types/express": "^5.0.0",
     "@types/formidable": "^3.4.3",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/node-fetch": "^2.6.1",
     "@types/nodemailer": "^6.4.4",
     "@types/sqlstring": "^2.3.0",
     "@types/ws": "^8.5.2",
+    "auto-changelog": "^2.4.0",
+    "eslint": "^9.11.1",
+    "globals": "^15.10.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.0.4",
+    "typescript-eslint": "^8.8.0"
+  },
+  "typings": "./dist/index.d.ts",
+  "dependencies": {
     "chums-types": "github:ChumsInc/chums-types",
-    "cookie": "^1.0.1",
+    "cookie": "^1.0.0",
     "debug": "^4.3.3",
     "dotenv": "^16.0.0",
     "formidable": "^3.5.1",
@@ -54,8 +59,8 @@
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "peerDependencies": {
-    "express": "^4.18.0",
-    "mysql2": "^3.1.2"
+    "express": "^4.18.0 || ^5.0.0",
+    "mysql2": ">=3.9.7"
   },
   "auto-changelog": {
     "template": "./changelog-template.hbs",

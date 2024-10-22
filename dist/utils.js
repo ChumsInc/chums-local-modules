@@ -1,4 +1,7 @@
 import SqlString from 'sqlstring';
+/**
+ * there is no @types/named-placeholders or built in typings
+ */
 // @ts-ignore
 import NamedPlaceholders from 'named-placeholders';
 const namedPlaceholders = NamedPlaceholders();

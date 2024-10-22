@@ -57,8 +57,6 @@ export function webSocketServer() {
 /**
  * Executes validation request
  *  - validates req.cookies.PHPSESSID (from a logged in user)
- * @param {IncomingMessage} message - Socket message
- * @returns {Promise<{valid: boolean, profile: {roles: [], accounts: [], user}}|*>}
  */
 export async function loadSocketValidation(message) {
     try {
@@ -72,7 +70,7 @@ export async function loadSocketValidation(message) {
         const fetchOptions = {};
         const headers = new Headers();
         headers.set('X-Forwarded-For', message.socket.remoteAddress || 'localhost');
-        let url = `${API_HOST}/api/user/validate/${encodeURIComponent(cookies.PHPSESSID)}`;
+        const url = `${API_HOST}/api/user/validate/${encodeURIComponent(cookies.PHPSESSID)}`;
         fetchOptions.headers = headers;
         const response = await fetch(url, fetchOptions);
         if (!response.ok) {
