@@ -15,4 +15,5 @@ export interface APIFetchOptions extends RequestInit {
  *
  */
 export declare function apiFetch(url?: string | URL, options?: APIFetchOptions): Promise<Response>;
+export declare const isJSONContentType: (contentType: string | null | undefined) => boolean;
 export declare function apiFetchJSON<T = unknown>(url: string | URL, options?: APIFetchOptions): Promise<T>;

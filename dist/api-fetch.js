@@ -44,10 +44,16 @@ export async function apiFetch(url = '', options = {}) {
         return Promise.reject(err);
     }
 }
+export const isJSONContentType = (contentType) => {
+    if (!contentType) {
+        return false;
+    }
+    return contentType.toLowerCase() === 'application/json' || contentType.toLowerCase().startsWith('application/json');
+};
 export async function apiFetchJSON(url, options = {}) {
     try {
         const res = await apiFetch(url, options);
-        if (res.headers.get('content-type') !== 'application/json') {
+        if (!isJSONContentType(res.headers.get('content-type'))) {
             const content = await res.text();
             debug('apiFetchJSON()', content);
             return Promise.reject(new Error(`Invalid content returned: ${res.headers.get('content-type')}`));
