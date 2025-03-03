@@ -3,7 +3,7 @@
   "version": "2.1.2",
   "description": "modules shared across chums node server instances",
   "main": "./dist/index.js",
-  "types": "./types/index.d.ts",
+  "types": "./dist/index.d.ts",
   "src": "./lib/index.ts",
   "scripts": {
     "build": "npm run clean && npm run build-ts",

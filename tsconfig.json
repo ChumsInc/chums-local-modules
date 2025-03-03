@@ -3,7 +3,6 @@
   "include": ["lib/**/*"],
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "./types",
     "emitDeclarationOnly": false,
     "outDir": "dist",
     "module": "Node16",
