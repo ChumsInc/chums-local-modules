@@ -72,7 +72,7 @@ export async function handleUpload(req: Request, options: UploadOptions = {}): P
             form.on('error', (err: unknown) => {
                 if (err instanceof Error) {
                     debug('handleUpload() form.on.error', err.message);
-                    return Promise.reject(err);
+                    return reject(err);
                 }
                 debug('error', err);
                 return reject(new Error('Unknown error in handleUpload()'));
@@ -86,7 +86,7 @@ export async function handleUpload(req: Request, options: UploadOptions = {}): P
             form.parse(req, async (err: unknown, fields: Fields, files: Files) => {
                 const fileValues = Object.values(files);
                 if (!fileValues.length) {
-                    return Promise.reject(new Error('No files found'));
+                    return reject(new Error('No files found'));
                 }
 
                 const [fileValue] = fileValues;
