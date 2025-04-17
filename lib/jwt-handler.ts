@@ -1,6 +1,6 @@
 import Debug from 'debug';
 import jwt, {JwtPayload} from 'jsonwebtoken';
-import {BaseJWTToken, GoogleJWTToken, UserJWTToken} from "./types.js";
+import {GoogleJWTToken, UserJWTToken} from "./types.js";
 
 const debug = Debug('chums:local-modules:jwt-handler');
 

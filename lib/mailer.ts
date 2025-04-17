@@ -2,7 +2,7 @@ import Debug from 'debug';
 import {createTransport} from 'nodemailer';
 import {Attachment} from "nodemailer/lib/mailer/index.js";
 
-const debug = Debug('chums:lib:mailer');
+const debug = Debug('chums:local-modules:mailer');
 
 export interface Address {
     name: string;

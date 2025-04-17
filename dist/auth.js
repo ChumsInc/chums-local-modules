@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Gets a user, password from http basic authorization header
  */

@@ -1,5 +1,4 @@
 import {Request} from 'express';
-'use strict';
 
 export interface BasicAuth {
     user: string|null,

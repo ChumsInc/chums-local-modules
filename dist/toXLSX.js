@@ -1,6 +1,6 @@
 import Debug from 'debug';
-const debug = Debug('chums:local-modules:toXLSX');
 import { utils, write } from 'xlsx';
+const debug = Debug('chums:local-modules:toXLSX');
 export const decode_cell = utils.decode_cell;
 export const encode_cell = utils.encode_cell;
 export const { aoa_to_sheet, json_to_sheet, sheet_add_json, sheet_add_aoa } = utils;

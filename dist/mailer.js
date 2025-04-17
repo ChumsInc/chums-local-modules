@@ -1,6 +1,6 @@
 import Debug from 'debug';
 import { createTransport } from 'nodemailer';
-const debug = Debug('chums:lib:mailer');
+const debug = Debug('chums:local-modules:mailer');
 export const getTs = () => {
     return Date.now();
 };

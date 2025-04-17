@@ -7,7 +7,7 @@ import {Request} from 'express';
 import * as path from "node:path";
 
 
-const debug = Debug('chums:lib:file-upload');
+const debug = Debug('chums:local-modules:file-upload');
 const ROOT_PATH = '/var/tmp';
 export const DEFAULT_UPLOAD_PATH = ROOT_PATH + '/chums';
 
