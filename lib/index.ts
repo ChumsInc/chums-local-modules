@@ -1,6 +1,8 @@
 export {apiFetch, apiFetchJSON} from './api-fetch.js';
 export type {Response, APIFetchOptions} from './api-fetch.d.ts'
 
+export {deprecationNotice} from './deprecation-notice.js';
+
 export {sendEmail, sendGmail, getLogoImageAttachment, getTs, getTs36} from './mailer.js';
 export type {sendMailProps, Address} from './mailer.d.ts';
 

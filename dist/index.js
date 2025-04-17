@@ -1,4 +1,5 @@
 export { apiFetch, apiFetchJSON } from './api-fetch.js';
+export { deprecationNotice } from './deprecation-notice.js';
 export { sendEmail, sendGmail, getLogoImageAttachment, getTs, getTs36 } from './mailer.js';
 export { mysql2Pool, mysql2Pool as pool, getConnection } from './mysql.js';
 export { resultToExcelSheet, buildXLSXHeaders, buildWorkBook, addResultToExcelSheet, parseDataForAOA, aoa_to_sheet, json_to_sheet, sheet_add_json, sheet_add_aoa, xlsxMimeType, encode_cell, decode_cell } from './toXLSX.js';
