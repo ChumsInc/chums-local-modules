@@ -68,19 +68,20 @@ export async function loadValidation(req) {
         const headers = new Headers();
         headers.set('X-Forwarded-For', req.ip ?? 'unknown');
         headers.set('referrer', req.get('referrer') || req.originalUrl);
-        let url = `${API_HOST}/api/user/validate`;
+        let url = `${API_HOST}/api/user/validate.json`;
         if (!!user && !!pass) {
             const credentials = Buffer.from(`${user}:${pass}`).toString('base64');
             headers.set('Authorization', `Basic ${credentials}`);
         }
         else if (token) {
-            url += '/google';
+            url = `${API_HOST}/api/user/validate/google.json`;
             fetchOptions.method = 'post';
             fetchOptions.body = JSON.stringify({ token });
             headers.set('Content-Type', 'application/json');
         }
         else if (session) {
-            url += `/${encodeURIComponent(session)}`;
+            url = `${API_HOST}/api/user/validate/session/:session.json`
+                .replace(':session', encodeURIComponent(session));
         }
         fetchOptions.headers = headers;
         const response = await fetch(url, fetchOptions);
