@@ -43,7 +43,7 @@ export {
 export type {ValidateUserAccountProps, CustomerValidationResponse, SuccessResponse} from './validate-user-account.d.ts'
 
 export {webSocketServer, loadSocketValidation} from './websockets.js';
-export type {ExtWebSocket} from './websockets.d.ts'
+export type {ProfileWebSocket, ExtWebSocket} from './websockets.d.ts'
 
 export {
     handleUpload,
@@ -64,3 +64,5 @@ export type {
 } from './types.d.ts';
 
 export type {File as FormidableFile} from 'formidable'
+
+export {isGoogleToken, isLocalToken, validateToken, isBeforeExpiry} from './jwt-handler.js';

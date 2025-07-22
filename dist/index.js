@@ -8,3 +8,4 @@ export { validateUser, validateRole, loadValidation, getUserValidation } from '.
 export { validateUserAccount, fetchCustomerValidation, } from './validate-user-account.js';
 export { webSocketServer, loadSocketValidation } from './websockets.js';
 export { handleUpload, loadFileContents, expressUploadFile, DEFAULT_UPLOAD_PATH } from './file-upload.js';
+export { isGoogleToken, isLocalToken, validateToken, isBeforeExpiry } from './jwt-handler.js';

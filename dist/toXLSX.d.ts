@@ -26,7 +26,7 @@ export interface WorkBookSheets {
 export declare function parseDataForAOA<T = unknown>(data: RowDataPacket[], columnNames: ColumnNames, onlyColumnNames: boolean): (T)[][];
 export declare function resultToExcelSheet<T = unknown>(data: RowDataPacket[], columnNames: ColumnNames, onlyColumnNames: boolean): WorkSheet;
 export declare function addResultToExcelSheet<T = unknown>(workSheet: WorkSheet, newData: T[][], options: SheetAOAOpts): WorkSheet;
-export declare function buildWorkBook(sheets: WorkBookSheets, options?: WritingOptions): any;
+export declare function buildWorkBook(sheets: WorkBookSheets, options?: WritingOptions): unknown;
 export declare function buildXLSXHeaders(filename: string): {
     'Content-Disposition': string;
     'Content-Type': string;

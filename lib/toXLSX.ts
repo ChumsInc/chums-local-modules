@@ -59,7 +59,7 @@ export function addResultToExcelSheet<T = unknown>(workSheet:WorkSheet, newData:
     return utils.sheet_add_aoa(workSheet, newData, options);
 }
 
-export function buildWorkBook(sheets:WorkBookSheets, options:WritingOptions = {}):any {
+export function buildWorkBook(sheets:WorkBookSheets, options:WritingOptions = {}):unknown {
     const defaultOptions:WritingOptions = {
         type: 'buffer',
         cellDates: false,

@@ -13,8 +13,9 @@ export { validateUser, validateRole, loadValidation, getUserValidation } from '.
 export { validateUserAccount, fetchCustomerValidation, } from './validate-user-account.js';
 export type { ValidateUserAccountProps, CustomerValidationResponse, SuccessResponse } from './validate-user-account.d.ts';
 export { webSocketServer, loadSocketValidation } from './websockets.js';
-export type { ExtWebSocket } from './websockets.d.ts';
+export type { ProfileWebSocket, ExtWebSocket } from './websockets.d.ts';
 export { handleUpload, loadFileContents, expressUploadFile, DEFAULT_UPLOAD_PATH } from './file-upload.js';
 export type { UploadOptions } from './file-upload.d.ts';
 export type { User, UserAccount, UserProfile, UserValidation, BaseJWTToken, UserJWTToken, GoogleJWTToken } from './types.d.ts';
 export type { File as FormidableFile } from 'formidable';
+export { isGoogleToken, isLocalToken, validateToken, isBeforeExpiry } from './jwt-handler.js';

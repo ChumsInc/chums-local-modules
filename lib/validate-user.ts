@@ -78,7 +78,7 @@ export async function loadValidation(req: Request): Promise<UserValidation|null>
         headers.set('X-Forwarded-For', req.ip ?? 'unknown');
         headers.set('referrer', req.get('referrer') || req.originalUrl);
 
-        let url = `${API_HOST}/api/user/validate`;
+        let url = `${API_HOST}/api/user/validate.json`;
 
         if (!!user && !!pass) {
             const credentials = Buffer.from(`${user}:${pass}`).toString('base64');
