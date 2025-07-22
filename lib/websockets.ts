@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import {WebSocket, WebSocketServer} from 'ws';
+import {ServerOptions, type WebSocket, WebSocketServer} from 'ws';
 import {IncomingMessage} from 'node:http';
 import {Socket} from "node:net";
 import {UserProfile, UserValidation} from "./types.js";
@@ -12,58 +12,66 @@ const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
 export const VALIDATION_ERROR = 'VALIDATION_ERROR';
 
 
-export interface ExtWebSocket extends WebSocket {
+export interface ProfileWebSocket extends WebSocket {
     isAlive: boolean,
     profile?: UserProfile,
 }
+export type ExtWebSocket = ProfileWebSocket;
 
-export function webSocketServer() {
-    // @ts-ignore
-    const wsServer = new WebSocketServer<ExtWebSocket>({noServer: true});
-    wsServer.on('connection', async (ws, message) => {
-        const {valid, status, profile} = await loadSocketValidation(message);
-        if (!valid || status !== 'OK') {
-            ws.close();
-            return;
-        }
-        ws.isAlive = true;
-        ws.profile = profile;
-
-        ws.on('message', (message: string) => {
-            ws.isAlive = true;
-            debug('wsServer.onMessage', message);
-        });
-
-        ws.on('pong', () => {
-            ws.isAlive = true;
-        });
-
-        ws.on('close', (ev: unknown) => {
-            debug('wsServer.onClose()', ev);
-        });
-
-        ws.on('error', (ev: unknown) => {
-            debug('wsServer.onError()', ev);
-        });
-    })
-
-    setInterval(() => {
-        wsServer.clients.forEach((ws) => {
-            if (!ws.isAlive) {
-                return ws.terminate();
+class ProfileWebSocketServer extends WebSocketServer {
+    constructor(options?: ServerOptions) {
+        super(options);
+        this.on('connection', async (ws:ProfileWebSocket, message) => {
+            const {valid, status, profile} = await loadSocketValidation(message);
+            if (!valid || status !== 'OK') {
+                ws.close();
+                return;
             }
+            ws.isAlive = true;
+            ws.profile = profile;
 
-            ws.isAlive = false;
-            ws.ping(null, false, (err?: Error) => {
-                if (err) {
-                    debug('wsServer.clients.ping()', err.message);
-                }
+            ws.on('message', (message: string) => {
+                ws.isAlive = true;
+                debug('wsServer.onMessage', message);
+            });
+
+            ws.on('pong', () => {
+                ws.isAlive = true;
+            });
+
+            ws.on('close', (ev: unknown) => {
+                debug('wsServer.onClose()', ev);
+            });
+
+            ws.on('error', (ev: unknown) => {
+                debug('wsServer.onError()', ev);
             });
         })
-    }, 10000);
+
+        setInterval(() => {
+            this.clients.forEach((_ws) => {
+                const ws = _ws as ProfileWebSocket;
+                if (!ws.isAlive) {
+                    return ws.terminate();
+                }
+
+                ws.isAlive = false;
+                ws.ping(null, false, (err?: Error) => {
+                    if (err) {
+                        debug('wsServer.clients.ping()', err.message);
+                    }
+                });
+            })
+        }, 10000);
+
+    }
+}
+
+export function webSocketServer() {
+
+    const wsServer = new ProfileWebSocketServer({noServer: true});
 
     const onUpgrade = (request: IncomingMessage, socket: Socket, head: Buffer) => {
-        // debug(' server.onUpgrade()', request);
         wsServer.handleUpgrade(request, socket, head, (ws) => {
             wsServer.emit('connection', ws, request);
         })
@@ -93,7 +101,7 @@ export async function loadSocketValidation(message: IncomingMessage): Promise<Us
         const headers = new Headers();
         headers.set('X-Forwarded-For', message.socket.remoteAddress || 'localhost');
 
-        const url = `${API_HOST}/api/user/validate/${encodeURIComponent(cookies.PHPSESSID)}`;
+        const url = `${API_HOST}/api/user/validate/session/${encodeURIComponent(cookies.PHPSESSID)}.json`;
         fetchOptions.headers = headers;
         const response = await fetch(url, fetchOptions);
         if (!response.ok) {
