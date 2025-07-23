@@ -1,5 +1,4 @@
 import {JwtPayload} from "jsonwebtoken";
-import {Response} from 'express'
 import {ValidatedUserProfile} from "chums-types";
 
 export interface User {
@@ -54,7 +53,7 @@ export interface UserValidation {
     profile?: UserProfile,
 }
 
-export interface BaseJWTToken extends JwtPayload{
+export interface BaseJWTToken extends JwtPayload {
     aud?: string,
     iat?: number,
     exp?: number,
@@ -77,7 +76,7 @@ export interface ValidatedUser {
     profile: ValidatedUserProfile,
     auth: {
         valid: boolean;
-        status: 'OK'|string;
+        status: 'OK' | string;
         profile: ValidatedUserProfile;
     }
 }
