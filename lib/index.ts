@@ -60,7 +60,8 @@ export type {
     UserValidation,
     BaseJWTToken,
     UserJWTToken,
-    GoogleJWTToken
+    GoogleJWTToken,
+    ValidatedUser
 } from './types.d.ts';
 
 export type {File as FormidableFile} from 'formidable'
