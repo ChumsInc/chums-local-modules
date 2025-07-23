@@ -19,3 +19,4 @@ export type { UploadOptions } from './file-upload.d.ts';
 export type { User, UserAccount, UserProfile, UserValidation, BaseJWTToken, UserJWTToken, GoogleJWTToken } from './types.d.ts';
 export type { File as FormidableFile } from 'formidable';
 export { isGoogleToken, isLocalToken, validateToken, isBeforeExpiry } from './jwt-handler.js';
+export { logPath } from './log-path.js';

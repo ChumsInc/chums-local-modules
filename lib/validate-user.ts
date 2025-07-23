@@ -19,14 +19,13 @@ export async function validateUser(req: Request, res: Response, next: NextFuncti
     try {
         const validation = await loadValidation(req);
         if (!validation) {
+            debug('validateUser()', 'No Validation', req.method, req.originalUrl, req.get('referer'));
             res.status(401).json({error: 'Not authorized', message: 'Invalid validation response'});
             return;
         }
         const {valid, status, profile} = validation;
         if (!valid) {
-            if (res.locals.debug) {
-                debug('validateUser()', valid, status, req.method, req.originalUrl, req.get('referer'));
-            }
+            debug('validateUser()', 'Not Validated', req.method, req.originalUrl, req.get('referer'));
             res.status(401).json({error: 401, status});
         }
         res.locals.profile = profile;
