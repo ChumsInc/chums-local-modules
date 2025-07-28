@@ -1,5 +1,6 @@
 import Debug from 'debug';
 import { utils, write } from 'xlsx';
+import { Headers } from "node-fetch";
 const debug = Debug('chums:local-modules:toXLSX');
 export const decode_cell = utils.decode_cell;
 export const encode_cell = utils.encode_cell;
@@ -54,8 +55,8 @@ export function buildWorkBook(sheets, options = {}) {
     return write({ SheetNames: sheetNames, Sheets: sheets }, { ...defaultOptions, ...options });
 }
 export function buildXLSXHeaders(filename) {
-    return {
-        'Content-Disposition': `attachment; filename=${filename.replace(/[\s]+/g, '_')}`,
-        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    };
+    const headers = new Headers();
+    headers.set('Content-Disposition', `attachment; filename=${filename.replace(/[\s]+/g, '_')}`);
+    headers.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    return headers;
 }

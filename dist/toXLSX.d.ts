@@ -1,5 +1,6 @@
 import { WorkSheet, WritingOptions, SheetAOAOpts } from 'xlsx';
 import { RowDataPacket } from "mysql2";
+import { Headers } from "node-fetch";
 export declare const decode_cell: (address: string) => import("xlsx").CellAddress;
 export declare const encode_cell: (cell: import("xlsx").CellAddress) => string;
 export declare const aoa_to_sheet: {
@@ -27,7 +28,4 @@ export declare function parseDataForAOA<T = RowDataPacket>(data: T[], columnName
 export declare function resultToExcelSheet<T = RowDataPacket>(data: T[], columnNames: ColumnNames<T>, onlyColumnNames: boolean): WorkSheet;
 export declare function addResultToExcelSheet<T = RowDataPacket>(workSheet: WorkSheet, newData: T[][], options: SheetAOAOpts): WorkSheet;
 export declare function buildWorkBook(sheets: WorkBookSheets, options?: WritingOptions): unknown;
-export declare function buildXLSXHeaders(filename: string): {
-    'Content-Disposition': string;
-    'Content-Type': string;
-};
+export declare function buildXLSXHeaders(filename: string): Headers;

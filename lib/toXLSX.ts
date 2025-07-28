@@ -1,6 +1,7 @@
 import Debug from 'debug';
 import {utils, WorkSheet, write, WritingOptions, SheetAOAOpts} from 'xlsx';
 import {RowDataPacket} from "mysql2";
+import {Headers} from "node-fetch";
 
 const debug = Debug('chums:local-modules:toXLSX');
 export const decode_cell = utils.decode_cell;
@@ -75,11 +76,11 @@ export function buildWorkBook(sheets: WorkBookSheets, options: WritingOptions = 
     return write({SheetNames: sheetNames, Sheets: sheets}, {...defaultOptions, ...options});
 }
 
-export function buildXLSXHeaders(filename: string): { 'Content-Disposition': string, 'Content-Type': string } {
-    return {
-        'Content-Disposition': `attachment; filename=${filename.replace(/[\s]+/g, '_')}`,
-        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    }
+export function buildXLSXHeaders(filename: string): Headers {
+    const headers = new Headers();
+    headers.set('Content-Disposition', `attachment; filename=${filename.replace(/[\s]+/g, '_')}`);
+    headers.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    return headers;
 }
 
 
