@@ -17,15 +17,15 @@ export declare const aoa_to_sheet: {
 };
 export type { WorkSheet, WritingOptions, SheetAOAOpts } from 'xlsx';
 export declare const xlsxMimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-export interface ColumnNames {
-    [key: string]: string;
-}
+export type ColumnNames<T = RowDataPacket> = {
+    [key in keyof T]: string;
+};
 export interface WorkBookSheets {
     [key: string]: WorkSheet;
 }
-export declare function parseDataForAOA<T = unknown>(data: RowDataPacket[], columnNames: ColumnNames, onlyColumnNames: boolean): (T)[][];
-export declare function resultToExcelSheet<T = unknown>(data: RowDataPacket[], columnNames: ColumnNames, onlyColumnNames: boolean): WorkSheet;
-export declare function addResultToExcelSheet<T = unknown>(workSheet: WorkSheet, newData: T[][], options: SheetAOAOpts): WorkSheet;
+export declare function parseDataForAOA<T = RowDataPacket>(data: T[], columnNames: ColumnNames<T>, onlyColumnNames: boolean): unknown[][];
+export declare function resultToExcelSheet<T = RowDataPacket>(data: T[], columnNames: ColumnNames<T>, onlyColumnNames: boolean): WorkSheet;
+export declare function addResultToExcelSheet<T = RowDataPacket>(workSheet: WorkSheet, newData: T[][], options: SheetAOAOpts): WorkSheet;
 export declare function buildWorkBook(sheets: WorkBookSheets, options?: WritingOptions): unknown;
 export declare function buildXLSXHeaders(filename: string): {
     'Content-Disposition': string;

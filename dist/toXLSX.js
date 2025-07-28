@@ -6,35 +6,33 @@ export const encode_cell = utils.encode_cell;
 export const { aoa_to_sheet, json_to_sheet, sheet_add_json, sheet_add_aoa } = utils;
 export const xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 export function parseDataForAOA(data, columnNames, onlyColumnNames) {
-    let rows = [];
     let fields = [];
-    let columns = [];
     if (onlyColumnNames) {
         fields = Object.keys(columnNames);
-        columns = [...fields];
         if (data.length) {
             fields.forEach(field => {
                 if (data[0][field] === undefined) {
-                    debug('resultToExcelSheet()', `field '${field}' does not exist in data.`);
+                    debug('resultToExcelSheet()', `field '${String(field)}' does not exist in data.`);
                 }
             });
         }
-        rows = [
-            columns.map(col => columnNames[col] || col),
-            ...data.map(row => columns.map(col => row[col] || null))
+        return [
+            fields.map(field => columnNames[field] ?? field),
+            ...data.map(row => {
+                return fields.map(field => row[field] ?? null);
+            })
         ];
     }
-    else {
-        if (data.length) {
-            fields = Object.keys(data[0]);
-            columns = [...fields];
-            rows = [
-                columns.map(col => columnNames[col] || col),
-                ...data.map(row => Object.values(row))
-            ];
-        }
+    if (data.length) {
+        fields = Object.keys(data[0]);
+        return [
+            fields,
+            ...data.map(row => {
+                return fields.map(field => row[field] ?? null);
+            })
+        ];
     }
-    return rows;
+    return [];
 }
 export function resultToExcelSheet(data, columnNames, onlyColumnNames) {
     const rows = parseDataForAOA(data, columnNames, onlyColumnNames);
