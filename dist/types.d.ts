@@ -1,5 +1,5 @@
 import { JwtPayload } from "jsonwebtoken";
-import { ValidatedUserProfile } from "chums-types";
+export { ValidatedUser } from 'chums-types';
 export interface User {
     id: number;
     name: string;
@@ -62,12 +62,4 @@ export interface GoogleJWTToken extends JwtPayload {
     picture?: string;
     given_name?: string;
     family_name?: string;
-}
-export interface ValidatedUser {
-    profile: ValidatedUserProfile;
-    auth: {
-        valid: boolean;
-        status: 'OK' | string;
-        profile: ValidatedUserProfile;
-    };
 }
