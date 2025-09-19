@@ -10,3 +10,4 @@ export { webSocketServer, loadSocketValidation } from './websockets.js';
 export { handleUpload, loadFileContents, expressUploadFile, DEFAULT_UPLOAD_PATH } from './file-upload.js';
 export { isGoogleToken, isLocalToken, validateToken, isBeforeExpiry } from './jwt-handler.js';
 export { logPath } from './log-path.js';
+export { consentCookieName, cookieConsentHelper, loadCookieConsent, saveOptOutUser, extendCookieConsentExpiry, saveCookieConsent, setConsentCookie, shouldExtendCookieConsent, } from './cookie-consent.js';
