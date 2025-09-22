@@ -1,5 +1,6 @@
 import { JwtPayload } from 'jsonwebtoken';
-import { GoogleJWTToken, UserJWTToken } from "./types.js";
+import { GoogleJWTToken } from "./types.js";
+import { UserJWTToken } from "chums-types";
 /**
  * Validates a JTW Token
  */

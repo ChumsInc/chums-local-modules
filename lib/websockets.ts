@@ -2,9 +2,10 @@ import Debug from 'debug';
 import {ServerOptions, type WebSocket, WebSocketServer} from 'ws';
 import {IncomingMessage} from 'node:http';
 import {Socket} from "node:net";
-import {UserProfile, UserValidation} from "./types.js";
+import {UserValidation} from "./types.js";
 import {default as fetch, Headers, RequestInit} from "node-fetch";
 import * as cookie from 'cookie';
+import {ValidatedUserProfile} from "chums-types";
 
 const debug = Debug('chums:local-modules:websockets');
 
@@ -14,21 +15,22 @@ export const VALIDATION_ERROR = 'VALIDATION_ERROR';
 
 export interface ProfileWebSocket extends WebSocket {
     isAlive: boolean,
-    profile?: UserProfile,
+    profile?: ValidatedUserProfile | null,
 }
+
 export type ExtWebSocket = ProfileWebSocket;
 
 class ProfileWebSocketServer extends WebSocketServer {
     constructor(options?: ServerOptions) {
         super(options);
-        this.on('connection', async (ws:ProfileWebSocket, message) => {
+        this.on('connection', async (ws: ProfileWebSocket, message) => {
             const {valid, status, profile} = await loadSocketValidation(message);
             if (!valid || status !== 'OK') {
                 ws.close();
                 return;
             }
             ws.isAlive = true;
-            ws.profile = profile;
+            ws.profile = profile ?? null;
 
             ws.on('message', (message: string) => {
                 ws.isAlive = true;
@@ -94,7 +96,7 @@ export async function loadSocketValidation(message: IncomingMessage): Promise<Us
         if (!cookies.PHPSESSID) {
             const error = new Error('Only cookie sessions can be validated');
             error.name = VALIDATION_ERROR;
-            return {valid: false, error};
+            return {valid: false, error, status: 'Unauthorized'};
             // return Promise.reject(error);
         }
         const fetchOptions: RequestInit = {};
@@ -107,7 +109,7 @@ export async function loadSocketValidation(message: IncomingMessage): Promise<Us
         if (!response.ok) {
             const error = new Error(`Validation Error: ${response.status} ${response.statusText}`);
             error.name = VALIDATION_ERROR;
-            return {valid: false, error};
+            return {valid: false, error, status: 'Unauthorized'};
             // return Promise.reject(error);
         }
         return await response.json() as UserValidation;

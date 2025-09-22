@@ -2,13 +2,12 @@ import Debug from 'debug';
 import type {NextFunction, Request, Response} from 'express'
 import {default as fetch, Headers, type RequestInit} from 'node-fetch';
 import {basicAuth, jwtToken} from './auth.js';
-import type {GoogleJWTToken, UserJWTToken, UserProfile, UserValidation} from "./types.js";
+import type {GoogleJWTToken} from "./types.js";
 import {isBeforeExpiry, isLocalToken, validateToken} from './jwt-handler.js';
+import {UserJWTToken, UserValidationResponse, ValidatedUser, ValidatedUserProfile,} from "chums-types";
 
 const debug = Debug('chums:local-modules:validate-user');
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
-
-
 
 
 /**
@@ -17,21 +16,20 @@ const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
  * - On success populates req.userAuth = {valid, status, profile}
  * - On failure sends status 401 {error: 401, status: 'StatusText'}
  */
-export async function validateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function validateUser(req: Request, res: Response<unknown, ValidatedUser>, next: NextFunction): Promise<void> {
     try {
         const validation = await loadValidation(req);
-        if (!validation) {
-            debug('validateUser()', 'No Validation', req.method, req.originalUrl, req.get('referer'));
-            res.status(401).json({error: 'Not authorized', message: 'Invalid validation response'});
+        if (!validation || !validation?.valid) {
+            debug('validateUser()', 'Not Validated', req.method, req.originalUrl, req.get('referer'));
+            res.status(401).json({error: 401, status: validation?.status ?? 'Not Authorized'});
             return;
         }
-        const {valid, status, profile} = validation;
-        if (!valid) {
-            debug('validateUser()', 'Not Validated', req.method, req.originalUrl, req.get('referer'));
-            res.status(401).json({error: 401, status});
-        }
-        res.locals.profile = profile;
-        res.locals.auth = {valid, status, profile};
+        res.locals.profile = validation?.profile ?? null;
+        res.locals.auth = {
+            valid: validation.valid,
+            status: validation.status,
+            profile: validation.profile ?? null,
+        };
         next();
     } catch (err: unknown) {
         if (err instanceof Error) {
@@ -44,11 +42,55 @@ export async function validateUser(req: Request, res: Response, next: NextFuncti
     }
 }
 
-function isUserValidation(auth: UserValidation | unknown): auth is UserValidation {
-    return !!auth && (auth as UserValidation).valid !== undefined;
+export async function preValidateUser(req: Request, res: Response<unknown, ValidatedUser>, next: NextFunction): Promise<void> {
+    const noValidation: ValidatedUser = {
+        auth: {valid: false, status: 'Not Authorized', profile: null},
+        profile: null
+    };
+    try {
+        const validation = await loadValidation(req);
+        if (!validation || !validation.valid) {
+            res.locals.auth = noValidation.auth;
+            res.locals.profile = noValidation.profile;
+            next();
+            return;
+        }
+        res.locals.profile = validation.profile ?? null;
+        res.locals.auth = {
+            valid: validation.valid,
+            status: validation.status,
+            profile: validation.profile ?? null,
+        };
+        next();
+
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            debug("preValidateUser()", err.message);
+            res.locals.auth = noValidation.auth;
+            res.locals.profile = noValidation.profile;
+            next();
+        }
+        debug("preValidateUser()", err);
+        res.locals.auth = noValidation.auth;
+        res.locals.profile = noValidation.profile;
+        next();
+    }
 }
 
-export function getUserValidation(res: Response): UserValidation | null {
+export async function requireLogin(req: Request, res: Response<unknown, ValidatedUser>, next: NextFunction): Promise<void> {
+    if (!res.locals.auth.valid) {
+        const {valid, status} = res.locals.auth;
+        res.status(401).json({valid, status});
+        return;
+    }
+    next();
+}
+
+export function isUserValidation(auth: UserValidationResponse | unknown): auth is UserValidationResponse {
+    return !!auth && (auth as UserValidationResponse).valid !== undefined;
+}
+
+export function getUserValidation(res: Response): UserValidationResponse | null {
     return isUserValidation(res.locals.auth) ? res.locals.auth : null;
 }
 
@@ -58,16 +100,22 @@ export function getUserValidation(res: Response): UserValidation | null {
  *  - validates req.cookies.PHPSESSID (from a logged-in user)
  *  - validates basic authentication (from an API user)
  */
-export async function loadValidation(req: Request): Promise<UserValidation|null> {
+export async function loadValidation(req: Request): Promise<UserValidationResponse | null> {
     try {
         const {token} = jwtToken(req);
         if (token) {
             const decoded = await validateToken<UserJWTToken | GoogleJWTToken>(token);
             if (isLocalToken(decoded) && isBeforeExpiry(decoded)) {
                 const {user, roles = [], accounts = []} = decoded;
-                user.roles = roles
-                user.accounts = accounts;
-                return {valid: true, profile: {user, roles, accounts}};
+                return {
+                    valid: true,
+                    status: 'OK',
+                    profile: {
+                        user,
+                        roles,
+                        accounts
+                    }
+                };
             }
         }
 
@@ -99,7 +147,7 @@ export async function loadValidation(req: Request): Promise<UserValidation|null>
         if (!response.ok) {
             return Promise.reject(new Error(`${response.status} ${response.statusText}`));
         }
-        return await response.json() as UserValidation ?? null;
+        return await response.json() as UserValidationResponse ?? null;
     } catch (err: unknown) {
         if (err instanceof Error) {
             debug("loadValidation()", err.message);
@@ -118,7 +166,7 @@ export async function loadValidation(req: Request): Promise<UserValidation|null>
  */
 export const validateRole = (validRoles: string | string[] = []) =>
     (req: Request, res: Response, next: NextFunction) => {
-        const {roles = []} = res.locals.profile as UserProfile;
+        const {roles = []} = res.locals.profile as ValidatedUserProfile;
         if (!Array.isArray(validRoles)) {
             validRoles = [validRoles];
         }

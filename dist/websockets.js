@@ -15,7 +15,7 @@ class ProfileWebSocketServer extends WebSocketServer {
                 return;
             }
             ws.isAlive = true;
-            ws.profile = profile;
+            ws.profile = profile ?? null;
             ws.on('message', (message) => {
                 ws.isAlive = true;
                 debug('wsServer.onMessage', message);
@@ -68,7 +68,7 @@ export async function loadSocketValidation(message) {
         if (!cookies.PHPSESSID) {
             const error = new Error('Only cookie sessions can be validated');
             error.name = VALIDATION_ERROR;
-            return { valid: false, error };
+            return { valid: false, error, status: 'Unauthorized' };
             // return Promise.reject(error);
         }
         const fetchOptions = {};
@@ -80,7 +80,7 @@ export async function loadSocketValidation(message) {
         if (!response.ok) {
             const error = new Error(`Validation Error: ${response.status} ${response.statusText}`);
             error.name = VALIDATION_ERROR;
-            return { valid: false, error };
+            return { valid: false, error, status: 'Unauthorized' };
             // return Promise.reject(error);
         }
         return await response.json();

@@ -29,10 +29,12 @@ export {getDBCompany, getSageCompany, parseSQL} from './utils.js';
 export type {ParseSQLParams} from './utils.d.ts';
 
 export {
+    getUserValidation,
+    loadValidation,
+    preValidateUser,
+    requireLogin,
     validateUser,
     validateRole,
-    loadValidation,
-    getUserValidation
 } from './validate-user.js';
 
 export {
@@ -54,12 +56,7 @@ export {
 export type {UploadOptions} from './file-upload.d.ts'
 
 export type {
-    User,
-    UserAccount,
-    UserProfile,
     UserValidation,
-    BaseJWTToken,
-    UserJWTToken,
     GoogleJWTToken,
     ValidatedUser
 } from './types.d.ts';

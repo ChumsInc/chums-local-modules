@@ -1,11 +1,12 @@
 import { ServerOptions, type WebSocket, WebSocketServer } from 'ws';
 import { IncomingMessage } from 'node:http';
 import { Socket } from "node:net";
-import { UserProfile, UserValidation } from "./types.js";
+import { UserValidation } from "./types.js";
+import { ValidatedUserProfile } from "chums-types";
 export declare const VALIDATION_ERROR = "VALIDATION_ERROR";
 export interface ProfileWebSocket extends WebSocket {
     isAlive: boolean;
-    profile?: UserProfile;
+    profile?: ValidatedUserProfile | null;
 }
 export type ExtWebSocket = ProfileWebSocket;
 declare class ProfileWebSocketServer extends WebSocketServer {

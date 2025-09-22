@@ -13,18 +13,17 @@ const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
 export async function validateUser(req, res, next) {
     try {
         const validation = await loadValidation(req);
-        if (!validation) {
-            debug('validateUser()', 'No Validation', req.method, req.originalUrl, req.get('referer'));
-            res.status(401).json({ error: 'Not authorized', message: 'Invalid validation response' });
+        if (!validation || !validation?.valid) {
+            debug('validateUser()', 'Not Validated', req.method, req.originalUrl, req.get('referer'));
+            res.status(401).json({ error: 401, status: validation?.status ?? 'Not Authorized' });
             return;
         }
-        const { valid, status, profile } = validation;
-        if (!valid) {
-            debug('validateUser()', 'Not Validated', req.method, req.originalUrl, req.get('referer'));
-            res.status(401).json({ error: 401, status });
-        }
-        res.locals.profile = profile;
-        res.locals.auth = { valid, status, profile };
+        res.locals.profile = validation?.profile ?? null;
+        res.locals.auth = {
+            valid: validation.valid,
+            status: validation.status,
+            profile: validation.profile ?? null,
+        };
         next();
     }
     catch (err) {
@@ -37,7 +36,49 @@ export async function validateUser(req, res, next) {
         res.status(401).json({ error: 'Not authorized', message: err });
     }
 }
-function isUserValidation(auth) {
+export async function preValidateUser(req, res, next) {
+    const noValidation = {
+        auth: { valid: false, status: 'Not Authorized', profile: null },
+        profile: null
+    };
+    try {
+        const validation = await loadValidation(req);
+        if (!validation || !validation.valid) {
+            res.locals.auth = noValidation.auth;
+            res.locals.profile = noValidation.profile;
+            next();
+            return;
+        }
+        res.locals.profile = validation.profile ?? null;
+        res.locals.auth = {
+            valid: validation.valid,
+            status: validation.status,
+            profile: validation.profile ?? null,
+        };
+        next();
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            debug("preValidateUser()", err.message);
+            res.locals.auth = noValidation.auth;
+            res.locals.profile = noValidation.profile;
+            next();
+        }
+        debug("preValidateUser()", err);
+        res.locals.auth = noValidation.auth;
+        res.locals.profile = noValidation.profile;
+        next();
+    }
+}
+export async function requireLogin(req, res, next) {
+    if (!res.locals.auth.valid) {
+        const { valid, status } = res.locals.auth;
+        res.status(401).json({ valid, status });
+        return;
+    }
+    next();
+}
+export function isUserValidation(auth) {
     return !!auth && auth.valid !== undefined;
 }
 export function getUserValidation(res) {
@@ -56,9 +97,15 @@ export async function loadValidation(req) {
             const decoded = await validateToken(token);
             if (isLocalToken(decoded) && isBeforeExpiry(decoded)) {
                 const { user, roles = [], accounts = [] } = decoded;
-                user.roles = roles;
-                user.accounts = accounts;
-                return { valid: true, profile: { user, roles, accounts } };
+                return {
+                    valid: true,
+                    status: 'OK',
+                    profile: {
+                        user,
+                        roles,
+                        accounts
+                    }
+                };
             }
         }
         const { user, pass } = basicAuth(req);
