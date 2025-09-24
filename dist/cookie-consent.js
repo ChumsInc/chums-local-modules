@@ -218,6 +218,7 @@ export async function loadCookieConsent(props) {
                             ipAddress,
                             JSON_EXTRACT(preferences, '$')           AS preferences,
                             JSON_EXTRACT(IFNULL(changes, '[]'), '$') AS changes,
+                            gpc,
                             status,
                             dateCreated,
                             dateUpdated
