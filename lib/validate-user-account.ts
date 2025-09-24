@@ -30,6 +30,8 @@ export interface ValidateUserAccountProps {
 
 export async function validateUserAccount({id, Company, ARDivisionNo, CustomerNo, ShipToCode}: ValidateUserAccountProps) {
     try {
+        // const url = '/api/user/v2/validate/user/:id/:customerKey.json'; --- prep for /api/user/v2 calls
+        // @TODO: does this need to exist? will the function below work instead?
         const url = (ShipToCode ? VALIDATE_SHIP_TO_URL : VALIDATE_URL)
             .replace(':id', encodeURIComponent(id))
             .replace(':Company', encodeURIComponent(getDBCompany(Company)))
@@ -55,6 +57,7 @@ export async function validateUserAccount({id, Company, ARDivisionNo, CustomerNo
 
 export async function fetchCustomerValidation({id, Company, ARDivisionNo, CustomerNo}:ValidateUserAccountProps):Promise<CustomerValidationResponse> {
     try {
+        // const url = '/api/user/v2/validate/user/:id/:customerKey.json'; --- prep for /api/user/v2 calls
         const url = '/api/user/:id/validate/customer/:Company/:ARDivisionNo-:CustomerNo'
             .replace(':id', encodeURIComponent(id))
             .replace(':Company', encodeURIComponent(getDBCompany(Company)))

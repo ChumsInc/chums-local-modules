@@ -1,6 +1,10 @@
 import Debug from 'debug';
 import {createTransport} from 'nodemailer';
+import {SentMessageInfo} from "nodemailer/lib/smtp-transport/index.js";
 import {Attachment} from "nodemailer/lib/mailer/index.js";
+
+export {SentMessageInfo} from 'nodemailer/lib/smtp-transport/index.js';
+export {Attachment} from "nodemailer/lib/mailer/index.js";
 
 const debug = Debug('chums:local-modules:mailer');
 
@@ -9,26 +13,33 @@ export interface Address {
     address: string;
 }
 
+
 export interface SendMailProps {
-    to: (string|Address) | (string|Address)[],
-    cc?: (string|Address) | (string|Address)[],
-    bcc?: (string|Address) | (string|Address)[],
-    replyTo?: string|Address,
-    from?: string|Address,
+    to: (string | Address) | (string | Address)[],
+    cc?: (string | Address) | (string | Address)[],
+    bcc?: (string | Address) | (string | Address)[],
+    replyTo?: string | Address,
+    from?: string | Address,
     subject?: string,
     html: string,
     textContent?: string,
     attachments?: Attachment[],
 }
 
+export interface LogoAttachment {
+    filename: string,
+    path: string,
+    cid: string,
+}
+
 export type sendMailProps = SendMailProps;
 
 
-export const getTs = () => {
+export const getTs = (): number => {
     return Date.now();
 };
 
-export const getTs36 = () => {
+export const getTs36 = (): string => {
     return getTs().toString(36);
 };
 
@@ -37,7 +48,7 @@ export const getTs36 = () => {
  * @param {string} ts
  * @return {{path: string, filename: string, cid: string}}
  */
-export const getLogoImageAttachment = (ts = getTs36()) => {
+export const getLogoImageAttachment = (ts: string = getTs36()): LogoAttachment => {
     return {
         filename: 'chums-logo-badge-400px.png',
         path: `/var/www/intranet.chums.com/images/chums-logo-badge-400px.png`,
@@ -55,7 +66,7 @@ export const sendGmail = async ({
                                     html,
                                     textContent,
                                     attachments
-                                }: SendMailProps) => {
+                                }: SendMailProps): Promise<SentMessageInfo> => {
     try {
         to = !Array.isArray(to) ? [to] : to;
         cc = !Array.isArray(cc) ? [cc] : cc;
@@ -93,7 +104,7 @@ export const sendGmail = async ({
 
         // return mailOptions;
         return transporter.sendMail(mailOptions);
-    } catch (err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             debug("sendGmail()", err.message);
             return Promise.reject(err);

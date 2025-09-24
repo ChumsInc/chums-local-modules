@@ -23,4 +23,4 @@ export declare function loadValidation(req: Request): Promise<UserValidationResp
  *  - On success executes next()
  *  - On failure sends status 403 Forbidden, {error: 403, status: 'Forbidden'}
  */
-export declare const validateRole: (validRoles?: string | string[]) => (req: Request, res: Response, next: NextFunction) => void;
+export declare const validateRole: (validRoles?: string | string[]) => (req: Request, res: Response<unknown, ValidatedUser>, next: NextFunction) => void;

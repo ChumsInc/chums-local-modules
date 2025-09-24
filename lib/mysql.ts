@@ -1,5 +1,5 @@
-import {createPool, createConnection, PoolOptions, Pool} from 'mysql2/promise'
-export {Pool, QueryOptions, Connection, PoolConnection} from 'mysql2/promise'
+import {createPool, createConnection, type Connection, type PoolOptions, type Pool} from 'mysql2/promise'
+export type {Pool, QueryOptions, Connection, PoolConnection} from 'mysql2/promise'
 
 
 const config:PoolOptions = {
@@ -12,7 +12,7 @@ const config:PoolOptions = {
     namedPlaceholders: true,
 };
 
-export async function getConnection() {
+export async function getConnection():Promise<Connection> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {connectionLimit, ...connectionConfig} = config;
     return createConnection({...connectionConfig});

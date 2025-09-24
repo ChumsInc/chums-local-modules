@@ -4,7 +4,7 @@ import {default as fetch, Headers, type RequestInit} from 'node-fetch';
 import {basicAuth, jwtToken} from './auth.js';
 import type {GoogleJWTToken} from "./types.js";
 import {isBeforeExpiry, isLocalToken, validateToken} from './jwt-handler.js';
-import {UserJWTToken, UserValidationResponse, ValidatedUser, ValidatedUserProfile,} from "chums-types";
+import {UserJWTToken, UserValidationResponse, ValidatedUser,} from "chums-types";
 
 const debug = Debug('chums:local-modules:validate-user');
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
@@ -138,7 +138,7 @@ export async function loadValidation(req: Request): Promise<UserValidationRespon
             fetchOptions.body = JSON.stringify({token});
             headers.set('Content-Type', 'application/json');
         } else if (session) {
-            url = `${API_HOST}/api/user/validate/session/:session.json`
+            url = `${API_HOST}/api/user/v2/validate/:session.json`
                 .replace(':session', encodeURIComponent(session));
         }
 
@@ -165,8 +165,8 @@ export async function loadValidation(req: Request): Promise<UserValidationRespon
  *  - On failure sends status 403 Forbidden, {error: 403, status: 'Forbidden'}
  */
 export const validateRole = (validRoles: string | string[] = []) =>
-    (req: Request, res: Response, next: NextFunction) => {
-        const {roles = []} = res.locals.profile as ValidatedUserProfile;
+    (req: Request, res: Response<unknown, ValidatedUser>, next: NextFunction): void => {
+        const roles = res.locals.auth.profile?.roles ?? [];
         if (!Array.isArray(validRoles)) {
             validRoles = [validRoles];
         }
@@ -175,6 +175,6 @@ export const validateRole = (validRoles: string | string[] = []) =>
         if (isValid) {
             return next();
         }
-        debug('validateRole() Not Authorized', res.locals.profile.user.id, validRoles);
+        debug('validateRole() Not Authorized', res.locals.auth?.profile?.user?.id ?? '-', validRoles);
         res.status(403).json({error: 403, status: 'Forbidden'});
     }

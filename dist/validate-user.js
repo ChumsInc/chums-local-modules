@@ -126,7 +126,7 @@ export async function loadValidation(req) {
             headers.set('Content-Type', 'application/json');
         }
         else if (session) {
-            url = `${API_HOST}/api/user/validate/session/:session.json`
+            url = `${API_HOST}/api/user/v2/validate/:session.json`
                 .replace(':session', encodeURIComponent(session));
         }
         fetchOptions.headers = headers;
@@ -151,7 +151,7 @@ export async function loadValidation(req) {
  *  - On failure sends status 403 Forbidden, {error: 403, status: 'Forbidden'}
  */
 export const validateRole = (validRoles = []) => (req, res, next) => {
-    const { roles = [] } = res.locals.profile;
+    const roles = res.locals.auth.profile?.roles ?? [];
     if (!Array.isArray(validRoles)) {
         validRoles = [validRoles];
     }
@@ -160,6 +160,6 @@ export const validateRole = (validRoles = []) => (req, res, next) => {
     if (isValid) {
         return next();
     }
-    debug('validateRole() Not Authorized', res.locals.profile.user.id, validRoles);
+    debug('validateRole() Not Authorized', res.locals.auth?.profile?.user?.id ?? '-', validRoles);
     res.status(403).json({ error: 403, status: 'Forbidden' });
 };

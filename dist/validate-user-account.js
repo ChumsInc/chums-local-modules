@@ -6,6 +6,8 @@ const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:Cus
 const VALIDATE_SHIP_TO_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo-:ShipToCode';
 export async function validateUserAccount({ id, Company, ARDivisionNo, CustomerNo, ShipToCode }) {
     try {
+        // const url = '/api/user/v2/validate/user/:id/:customerKey.json'; --- prep for /api/user/v2 calls
+        // @TODO: does this need to exist? will the function below work instead?
         const url = (ShipToCode ? VALIDATE_SHIP_TO_URL : VALIDATE_URL)
             .replace(':id', encodeURIComponent(id))
             .replace(':Company', encodeURIComponent(getDBCompany(Company)))
@@ -31,6 +33,7 @@ export async function validateUserAccount({ id, Company, ARDivisionNo, CustomerN
 }
 export async function fetchCustomerValidation({ id, Company, ARDivisionNo, CustomerNo }) {
     try {
+        // const url = '/api/user/v2/validate/user/:id/:customerKey.json'; --- prep for /api/user/v2 calls
         const url = '/api/user/:id/validate/customer/:Company/:ARDivisionNo-:CustomerNo'
             .replace(':id', encodeURIComponent(id))
             .replace(':Company', encodeURIComponent(getDBCompany(Company)))

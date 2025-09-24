@@ -2,8 +2,8 @@ import Debug from 'debug';
 import {access, mkdir, readFile, rename, unlink} from 'fs/promises';
 import {constants, PathLike} from 'node:fs';
 import * as formidable from "formidable";
-import {Fields, Files} from "formidable";
-import {Request} from 'express';
+import type {Fields, Files, File} from "formidable";
+import type {Request} from 'express';
 import * as path from "node:path";
 
 
@@ -60,7 +60,7 @@ export async function loadFileContents(path: PathLike, removeFile: boolean = tru
 }
 
 
-export async function handleUpload(req: Request, options: UploadOptions = {}): Promise<formidable.File> {
+export async function handleUpload(req: Request, options: UploadOptions = {}): Promise<File> {
     if (!options) {
         options = {};
     }
