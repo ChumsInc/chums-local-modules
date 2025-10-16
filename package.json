@@ -52,7 +52,7 @@
     "dayjs": "^1.11.18",
     "debug": "^4.3.3",
     "dotenv": "^17.2.0",
-    "formidable": "^3.5.1",
+    "formidable": "^3.5.4",
     "jsonwebtoken": "^9.0.0",
     "named-placeholders": "^1.1.2",
     "node-fetch": "^3.3.2",
