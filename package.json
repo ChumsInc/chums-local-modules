@@ -34,7 +34,7 @@
     "@types/formidable": "^3.4.3",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/node-fetch": "^2.6.1",
-    "@types/nodemailer": "^6.4.4",
+    "@types/nodemailer": "^7.0.4",
     "@types/sqlstring": "^2.3.0",
     "@types/ws": "^8.5.2",
     "auto-changelog": "^2.4.0",
