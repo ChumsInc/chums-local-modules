@@ -1,6 +1,5 @@
-import { WorkSheet, WritingOptions, SheetAOAOpts } from 'xlsx';
-import { RowDataPacket } from "mysql2";
-import { Headers } from "node-fetch";
+import { type WorkSheet, type WritingOptions, type SheetAOAOpts } from 'xlsx';
+import type { RowDataPacket } from "mysql2";
 export declare const decode_cell: (address: string) => import("xlsx").CellAddress;
 export declare const encode_cell: (cell: import("xlsx").CellAddress) => string;
 export declare const aoa_to_sheet: {

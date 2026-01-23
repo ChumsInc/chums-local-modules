@@ -1,10 +1,10 @@
 import Debug from 'debug';
 import {createTransport} from 'nodemailer';
-import {SentMessageInfo} from "nodemailer/lib/smtp-transport/index.js";
-import {Attachment} from "nodemailer/lib/mailer/index.js";
+import type {SentMessageInfo} from "nodemailer/lib/smtp-transport/index.js";
+import type {Attachment} from "nodemailer/lib/mailer/index.js";
 
-export {SentMessageInfo} from 'nodemailer/lib/smtp-transport/index.js';
-export {Attachment} from "nodemailer/lib/mailer/index.js";
+export type {SentMessageInfo} from 'nodemailer/lib/smtp-transport/index.js';
+export type {Attachment} from "nodemailer/lib/mailer/index.js";
 
 const debug = Debug('chums:local-modules:mailer');
 

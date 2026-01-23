@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import fetch from 'node-fetch';
+import fetch, {} from 'node-fetch';
 import { URL } from 'node:url';
 export { Response } from 'node-fetch';
 const debug = Debug('chums:local-modules:api-fetch');

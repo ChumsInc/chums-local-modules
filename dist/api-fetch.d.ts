@@ -1,4 +1,4 @@
-import { RequestInit, Response } from 'node-fetch';
+import { type RequestInit, type Response } from 'node-fetch';
 import { URL } from 'node:url';
 export { Response } from 'node-fetch';
 export interface APIFetchOptions extends RequestInit {

@@ -1,3 +1,4 @@
+import Debug from "debug";
 import { isUserValidation } from "./validate-user.js";
 export const logPath = (debug) => (req, res, next) => {
     const { ip, method, originalUrl } = req;

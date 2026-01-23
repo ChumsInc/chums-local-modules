@@ -1,5 +1,5 @@
 import Debug from "debug";
-import {NextFunction, Request, Response} from "express";
+import type {NextFunction, Request, Response} from "express";
 
 const debug = Debug('chums:local-modules');
 

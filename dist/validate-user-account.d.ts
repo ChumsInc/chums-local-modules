@@ -1,5 +1,5 @@
-import { CustomerValidationResponse } from 'chums-types';
-export { CustomerValidationResponse } from 'chums-types';
+import type { CustomerValidationResponse } from 'chums-types';
+export type { CustomerValidationResponse } from 'chums-types';
 export interface SuccessResponse {
     success?: boolean;
 }

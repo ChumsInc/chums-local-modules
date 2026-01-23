@@ -1,2 +1,2 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 export declare const deprecationNotice: (req: Request, res: Response, next: NextFunction) => void;

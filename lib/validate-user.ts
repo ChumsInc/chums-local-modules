@@ -4,7 +4,7 @@ import {default as fetch, Headers, type RequestInit} from 'node-fetch';
 import {basicAuth, jwtToken} from './auth.js';
 import type {GoogleJWTToken} from "./types.js";
 import {isBeforeExpiry, isLocalToken, validateToken} from './jwt-handler.js';
-import {UserJWTToken, UserValidationResponse, ValidatedUser,} from "chums-types";
+import type {UserJWTToken, UserValidationResponse, ValidatedUser,} from "chums-types";
 
 const debug = Debug('chums:local-modules:validate-user');
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';

@@ -1,4 +1,4 @@
-import { PathLike } from 'node:fs';
+import { type PathLike } from 'node:fs';
 import type { File } from "formidable";
 import type { Request } from 'express';
 export declare const DEFAULT_UPLOAD_PATH: string;

@@ -1,9 +1,9 @@
-import {NextFunction, Request, Response} from 'express'
+import type {NextFunction, Request, Response} from 'express'
 import Debug from "debug";
-import {CookieConsentChange, CookieConsentRecord, CookieConsentSettings} from "chums-types";
+import type {CookieConsentChange, CookieConsentRecord, CookieConsentSettings} from "chums-types";
 import {mysql2Pool} from "./mysql.js";
 import dayjs from 'dayjs'
-import {ResultSetHeader, RowDataPacket} from "mysql2";
+import type {ResultSetHeader, RowDataPacket} from "mysql2";
 import {randomUUID} from "node:crypto";
 
 const debug = Debug('chums:local-modules:cookie-consent');

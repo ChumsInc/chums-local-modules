@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import Debug from "debug";
-import { ValidatedUser } from "chums-types";
+import type { ValidatedUser } from "chums-types";
 export declare const logPath: (debug: Debug.Debugger) => (req: Request, res: Response<unknown, Partial<ValidatedUser>>, next: NextFunction) => void;

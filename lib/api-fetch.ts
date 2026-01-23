@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import fetch, {RequestInit, Response} from 'node-fetch';
+import fetch, {type RequestInit, type Response} from 'node-fetch';
 import {URL} from 'node:url'
 
 export {Response} from 'node-fetch'

@@ -1,6 +1,6 @@
-import {JwtPayload} from "jsonwebtoken";
-import {UserValidationResponse} from "chums-types";
-export {ValidatedUser} from 'chums-types'
+import type {JwtPayload} from "jsonwebtoken";
+import type {UserValidationResponse} from "chums-types";
+export type {ValidatedUser} from 'chums-types'
 
 
 export interface UserValidation extends UserValidationResponse{

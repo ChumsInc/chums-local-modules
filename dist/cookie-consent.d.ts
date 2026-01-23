@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
-import { CookieConsentChange, CookieConsentRecord } from "chums-types";
-import { RowDataPacket } from "mysql2";
+import type { NextFunction, Request, Response } from 'express';
+import type { CookieConsentChange, CookieConsentRecord } from "chums-types";
+import type { RowDataPacket } from "mysql2";
 /**
  * A globally accessible name for the cookie that stores the cookie consent uuid
  */

@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import jwt from 'jsonwebtoken';
+import jwt, {} from 'jsonwebtoken';
 const debug = Debug('chums:local-modules:jwt-handler');
 const { JWT_ISSUER = 'NOT THE ISSUER', JWT_SECRET = 'NOT THE SECRET' } = process.env;
 const ERR_TOKEN_EXPIRED = 'TokenExpiredError';

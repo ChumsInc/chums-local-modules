@@ -1,5 +1,7 @@
 import Debug from 'debug';
 import { WebSocketServer } from 'ws';
+import { IncomingMessage } from 'node:http';
+import { Socket } from "node:net";
 import { default as fetch, Headers } from "node-fetch";
 import * as cookie from 'cookie';
 const debug = Debug('chums:local-modules:websockets');

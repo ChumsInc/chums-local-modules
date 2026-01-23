@@ -1,8 +1,9 @@
 import Debug from 'debug';
 import {apiFetch} from './api-fetch.js';
 import {getDBCompany} from './utils.js';
-import {CustomerValidationResponse} from 'chums-types'
-export {CustomerValidationResponse} from 'chums-types'
+import type {CustomerValidationResponse} from 'chums-types'
+
+export type {CustomerValidationResponse} from 'chums-types'
 
 const debug = Debug('chums:local-modules:validate-user-account');
 const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo';
@@ -11,6 +12,7 @@ const VALIDATE_SHIP_TO_URL = '/api/user/:id/validate/account/:Company/:ARDivisio
 export interface SuccessResponse {
     success?: boolean;
 }
+
 /**
  *
  * @param {string|number} id - User ID
@@ -28,7 +30,13 @@ export interface ValidateUserAccountProps {
     ShipToCode?: string;
 }
 
-export async function validateUserAccount({id, Company, ARDivisionNo, CustomerNo, ShipToCode}: ValidateUserAccountProps) {
+export async function validateUserAccount({
+                                              id,
+                                              Company,
+                                              ARDivisionNo,
+                                              CustomerNo,
+                                              ShipToCode
+                                          }: ValidateUserAccountProps) {
     try {
         // const url = '/api/user/v2/validate/user/:id/:customerKey.json'; --- prep for /api/user/v2 calls
         // @TODO: does this need to exist? will the function below work instead?
@@ -55,7 +63,12 @@ export async function validateUserAccount({id, Company, ARDivisionNo, CustomerNo
     }
 }
 
-export async function fetchCustomerValidation({id, Company, ARDivisionNo, CustomerNo}:ValidateUserAccountProps):Promise<CustomerValidationResponse> {
+export async function fetchCustomerValidation({
+                                                  id,
+                                                  Company,
+                                                  ARDivisionNo,
+                                                  CustomerNo
+                                              }: ValidateUserAccountProps): Promise<CustomerValidationResponse> {
     try {
         // const url = '/api/user/v2/validate/user/:id/:customerKey.json'; --- prep for /api/user/v2 calls
         const url = '/api/user/:id/validate/customer/:Company/:ARDivisionNo-:CustomerNo'
@@ -69,7 +82,7 @@ export async function fetchCustomerValidation({id, Company, ARDivisionNo, Custom
             return Promise.reject(new Error(`Error ${res.status}: ${res.statusText}`));
         }
         return await res.json() as CustomerValidationResponse;
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             debug("validateUserCustomerAccess()", err.message);
             return Promise.reject(err);

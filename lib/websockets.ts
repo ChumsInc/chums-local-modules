@@ -1,11 +1,11 @@
 import Debug from 'debug';
-import {ServerOptions, type WebSocket, WebSocketServer} from 'ws';
+import {type ServerOptions, type WebSocket, WebSocketServer} from 'ws';
 import {IncomingMessage} from 'node:http';
 import {Socket} from "node:net";
-import {UserValidation} from "./types.js";
-import {default as fetch, Headers, RequestInit} from "node-fetch";
+import type {UserValidation} from "./types.js";
+import {default as fetch, Headers, type RequestInit} from "node-fetch";
 import * as cookie from 'cookie';
-import {ValidatedUserProfile} from "chums-types";
+import type {ValidatedUserProfile} from "chums-types";
 
 const debug = Debug('chums:local-modules:websockets');
 

@@ -1,6 +1,6 @@
 import Debug from 'debug';
 import {access, mkdir, readFile, rename, unlink} from 'fs/promises';
-import {constants, PathLike} from 'node:fs';
+import {constants, type PathLike} from 'node:fs';
 import * as formidable from "formidable";
 import type {Fields, Files, File} from "formidable";
 import type {Request} from 'express';

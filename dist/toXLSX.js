@@ -1,6 +1,5 @@
 import Debug from 'debug';
 import { utils, write } from 'xlsx';
-import { Headers } from "node-fetch";
 const debug = Debug('chums:local-modules:toXLSX');
 export const decode_cell = utils.decode_cell;
 export const encode_cell = utils.encode_cell;
