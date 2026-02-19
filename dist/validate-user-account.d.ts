@@ -14,11 +14,11 @@ export interface ValidateUserAccountProps {
     ShipToCode?: string | null;
 }
 /**
- * @oaram {ValidateUserAccountProps} customer
- * @param {string|number} customer.id - User ID
- * @param {string} customer.ARDivisionNo Customer AR Division Number
- * @param {string} customer.CustomerNo Customer Account Number
- * @param {string} [customer.ShipToCode] Customer Ship To Code
+ * @oaram {ValidateUserAccountProps}
+ * @param {string|number} id - User ID
+ * @param {string} ARDivisionNo Customer AR Division Number
+ * @param {string} CustomerNo Customer Account Number
+ * @param {string} [ShipToCode] Customer Ship To Code
  * @returns {Promise<boolean>}
  */
 export declare function validateUserAccount({ id, ARDivisionNo, CustomerNo, ShipToCode }: ValidateUserAccountProps): Promise<boolean>;
