@@ -1,22 +1,25 @@
-import type { CustomerValidationResponse } from 'chums-types';
 export type { CustomerValidationResponse } from 'chums-types';
 export interface SuccessResponse {
     success?: boolean;
 }
-/**
- *
- * @param {string|number} id - User ID
- * @param {string} Company
- * @param {string} ARDivisionNo
- * @param {string} CustomerNo
- * @returns {Promise<boolean>}
- */
+export interface ValidateCustomerAccessResponse {
+    billTo: boolean;
+    shipTo: string[];
+    canSetDefaultShipTo: boolean;
+}
 export interface ValidateUserAccountProps {
     id: string | number;
-    Company: string;
     ARDivisionNo: string;
     CustomerNo: string;
-    ShipToCode?: string;
+    ShipToCode?: string | null;
 }
-export declare function validateUserAccount({ id, Company, ARDivisionNo, CustomerNo, ShipToCode }: ValidateUserAccountProps): Promise<boolean>;
-export declare function fetchCustomerValidation({ id, Company, ARDivisionNo, CustomerNo }: ValidateUserAccountProps): Promise<CustomerValidationResponse>;
+/**
+ * @oaram {ValidateUserAccountProps} customer
+ * @param {string|number} customer.id - User ID
+ * @param {string} customer.ARDivisionNo Customer AR Division Number
+ * @param {string} customer.CustomerNo Customer Account Number
+ * @param {string} [customer.ShipToCode] Customer Ship To Code
+ * @returns {Promise<boolean>}
+ */
+export declare function validateUserAccount({ id, ARDivisionNo, CustomerNo, ShipToCode }: ValidateUserAccountProps): Promise<boolean>;
+export declare function fetchCustomerValidation({ id, ARDivisionNo, CustomerNo, ShipToCode, }: ValidateUserAccountProps): Promise<ValidateCustomerAccessResponse>;

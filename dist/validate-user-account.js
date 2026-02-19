@@ -1,26 +1,21 @@
 import Debug from 'debug';
 import { apiFetch } from './api-fetch.js';
-import { getDBCompany } from './utils.js';
 const debug = Debug('chums:local-modules:validate-user-account');
-const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo';
+// const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo';
+const VALIDATE_URL = '/api/user/v2/validate/user/:id/:customerKey.json';
 const VALIDATE_SHIP_TO_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo-:ShipToCode';
-export async function validateUserAccount({ id, Company, ARDivisionNo, CustomerNo, ShipToCode }) {
+/**
+ * @oaram {ValidateUserAccountProps} customer
+ * @param {string|number} customer.id - User ID
+ * @param {string} customer.ARDivisionNo Customer AR Division Number
+ * @param {string} customer.CustomerNo Customer Account Number
+ * @param {string} [customer.ShipToCode] Customer Ship To Code
+ * @returns {Promise<boolean>}
+ */
+export async function validateUserAccount({ id, ARDivisionNo, CustomerNo, ShipToCode }) {
     try {
-        // const url = '/api/user/v2/validate/user/:id/:customerKey.json'; --- prep for /api/user/v2 calls
-        // @TODO: does this need to exist? will the function below work instead?
-        const url = (ShipToCode ? VALIDATE_SHIP_TO_URL : VALIDATE_URL)
-            .replace(':id', encodeURIComponent(id))
-            .replace(':Company', encodeURIComponent(getDBCompany(Company)))
-            .replace(':ARDivisionNo', encodeURIComponent(ARDivisionNo))
-            .replace(':CustomerNo', encodeURIComponent(CustomerNo))
-            .replace(':ShipToCode', encodeURIComponent(ShipToCode ?? ''));
-        const res = await apiFetch(url, { referrer: 'chums:local-modules:validate-user-account' });
-        if (!res.ok) {
-            debug('validateAccount()', res.status, res.statusText);
-            return Promise.reject(new Error(`Error ${res.status}: ${res.statusText}`));
-        }
-        const response = await res.json();
-        return response.success === true;
+        const response = await fetchCustomerValidation({ id, ARDivisionNo, CustomerNo, ShipToCode });
+        return response.billTo || response.shipTo.includes(ShipToCode ?? '');
     }
     catch (err) {
         if (err instanceof Error) {
@@ -31,14 +26,15 @@ export async function validateUserAccount({ id, Company, ARDivisionNo, CustomerN
         return Promise.reject(err);
     }
 }
-export async function fetchCustomerValidation({ id, Company, ARDivisionNo, CustomerNo }) {
+export async function fetchCustomerValidation({ id, ARDivisionNo, CustomerNo, ShipToCode, }) {
     try {
-        // const url = '/api/user/v2/validate/user/:id/:customerKey.json'; --- prep for /api/user/v2 calls
-        const url = '/api/user/:id/validate/customer/:Company/:ARDivisionNo-:CustomerNo'
-            .replace(':id', encodeURIComponent(id))
-            .replace(':Company', encodeURIComponent(getDBCompany(Company)))
-            .replace(':ARDivisionNo', encodeURIComponent(ARDivisionNo))
-            .replace(':CustomerNo', encodeURIComponent(CustomerNo));
+        const customerSlugParts = [ARDivisionNo, CustomerNo];
+        if (ShipToCode) {
+            customerSlugParts.push(ShipToCode);
+        }
+        const customerSlug = customerSlugParts.join('-');
+        const url = '/api/user/v2/validate/user/:id/:customerKey.json'
+            .replace(':id', encodeURIComponent(id)).replace(':customerKey', encodeURIComponent(customerSlug));
         const res = await apiFetch(url, { referrer: 'chums:chums-base:validate-user:validateUserCustomerAccess' });
         if (!res.ok) {
             debug('validateAccount()', res.status, res.statusText);
