@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/ChumsInc/chums-local-modules#readme",
   "devDependencies": {
-    "@eslint/js": "^9.11.1",
+    "@eslint/js": "^10.0.1",
     "@tsconfig/node18": "^18.2.2",
     "@tsconfig/node24": "^24.0.4",
     "@types/cookie": "^0.6.0",
@@ -40,7 +40,7 @@
     "@types/sqlstring": "^2.3.0",
     "@types/ws": "^8.5.2",
     "auto-changelog": "^2.4.0",
-    "eslint": "^9.11.1",
+    "eslint": "^10.0.0",
     "globals": "^17.1.0",
     "mysql2": ">=3.9.7",
     "rimraf": "^6.0.1",
@@ -58,7 +58,7 @@
     "jsonwebtoken": "^9.0.0",
     "named-placeholders": "^1.1.2",
     "node-fetch": "^3.3.2",
-    "nodemailer": "^7.0.5",
+    "nodemailer": "^8.0.1",
     "sqlstring": "^2.3.2",
     "ws": "^8.5.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
