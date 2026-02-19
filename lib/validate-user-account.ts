@@ -1,13 +1,9 @@
 import Debug from 'debug';
 import {apiFetch} from './api-fetch.js';
-import type {CustomerValidationResponse} from 'chums-types'
 
 export type {CustomerValidationResponse} from 'chums-types'
 
 const debug = Debug('chums:local-modules:validate-user-account');
-// const VALIDATE_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo';
-const VALIDATE_URL = '/api/user/v2/validate/user/:id/:customerKey.json';
-const VALIDATE_SHIP_TO_URL = '/api/user/:id/validate/account/:Company/:ARDivisionNo-:CustomerNo-:ShipToCode';
 
 export interface SuccessResponse {
     success?: boolean;
