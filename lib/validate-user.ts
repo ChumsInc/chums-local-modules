@@ -125,7 +125,7 @@ export async function loadValidation(req: Request): Promise<UserValidationRespon
         const fetchOptions: RequestInit = {};
         const headers = new Headers();
         headers.set('X-Forwarded-For', req.ip ?? 'unknown');
-        headers.set('referrer', req.get('referrer') || req.get('referer') || req.originalUrl);
+        headers.set('referer', req.get('referer') || req.get('referrer') || req.originalUrl);
 
         let url = `${API_HOST}/api/user/validate.json`;
 
