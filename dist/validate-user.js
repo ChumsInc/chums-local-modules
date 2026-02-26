@@ -113,7 +113,7 @@ export async function loadValidation(req) {
         const fetchOptions = {};
         const headers = new Headers();
         headers.set('X-Forwarded-For', req.ip ?? 'unknown');
-        headers.set('referrer', req.get('referrer') || req.originalUrl);
+        headers.set('referrer', req.get('referrer') || req.get('referer') || req.originalUrl);
         let url = `${API_HOST}/api/user/validate.json`;
         if (!!user && !!pass) {
             const credentials = Buffer.from(`${user}:${pass}`).toString('base64');
