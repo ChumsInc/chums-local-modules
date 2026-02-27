@@ -14,7 +14,7 @@ export const xlsxMimeType = 'application/vnd.openxmlformats-officedocument.sprea
 
 
 export type ColumnNames<T = RowDataPacket> = {
-    [key in keyof T]: string;
+    [key in keyof T]?: string;
 };
 
 export interface WorkBookSheets {
