@@ -84,6 +84,12 @@ export function isUserValidation(auth) {
 export function getUserValidation(res) {
     return isUserValidation(res.locals.auth) ? res.locals.auth : null;
 }
+export function isValidatedApiUser(arg) {
+    return !!arg && arg?.user?.clientId !== undefined;
+}
+export function isValidatedUser(arg) {
+    return !!arg && arg?.user?.email !== undefined;
+}
 /**
  * Executes validation request
  *  - validates JWT token from Authorization header "Bearer asdasd...asd" (from a standalone/web app)

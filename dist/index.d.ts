@@ -9,7 +9,7 @@ export { resultToExcelSheet, buildXLSXHeaders, buildWorkBook, addResultToExcelSh
 export type { WorkBookSheets, ColumnNames, SheetAOAOpts, WorkSheet, WritingOptions } from './toXLSX.d.ts';
 export { getDBCompany, getSageCompany, parseSQL } from './utils.js';
 export type { ParseSQLParams } from './utils.d.ts';
-export { getUserValidation, loadValidation, preValidateUser, requireLogin, validateUser, validateRole, } from './validate-user.js';
+export { getUserValidation, loadValidation, preValidateUser, requireLogin, validateUser, validateRole, isValidatedApiUser, isValidatedUser, isUserValidation, } from './validate-user.js';
 export { validateUserAccount, fetchCustomerValidation, } from './validate-user-account.js';
 export type { ValidateUserAccountProps, CustomerValidationResponse, SuccessResponse } from './validate-user-account.d.ts';
 export { webSocketServer, loadSocketValidation } from './websockets.js';

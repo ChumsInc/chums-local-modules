@@ -35,6 +35,9 @@ export {
     requireLogin,
     validateUser,
     validateRole,
+    isValidatedApiUser,
+    isValidatedUser,
+    isUserValidation,
 } from './validate-user.js';
 
 export {

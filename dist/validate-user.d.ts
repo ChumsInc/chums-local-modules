@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import type { UserValidationResponse, ValidatedUser } from "chums-types";
+import type { UserValidationResponse, ValidatedAPIProfile, ValidatedUser, ValidatedUserProfile } from "chums-types";
 /**
  * Requests validation from CHUMS /api/user service
  * - On success populates res.locals.profile = {user, roles, accounts} and executes next()
@@ -11,6 +11,8 @@ export declare function preValidateUser(req: Request, res: Response<unknown, Val
 export declare function requireLogin(req: Request, res: Response<unknown, ValidatedUser>, next: NextFunction): Promise<void>;
 export declare function isUserValidation(auth: UserValidationResponse | unknown): auth is UserValidationResponse;
 export declare function getUserValidation(res: Response): UserValidationResponse | null;
+export declare function isValidatedApiUser(arg: ValidatedUserProfile | ValidatedAPIProfile | null): arg is ValidatedAPIProfile;
+export declare function isValidatedUser(arg: ValidatedUserProfile | ValidatedAPIProfile | null): arg is ValidatedUserProfile;
 /**
  * Executes validation request
  *  - validates JWT token from Authorization header "Bearer asdasd...asd" (from a standalone/web app)

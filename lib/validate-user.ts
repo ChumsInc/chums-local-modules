@@ -4,7 +4,13 @@ import {default as fetch, Headers, type RequestInit} from 'node-fetch';
 import {basicAuth, jwtToken} from './auth.js';
 import type {GoogleJWTToken} from "./types.js";
 import {isBeforeExpiry, isLocalToken, validateToken} from './jwt-handler.js';
-import type {UserJWTToken, UserValidationResponse, ValidatedUser,} from "chums-types";
+import type {
+    APIUserProfile,
+    UserJWTToken,
+    UserValidationResponse, ValidatedAPIProfile,
+    ValidatedUser,
+    ValidatedUserProfile,
+} from "chums-types";
 
 const debug = Debug('chums:local-modules:validate-user');
 const API_HOST = process.env.CHUMS_API_HOST || 'http://localhost';
@@ -92,6 +98,14 @@ export function isUserValidation(auth: UserValidationResponse | unknown): auth i
 
 export function getUserValidation(res: Response): UserValidationResponse | null {
     return isUserValidation(res.locals.auth) ? res.locals.auth : null;
+}
+
+export function isValidatedApiUser(arg:ValidatedUserProfile|ValidatedAPIProfile|null): arg is ValidatedAPIProfile {
+    return !!arg && (arg as ValidatedAPIProfile)?.user?.clientId !== undefined;
+}
+
+export function isValidatedUser(arg:ValidatedUserProfile|ValidatedAPIProfile|null): arg is ValidatedUserProfile {
+    return !!arg && (arg as ValidatedUserProfile)?.user?.email !== undefined;
 }
 
 /**
