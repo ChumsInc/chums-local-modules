@@ -11,7 +11,7 @@ export interface APIFetchOptions extends RequestInit {
     referrer?: string;
 }
 /**
- * Makes a request to an API, defaults to chums intranet API if not including options.headers.Authorization
+ * Makes a request to an API, defaults to CHUMS Intranet API if not including options.headers.Authorization
  *
  */
 export declare function apiFetch(url?: string | URL, options?: APIFetchOptions): Promise<Response>;
