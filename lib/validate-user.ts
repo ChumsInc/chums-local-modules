@@ -5,9 +5,9 @@ import {basicAuth, jwtToken} from './auth.js';
 import type {GoogleJWTToken} from "./types.js";
 import {isBeforeExpiry, isLocalToken, validateToken} from './jwt-handler.js';
 import type {
-    APIUserProfile,
     UserJWTToken,
-    UserValidationResponse, ValidatedAPIProfile,
+    UserValidationResponse,
+    ValidatedAPIProfile,
     ValidatedUser,
     ValidatedUserProfile,
 } from "chums-types";
@@ -100,11 +100,11 @@ export function getUserValidation(res: Response): UserValidationResponse | null 
     return isUserValidation(res.locals.auth) ? res.locals.auth : null;
 }
 
-export function isValidatedApiUser(arg:ValidatedUserProfile|ValidatedAPIProfile|null): arg is ValidatedAPIProfile {
+export function isValidatedApiUser(arg: ValidatedUserProfile | ValidatedAPIProfile | null): arg is ValidatedAPIProfile {
     return !!arg && (arg as ValidatedAPIProfile)?.user?.clientId !== undefined;
 }
 
-export function isValidatedUser(arg:ValidatedUserProfile|ValidatedAPIProfile|null): arg is ValidatedUserProfile {
+export function isValidatedUser(arg: ValidatedUserProfile | ValidatedAPIProfile | null): arg is ValidatedUserProfile {
     return !!arg && (arg as ValidatedUserProfile)?.user?.email !== undefined;
 }
 
@@ -141,7 +141,7 @@ export async function loadValidation(req: Request): Promise<UserValidationRespon
         headers.set('X-Forwarded-For', req.ip ?? 'unknown');
         headers.set('referer', req.get('referer') || req.get('referrer') || req.originalUrl);
 
-        let url = `${API_HOST}/api/user/validate.json`;
+        let url = `${API_HOST}/api/user/v2/validate.json`;
 
         if (!!user && !!pass) {
             const credentials = Buffer.from(`${user}:${pass}`).toString('base64');
