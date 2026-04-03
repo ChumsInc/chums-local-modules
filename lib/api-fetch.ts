@@ -23,7 +23,7 @@ export interface APIFetchOptions extends RequestInit {
 
 
 /**
- * Makes a request to an API, defaults to chums intranet API if not including options.headers.Authorization
+ * Makes a request to an API, defaults to CHUMS Intranet API if not including options.headers.Authorization
  *
  */
 export async function apiFetch(url: string | URL = '', options: APIFetchOptions = {}): Promise<Response> {
