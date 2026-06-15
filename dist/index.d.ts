@@ -3,7 +3,7 @@ export type { Response, APIFetchOptions } from './api-fetch.d.ts';
 export { deprecationNotice } from './deprecation-notice.js';
 export { sendEmail, sendGmail, getLogoImageAttachment, getTs, getTs36 } from './mailer.js';
 export type { sendMailProps, Address } from './mailer.d.ts';
-export { mysql2Pool, mysql2Pool as pool, getConnection } from './mysql.js';
+export { mysql2Pool, mysql2Pool as pool, getConnection, getPool } from './mysql.js';
 export type { Pool, QueryOptions, PoolConnection, Connection } from './mysql.d.ts';
 export { resultToExcelSheet, buildXLSXHeaders, buildWorkBook, addResultToExcelSheet, parseDataForAOA, aoa_to_sheet, json_to_sheet, sheet_add_json, sheet_add_aoa, xlsxMimeType, encode_cell, decode_cell } from './toXLSX.js';
 export type { WorkBookSheets, ColumnNames, SheetAOAOpts, WorkSheet, WritingOptions } from './toXLSX.d.ts';

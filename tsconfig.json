@@ -5,6 +5,7 @@
     "declaration": true,
     "emitDeclarationOnly": false,
     "outDir": "dist",
+    "rootDir": "lib",
     "verbatimModuleSyntax": true
   },
   "exclude": [

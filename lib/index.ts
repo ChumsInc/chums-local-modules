@@ -6,7 +6,7 @@ export {deprecationNotice} from './deprecation-notice.js';
 export {sendEmail, sendGmail, getLogoImageAttachment, getTs, getTs36} from './mailer.js';
 export type {sendMailProps, Address} from './mailer.d.ts';
 
-export {mysql2Pool, mysql2Pool as pool, getConnection} from './mysql.js';
+export {mysql2Pool, mysql2Pool as pool, getConnection, getPool} from './mysql.js';
 export type {Pool, QueryOptions, PoolConnection, Connection} from './mysql.d.ts';
 
 export {

@@ -1,6 +1,5 @@
 import { createPool, createConnection } from 'mysql2/promise';
-const config = {
-    connectionLimit: Number(process.env.MYSQL_POOL_LIMIT) || 5,
+const connectionConfig = {
     host: process.env.MYSQL_SERVER || '',
     port: Number(process.env.MYSQL_PORT || 3306),
     user: process.env.MYSQL_USERNAME || '',
@@ -8,8 +7,14 @@ const config = {
     database: process.env.MYSQL_DB || '',
     namedPlaceholders: true,
 };
-export async function getConnection() {
-    const { connectionLimit, ...connectionConfig } = config;
-    return createConnection({ ...connectionConfig });
+const poolConfig = {
+    connectionLimit: Number(process.env.MYSQL_POOL_LIMIT) || 5,
+    ...connectionConfig
+};
+export async function getConnection(options) {
+    return createConnection({ ...connectionConfig, ...options });
 }
-export const mysql2Pool = createPool({ ...config });
+export const mysql2Pool = createPool({ ...poolConfig });
+export async function getPool(options) {
+    return createPool({ ...poolConfig, ...options });
+}
