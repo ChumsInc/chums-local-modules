@@ -34,7 +34,7 @@
     "@types/express": "^5.0.0",
     "@types/formidable": "^3.4.3",
     "@types/jsonwebtoken": "^9.0.0",
-    "@types/node": "^25.0.10",
+    "@types/node": "^26.0.0",
     "@types/node-fetch": "^2.6.1",
     "@types/nodemailer": "^8.0.1",
     "@types/sqlstring": "^2.3.0",
@@ -58,7 +58,7 @@
     "jsonwebtoken": "^9.0.0",
     "named-placeholders": "^1.1.2",
     "node-fetch": "^3.3.2",
-    "nodemailer": "^8.0.11",
+    "nodemailer": "^9.0.1",
     "sqlstring": "^2.3.2",
     "ws": "^8.5.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
