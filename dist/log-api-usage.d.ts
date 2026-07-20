@@ -1,0 +1,11 @@
+import type { NextFunction, Request, Response } from "express";
+import type { ValidatedUser } from "chums-types";
+export interface LogApiUsageProps {
+    path: string;
+    params: string | null;
+    method: string;
+    userId: number | null;
+    referrer: string | null;
+}
+export declare function logApiUsage(props: LogApiUsageProps): Promise<void>;
+export declare function logAPIUsageMiddleware(req: Request, res: Response<unknown, ValidatedUser>, next: NextFunction): Promise<void>;

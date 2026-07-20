@@ -66,7 +66,7 @@ export function webSocketServer() {
  */
 export async function loadSocketValidation(message) {
     try {
-        const cookies = cookie.parse(message.headers.cookie || '');
+        const cookies = cookie.parseCookie(message.headers.cookie || '');
         if (!cookies.PHPSESSID) {
             const error = new Error('Only cookie sessions can be validated');
             error.name = VALIDATION_ERROR;
