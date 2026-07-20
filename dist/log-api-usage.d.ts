@@ -9,4 +9,4 @@ export interface LogApiUsageProps {
     referrer: string | null;
 }
 export declare function logApiUsage(props: LogApiUsageProps): Promise<void>;
-export declare const logAPIUsageMiddleware: (api: string) => (req: Request, res: Response<unknown, ValidatedUser>, next: NextFunction) => Promise<void>;
+export declare function logAPIUsageMiddleware(api: string): (req: Request, res: Response<unknown, ValidatedUser>, next: NextFunction) => Promise<void>;

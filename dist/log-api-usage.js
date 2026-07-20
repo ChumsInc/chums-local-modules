@@ -23,24 +23,26 @@ export async function logApiUsage(props) {
         return Promise.reject(new Error('Error in logApiUsage()'));
     }
 }
-export const logAPIUsageMiddleware = (api) => async (req, res, next) => {
-    try {
-        const [path, params] = req.originalUrl.split('?');
-        const props = {
-            api,
-            path: path ?? req.originalUrl,
-            params: params ?? null,
-            method: req.method,
-            userId: res.locals.profile?.user?.id ?? 0,
-            referrer: req.get('Referrer') ?? null,
-        };
-        await logApiUsage(props);
-        next();
-    }
-    catch (err) {
-        if (err instanceof Error) {
-            debug("logAPIUsageMiddleware()", err.message);
+export function logAPIUsageMiddleware(api) {
+    return async (req, res, next) => {
+        try {
+            const [path, params] = req.originalUrl.split('?');
+            const props = {
+                api,
+                path: path ?? req.originalUrl,
+                params: params ?? null,
+                method: req.method,
+                userId: res.locals.profile?.user?.id ?? 0,
+                referrer: req.get('Referrer') ?? null,
+            };
+            await logApiUsage(props);
+            next();
         }
-        next();
-    }
-};
+        catch (err) {
+            if (err instanceof Error) {
+                debug("logAPIUsageMiddleware()", err.message);
+            }
+            next();
+        }
+    };
+}
