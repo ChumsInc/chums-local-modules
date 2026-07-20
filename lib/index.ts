@@ -87,3 +87,5 @@ export type {
     SaveOptOutUserProps,
     LoadCookieConsentProps,
 } from './cookie-consent.js'
+
+export {logAPIUsageMiddleware, logApiUsage, type LogApiUsageProps} from './log-api-usage.js';
