@@ -8,25 +8,27 @@ const debug = Debug('chums:local-modules:log-api-usage');
 
 
 export interface LogApiUsageProps {
+    api: string;
     path: string;
-    params: string|null;
+    params: string | null;
     method: string;
-    userId: number|null;
-    referrer: string|null;
+    userId: number | null;
+    referrer: string | null;
 }
 
-export async function logApiUsage(props:LogApiUsageProps):Promise<void> {
+export async function logApiUsage(props: LogApiUsageProps): Promise<void> {
     try {
-        const sql = `INSERT INTO users.api_usage_history (path, params, method, user_id, referrer)
-                     VALUES (:path, :params, :method, :userId, :referrer)`;
+        const sql = `INSERT INTO users.api_usage_history (api, path, params, method, user_id, referrer)
+                     VALUES (:api, :path, :params, :method, :userId, :referrer)`;
         await mysql2Pool.query<ResultSetHeader>(sql, {
+            api: props.api,
             path: props.path,
             params: props.params,
             method: props.method,
             userId: props.userId ?? null,
             referrer: props.referrer ?? null,
         });
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             debug("logApiUsage()", err.message);
             return Promise.reject(err);
@@ -36,10 +38,12 @@ export async function logApiUsage(props:LogApiUsageProps):Promise<void> {
     }
 }
 
-export async function logAPIUsageMiddleware(req:Request, res:Response<unknown, ValidatedUser>, next:NextFunction):Promise<void> {
+
+export const logAPIUsageMiddleware = (api: string) => async (req: Request, res: Response<unknown, ValidatedUser>, next: NextFunction) => {
     try {
         const [path, params] = req.originalUrl.split('?');
-        const props:LogApiUsageProps = {
+        const props: LogApiUsageProps = {
+            api,
             path: path ?? req.originalUrl,
             params: params ?? null,
             method: req.method,
@@ -48,7 +52,7 @@ export async function logAPIUsageMiddleware(req:Request, res:Response<unknown, V
         }
         await logApiUsage(props);
         next();
-    } catch(err:unknown) {
+    } catch (err: unknown) {
         if (err instanceof Error) {
             debug("logAPIUsageMiddleware()", err.message);
         }
