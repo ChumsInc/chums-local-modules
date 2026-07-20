@@ -50,7 +50,7 @@
   "typings": "./dist/index.d.ts",
   "dependencies": {
     "chums-types": "github:ChumsInc/chums-types",
-    "cookie": "^1.0.0",
+    "cookie": "^2.0.1",
     "dayjs": "^1.11.18",
     "debug": "^4.3.3",
     "dotenv": "^17.2.0",
