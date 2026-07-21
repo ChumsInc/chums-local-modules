@@ -15,6 +15,7 @@ const connectionConfig:ConnectionOptions = {
     password: process.env.MYSQL_PASSWORD || '',
     database: process.env.MYSQL_DB || '',
     namedPlaceholders: true,
+    jsonStrings: (process.env.MYSQL_JSON_STRINGS ?? '').toLowerCase() === 'true',
 }
 
 const poolConfig:PoolOptions = {

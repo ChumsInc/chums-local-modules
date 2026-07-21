@@ -5,6 +5,7 @@ import {mysql2Pool} from "./mysql.js";
 import dayjs from 'dayjs'
 import type {ResultSetHeader, RowDataPacket} from "mysql2";
 import {randomUUID} from "node:crypto";
+import process from 'node:process';
 
 const debug = Debug('chums:local-modules:cookie-consent');
 
@@ -248,17 +249,24 @@ export async function loadCookieConsent(props: LoadCookieConsentProps): Promise<
             uuid: props.uuid ?? null,
             userId: props.userId ?? null,
         }
-        const [rows] = await mysql2Pool.query<CookieConsentRow[]>(sql, args);
+        const [rows] = await mysql2Pool.query<(CookieConsentRow | CookieConsentJSONRow)[]>(sql, args);
         if (rows.length === 0) {
             return null;
         }
         const row = rows[0];
+        if (isCookieConsentJSONRow(row)) {
+            return {
+                ...row,
+                gpc: row.gpc === 1,
+            }
+        }
         return {
             ...row,
             preferences: JSON.parse(row.preferences),
             gpc: !!row.gpc,
             changes: JSON.parse(row.changes),
         }
+
     } catch (err: unknown) {
         if (err instanceof Error) {
             debug("loadCookieConsent()", err.message);
@@ -267,6 +275,10 @@ export async function loadCookieConsent(props: LoadCookieConsentProps): Promise<
         debug("loadCookieConsent()", err);
         return Promise.reject(new Error('Error in loadCookieConsent()'));
     }
+}
+
+function isCookieConsentJSONRow(row:CookieConsentRow|CookieConsentJSONRow):row is CookieConsentJSONRow {
+    return typeof row.preferences === 'object';
 }
 
 /**
@@ -297,6 +309,10 @@ export interface SaveCookieConsentProps extends Pick<CookieConsentRecord, 'ipAdd
 export interface CookieConsentRow extends Omit<CookieConsentRecord, 'preferences' | 'changes' | 'gpc'>, RowDataPacket {
     preferences: string;
     changes: string;
+    gpc: number;
+}
+
+export interface CookieConsentJSONRow extends Omit<CookieConsentRecord, 'gpc'>, RowDataPacket {
     gpc: number;
 }
 

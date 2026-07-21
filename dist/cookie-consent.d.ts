@@ -64,4 +64,7 @@ export interface CookieConsentRow extends Omit<CookieConsentRecord, 'preferences
     changes: string;
     gpc: number;
 }
+export interface CookieConsentJSONRow extends Omit<CookieConsentRecord, 'gpc'>, RowDataPacket {
+    gpc: number;
+}
 export type SaveOptOutUserProps = Pick<SaveCookieConsentProps, 'uuid' | 'userId' | 'url' | 'ipAddress'>;

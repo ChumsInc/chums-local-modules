@@ -2,6 +2,7 @@ import Debug from "debug";
 import { mysql2Pool } from "./mysql.js";
 import dayjs from 'dayjs';
 import { randomUUID } from "node:crypto";
+import process from 'node:process';
 const debug = Debug('chums:local-modules:cookie-consent');
 /**
  * A globally accessible name for the cookie that stores the cookie consent uuid
@@ -237,6 +238,12 @@ export async function loadCookieConsent(props) {
             return null;
         }
         const row = rows[0];
+        if (isCookieConsentJSONRow(row)) {
+            return {
+                ...row,
+                gpc: row.gpc === 1,
+            };
+        }
         return {
             ...row,
             preferences: JSON.parse(row.preferences),
@@ -252,6 +259,9 @@ export async function loadCookieConsent(props) {
         debug("loadCookieConsent()", err);
         return Promise.reject(new Error('Error in loadCookieConsent()'));
     }
+}
+function isCookieConsentJSONRow(row) {
+    return typeof row.preferences === 'object';
 }
 /**
  * Returns the status of the preferences based on the preferences

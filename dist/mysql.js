@@ -6,6 +6,7 @@ const connectionConfig = {
     password: process.env.MYSQL_PASSWORD || '',
     database: process.env.MYSQL_DB || '',
     namedPlaceholders: true,
+    jsonStrings: (process.env.MYSQL_JSON_STRINGS ?? '').toLowerCase() === 'true',
 };
 const poolConfig = {
     connectionLimit: Number(process.env.MYSQL_POOL_LIMIT) || 5,
