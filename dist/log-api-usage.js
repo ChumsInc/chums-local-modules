@@ -29,7 +29,7 @@ export function logAPIUsageMiddleware(api) {
             const params = { ...req.params, ...req.query };
             const props = {
                 api,
-                path: req.route.path,
+                path: req.route?.path ?? '',
                 params: JSON.stringify(params),
                 method: req.method,
                 userId: res.locals.profile?.user?.id ?? 0,
