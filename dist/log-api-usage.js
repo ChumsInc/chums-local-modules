@@ -26,11 +26,11 @@ export async function logApiUsage(props) {
 export function logAPIUsageMiddleware(api) {
     return async (req, res, next) => {
         try {
-            const [path, params] = req.originalUrl.split('?');
+            const params = { ...req.params, ...req.query };
             const props = {
                 api,
-                path: path ?? req.originalUrl,
-                params: params ?? null,
+                path: req.route.path,
+                params: JSON.stringify(params),
                 method: req.method,
                 userId: res.locals.profile?.user?.id ?? 0,
                 referrer: req.get('Referrer') ?? null,
