@@ -26,17 +26,19 @@ export async function logApiUsage(props) {
 export function logAPIUsageMiddleware(api) {
     return async (req, res, next) => {
         try {
-            const [path] = req.path.split('?');
-            const params = { ...req.params, ...req.query };
-            const props = {
-                api,
-                path: req.route?.path ?? path,
-                params: JSON.stringify(params),
-                method: req.method,
-                userId: res.locals.profile?.user?.id ?? 0,
-                referrer: req.get('Referrer') ?? null,
-            };
-            await logApiUsage(props);
+            res.on('finish', async () => {
+                const [path] = req.path.split('?');
+                const params = { ...req.params, ...req.query };
+                const props = {
+                    api,
+                    path: `${req.baseUrl}${(req.route?.path ?? path)}`,
+                    params: JSON.stringify(params),
+                    method: req.method,
+                    userId: res.locals.profile?.user?.id ?? 0,
+                    referrer: req.get('Referrer') ?? null,
+                };
+                await logApiUsage(props);
+            });
             next();
         }
         catch (err) {
