@@ -40,6 +40,7 @@
     "@types/sqlstring": "^2.3.0",
     "@types/ws": "^8.5.2",
     "auto-changelog": "^2.4.0",
+    "chums-types": "github:ChumsInc/chums-types",
     "eslint": "^10.0.0",
     "globals": "^17.1.0",
     "mysql2": ">=3.9.7",
@@ -49,7 +50,6 @@
   },
   "typings": "./dist/index.d.ts",
   "dependencies": {
-    "chums-types": "github:ChumsInc/chums-types",
     "cookie": "^2.0.1",
     "dayjs": "^1.11.18",
     "debug": "^4.3.3",
