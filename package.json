@@ -68,6 +68,11 @@
     "mysql2": ">=3.9.7",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
+  "peerDependenciesMeta": {
+    "xlsx": {
+      "optional": true
+    }
+  },
   "auto-changelog": {
     "template": "./changelog-template.hbs",
     "unreleased": true,
