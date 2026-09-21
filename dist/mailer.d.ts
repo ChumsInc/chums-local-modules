@@ -1,7 +1,5 @@
-import type { SentMessageInfo } from "nodemailer/lib/smtp-transport/index.js";
-import type { Attachment } from "nodemailer/lib/mailer/index.js";
-export type { SentMessageInfo } from 'nodemailer/lib/smtp-transport/index.js';
-export type { Attachment } from "nodemailer/lib/mailer/index.js";
+import type { Attachment, SentMessageInfo } from "nodemailer";
+export type { SentMessageInfo, Attachment } from 'nodemailer';
 export interface Address {
     name: string;
     address: string;
