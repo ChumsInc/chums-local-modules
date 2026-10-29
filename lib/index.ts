@@ -9,22 +9,6 @@ export type {sendMailProps, Address} from './mailer.d.ts';
 export {mysql2Pool, mysql2Pool as pool, getConnection, getPool} from './mysql.js';
 export type {Pool, QueryOptions, PoolConnection, Connection} from './mysql.d.ts';
 
-export {
-    resultToExcelSheet,
-    buildXLSXHeaders,
-    buildWorkBook,
-    addResultToExcelSheet,
-    parseDataForAOA,
-    aoa_to_sheet,
-    json_to_sheet,
-    sheet_add_json,
-    sheet_add_aoa,
-    xlsxMimeType,
-    encode_cell,
-    decode_cell
-} from './toXLSX.js';
-export type {WorkBookSheets, ColumnNames, SheetAOAOpts, WorkSheet, WritingOptions} from './toXLSX.d.ts'
-
 export {getDBCompany, getSageCompany, parseSQL} from './utils.js';
 export type {ParseSQLParams} from './utils.d.ts';
 
