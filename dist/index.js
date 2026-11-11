@@ -11,3 +11,4 @@ export { isGoogleToken, isLocalToken, validateToken, isBeforeExpiry } from './jw
 export { logPath } from './log-path.js';
 export { consentCookieName, cookieConsentHelper, loadCookieConsent, saveOptOutUser, extendCookieConsentExpiry, saveCookieConsent, setConsentCookie, shouldExtendCookieConsent, } from './cookie-consent.js';
 export { logAPIUsageMiddleware, logApiUsage } from './log-api-usage.js';
+export { parseCustomerSlug } from './customer.js';

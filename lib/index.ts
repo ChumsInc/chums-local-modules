@@ -73,3 +73,5 @@ export type {
 } from './cookie-consent.js'
 
 export {logAPIUsageMiddleware, logApiUsage, type LogApiUsageProps} from './log-api-usage.js';
+
+export {parseCustomerSlug, type CustomerSlugResponse} from './customer.js'
